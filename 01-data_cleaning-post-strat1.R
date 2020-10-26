@@ -40,28 +40,28 @@ reduced_data <-
 ## count(age) to count(age, sex, ....)
 
 # group by sex
-reduced_data <- 
+sex_data <- 
   reduced_data %>% 
   count(sex) %>%
   group_by(sex)
 
 # group by race
-reduced_data <-
+race_data <-
   reduced_data %>%
   count(race) %>%
   group_by(race)
 
 # group by age
 
-reduced_data <- 
+age_data <- 
   reduced_data %>% 
   filter(age != "less than 1 year old") %>%
   filter(age != "90 (90+ in 1980 and 1990)")
 
-reduced_data$age <- as.integer(reduced_data$age)
+age_data$age <- as.integer(age_data$age)
 
-reduced_data <-
-  reduced_data %>%
+age_data <-
+  age_data %>%
   filter(age >= 18) %>%
   count(age)%>%
   group_by(age)
@@ -70,7 +70,7 @@ reduced_data <-
 # group by age group
 reduced_data$age <- as.integer(reduced_data$age)
 
-reduced_data <-
+age_group_data <-
   reduced_data %>%
   filter(age>=18) %>%
   mutate(age_group = case_when(age <= 29 ~ "18-29 year olds",
@@ -81,25 +81,25 @@ reduced_data <-
   group_by(age_group)
 
 # group by health insurance (Medicaid)
-reduced_data <- 
+medicaid_data <- 
   reduced_data %>% 
   count(hinscaid) %>%
   group_by(hinscaid)
 
 #group by health insurance (Medicare)
-reduced_data <- 
+medicare_data <- 
   reduced_data %>% 
   count(hinscare) %>%
   group_by(hinscare)
 
 # group by education attainment
-reduced_data <- 
+education_data <- 
   reduced_data %>% 
   count(educ) %>%
   group_by(educ)
 
 # group by industry
-reduced_data <- 
+industry_data <- 
   reduced_data %>% 
   mutate(industry = case_when(ind %in% c(170:490) ~ "Agriculture, Forestry, Fishing, Hunting, and Mining",
                               ind == 770 ~ "Construction",
@@ -126,7 +126,7 @@ reduced_data <-
   group_by(industry)
 
 # group by wage
-reduced_data <-
+wage_data <-
   reduced_data %>%
   filter(incwage != 999999, incwage != 999998) %>%
   mutate(income = case_when(incwage %in% c(0:9999) ~ "Less than $10,000",
@@ -144,7 +144,7 @@ reduced_data <-
            
 # Saving the census data as a csv file in my
 # working directory
-write_csv(reduced_data, "census_data.csv")
+# write_csv(_data, "_census_data.csv")
 
 
 
