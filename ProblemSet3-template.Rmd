@@ -1,7 +1,7 @@
 ---
-title: "Title of Your Report"
-author: "Names of your Group Members"
-date: "Due Date"
+title: "Analysis on the popular vote of the 2020 American federal election"
+author: "Yena Joo, Woolim Kim, Guemin Kim"
+date: "Nov 2, 2020"
 output:
   pdf_document: default
   html_document:
@@ -12,10 +12,10 @@ output:
 library(tidyverse)
 
 # Loading in the cleaned survey Data
-survey_data <- read_csv("C:/Users/Sammi-Jo/Desktop/PS3/outputs/survey_data.csv")
+survey_data <- read_csv("survey_data.csv")
 
 # Loading in the cleaned census Data
-census_data <- read_csv("C:/Users/Sammi-Jo/Desktop/PS3/outputs/census_data.csv")
+census_data <- read_csv("census_data.csv")
 
 ```
 
@@ -40,7 +40,7 @@ Where $y$ represents the proportion of voters who will vote for Donald Trump. Si
 ```{r, include=FALSE}
 
 # Creating the Model
-model <- lm(vote_trump ~ age, 
+model <- glm(vote_trump ~ age, 
             data=survey_data)
 
 # Model Results (to Report in Results section)

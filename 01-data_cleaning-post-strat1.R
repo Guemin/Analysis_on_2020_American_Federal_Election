@@ -38,69 +38,40 @@ reduced_data <-
 ## Here I am only splitting cells by age, but you 
 ## can use other variables to split by changing
 ## count(age) to count(age, sex, ....)
-
-# group by sex
-sex_data <- 
-  reduced_data %>% 
-  count(sex) %>%
-  group_by(sex)
-
-# group by race
-race_data <-
-  reduced_data %>%
-  count(race) %>%
-  group_by(race)
-
-# group by age
-
-age_data <- 
+reduced_data <-
   reduced_data %>% 
   filter(age != "less than 1 year old") %>%
   filter(age != "90 (90+ in 1980 and 1990)")
 
-age_data$age <- as.integer(age_data$age)
-
-age_data <-
-  age_data %>%
-  filter(age >= 18) %>%
-  count(age)%>%
-  group_by(age)
-
-
-# group by age group
 reduced_data$age <- as.integer(reduced_data$age)
 
-age_group_data <-
+reduced_data <- 
   reduced_data %>%
   filter(age>=18) %>%
   mutate(age_group = case_when(age <= 29 ~ "18-29 year olds",
                                age %in% c(30:44) ~ "30-44 year olds",
                                age %in% c(45:64) ~ "45-64 year olds",
                                age >=65 ~ "65 years and older")) %>%
-  count(age_group) %>%
-  group_by(age_group)
-
-# group by health insurance (Medicaid)
-medicaid_data <- 
-  reduced_data %>% 
-  count(hinscaid) %>%
-  group_by(hinscaid)
-
-#group by health insurance (Medicare)
-medicare_data <- 
-  reduced_data %>% 
-  count(hinscare) %>%
-  group_by(hinscare)
-
-# group by education attainment
-education_data <- 
-  reduced_data %>% 
-  count(educ) %>%
-  group_by(educ)
-
-# group by industry
-industry_data <- 
-  reduced_data %>% 
+  mutate(race = case_when(race == "white" ~ "White",
+                          race == "black/african american/negro" ~ "Black",
+                          race == "american indian or alaska native" ~ "Native",
+                          race == "chinese" ~ "Asian",
+                          race == "japanese" ~ "Asian",
+                          race == "other asian or pacific islander" ~ "Asian",
+                          race == "other race, nec" ~"Other",
+                          race == "two major races" ~ "Other",
+                          race == "three or more major races" ~ "Other")) %>%
+  mutate(educ = case_when(educ == "n/a or no schooling" ~ "Didn't graduate from high school",
+                          educ == "nursery school to grade 4" ~ "Didn't graduate from high school",
+                          educ == "grade 5, 6, 7, or 8" ~ "Didn't graduate from high school",
+                          educ == "grade 9" ~ "Didn't graduate from high school",
+                          educ == "grade 10" ~ "Didn't graduate from high school",
+                          educ == "grade 11" ~ "Didn't graduate from high school",
+                          educ == "grade 12" ~ "High school graduate",
+                          educ == "1 year of college" ~"Some College",
+                          educ == "2 years of college" ~ "Some College",
+                          educ == "4 years of college" ~ "Some College",
+                          educ == "5+ years of college" ~ "Some College"))%>%
   mutate(industry = case_when(ind %in% c(170:490) ~ "Agriculture, Forestry, Fishing, Hunting, and Mining",
                               ind == 770 ~ "Construction",
                               ind %in% c(1070:3990) ~ "Manufacturing",
@@ -122,12 +93,6 @@ industry_data <-
                               ind %in% c(9370:9590) ~ "Public Administration",
                               ind %in% c(9670:9870) ~ "Military",
                               ind == 9920 ~ "Unemployed or never worked")) %>%
-  count(industry) %>%
-  group_by(industry)
-
-# group by wage
-wage_data <-
-  reduced_data %>%
   filter(incwage != 999999, incwage != 999998) %>%
   mutate(income = case_when(incwage %in% c(0:9999) ~ "Less than $10,000",
                             incwage %in% c(10000:14999) ~ "$10,000 - $14,999",
@@ -139,12 +104,12 @@ wage_data <-
                             incwage %in% c(75000:99999) ~ "$75,000 - $99,999",
                             incwage %in% c(100000:149999) ~ "$100,000 - $149,999",
                             incwage >= 150000 ~ "$150,000 and over")) %>%
-  count(income) %>%
-  group_by(income)
+  count(age_group, sex, race, hinscaid, hinscare, educ, industry, income) %>%
+  group_by(age_group, sex, race, hinscaid, hinscare, educ, industry, income)
            
 # Saving the census data as a csv file in my
 # working directory
-# write_csv(_data, "_census_data.csv")
+ write_csv(reduced_data, "census_data.csv")
 
 
 
