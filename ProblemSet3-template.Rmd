@@ -10,6 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(lme4)
 
 # Loading in the cleaned survey Data
 survey_data <- read_csv("survey_data.csv")
@@ -40,13 +41,13 @@ Where $y$ represents the proportion of voters who will vote for Donald Trump. Si
 ```{r, include=FALSE}
 
 # Creating the Model
-model <- glm(vote_trump ~ age, 
+model <- glm(vote_trump ~ age_group + gender, 
             data=survey_data)
 
 # Model Results (to Report in Results section)
-# summary(model)
+#summary(model)
 # OR
-# broom::tidy(model)
+broom::tidy(model)
 
 ```
 

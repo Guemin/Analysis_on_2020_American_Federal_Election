@@ -43,11 +43,30 @@ reduced_data <-
 # Maybe make some age-groups?
 # Maybe check the values?
 # Is vote a binary? If not, what are you going to do?
+reduced_data <-
+  reduced_data %>% 
+  filter(age != "less than 1 year old") %>%
+  filter(age != "90 (90+ in 1980 and 1990)") %>%
+  rename(sex = gender)
+
+reduced_data$age <- as.integer(reduced_data$age)
+
+reduced_data <- 
+  reduced_data %>%
+  filter(age>=18) %>%
+  mutate(age_group = case_when(age <= 29 ~ "18-29 year olds",
+                               age %in% c(30:44) ~ "30-44 year olds",
+                               age %in% c(45:64) ~ "45-64 year olds",
+                               age >=65 ~ "65 years and older"))
 
 reduced_data<-
   reduced_data %>%
   mutate(vote_trump = 
            ifelse(vote_2020=="Donald Trump", 1, 0))
+reduced_data<-
+  reduced_data %>%
+  mutate(vote_Biden = 
+            ifelse(vote_2020=="Joe Biden", 1, 0))
 
 # Saving the survey/sample data as a csv file in my
 # working directory

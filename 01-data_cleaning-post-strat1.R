@@ -38,10 +38,12 @@ reduced_data <-
 ## Here I am only splitting cells by age, but you 
 ## can use other variables to split by changing
 ## count(age) to count(age, sex, ....)
+
 reduced_data <-
   reduced_data %>% 
   filter(age != "less than 1 year old") %>%
   filter(age != "90 (90+ in 1980 and 1990)")
+  
 
 reduced_data$age <- as.integer(reduced_data$age)
 
