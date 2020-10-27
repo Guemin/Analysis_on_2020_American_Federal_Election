@@ -41,7 +41,7 @@ Where $y$ represents the proportion of voters who will vote for Donald Trump. Si
 ```{r, include=FALSE}
 
 # Creating the Model
-model <- glm(vote_trump ~ age_group + gender, 
+model <- glm(vote_trump ~ age_group + sex, 
             data=survey_data)
 
 # Model Results (to Report in Results section)
@@ -66,6 +66,7 @@ census_data %>%
   mutate(alp_predict_prop = estimate*n) %>%
   summarise(alp_predict = sum(alp_predict_prop)/sum(n))
 
+summary(census_data)
 
 ```
 

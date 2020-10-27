@@ -106,6 +106,8 @@ reduced_data <-
                             incwage %in% c(75000:99999) ~ "$75,000 - $99,999",
                             incwage %in% c(100000:149999) ~ "$100,000 - $149,999",
                             incwage >= 150000 ~ "$150,000 and over")) %>%
+  mutate(sex = case_when(sex == "male" ~ "Male",
+                         sex == "female" ~ "Female")) %>%
   count(age_group, sex, race, hinscaid, hinscare, educ, industry, income) %>%
   group_by(age_group, sex, race, hinscaid, hinscare, educ, industry, income)
            
