@@ -46,7 +46,7 @@ model <- glmer(vote_trump ~ age_group + gender + race_ethnicity + education + (1
 model2 <- glm(vote_trump ~ age_group + gender + race_ethnicity + education + household_income, 
             data=survey_data)
 
-#voting for Baiden
+#voting for Biden
 model_b <- glmer(vote_Biden ~ age_group + gender + race_ethnicity + education + (1|household_income), 
             data=survey_data, family = binomial)
 model2_b <- glm(vote_Biden ~ age_group + gender + race_ethnicity + education + household_income, 
