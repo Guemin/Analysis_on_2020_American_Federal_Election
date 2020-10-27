@@ -39,10 +39,10 @@ $$ y = \beta_0+\beta_1  x_{age} + \epsilon$$
 Where $y$ represents the proportion of voters who will vote for Donald Trump. Similarly, $\beta_0$ represents the intercept of the model, and is the probability of voting for Donald Trump at age 0. Additionally, $\beta_1$ represents the slope of the model. So, for everyone one unit increase in age, we expect a $\beta_1$ increase in the probability of voting for Donald Trump.
 
 ```{r}
-#naive model
+#naive model for estimating trump
 head(survey_data)
 
-mod <- lm(vote_trump ~ gender + age_group, 
+mod <- lm(vote_trump ~ gender + age_group + race + state + education,
            data = survey_data)
 
 broom::tidy(mod)
@@ -53,12 +53,43 @@ census_data$estimate <-
   mod %>%
   predict(newdata = census_data)
 
+#estimate for each age group
 census_data %>%
   mutate(vote_prop = estimate*n) %>%
-  group_by(state) %>%
+  group_by(age_group) %>%
   summarise(vote_props = sum(vote_prop)/sum(n))
-```
 
+
+total_estimate <-
+  census_data %>%
+  mutate(vote_prop = estimate*n) %>%
+  summarise(vote_props = sum(vote_prop)/sum(n))
+  
+total_estimate
+  
+```
+```{r}
+library(broom)
+library(brms)
+library(here)
+library(tidybayes)
+
+model <- glmer(as.factor(vote_trump) ~ gender + (1|age_group),
+              data = survey_data, family = binomial)
+summary(model)
+
+census_data$estimate <-
+  model %>%
+  predict(newdata = census_data)
+
+total_estimate <-
+  census_data %>%
+  mutate(vote_prop = estimate*n) %>%
+  summarise(vote_props = sum(vote_prop)/sum(n))
+
+head(census_data)
+total_estimate
+```
 
 ```{r, include=T}
 
