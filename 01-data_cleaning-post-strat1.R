@@ -2,7 +2,7 @@
 # Purpose: Prepare and clean the survey data downloaded from IPUMS USA
 # Author: Guemin Kim, Woolim Kim and Yena Joo
 # Data: 27 October 2020
-# Contact: guemin.kim@mail.utoronto.ca, 
+# Contact: guemin.kim@mail.utoronto.ca, yena.joo@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: 
 # - Need to have downloaded the ACS data and saved it to inputs/data

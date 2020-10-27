@@ -2,7 +2,7 @@
 # Purpose: Prepare and clean the survey data downloaded from voterstudygroup.org
 # Author: Guemin Kim, Yena Joo, Woolim Kim
 # Data: 27 October 2020
-# Contact: guemin.kim@mail.utoronto.ca, 
+# Contact: guemin.kim@mail.utoronto.ca, yena.joo@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: 
 # - Need to have downloaded the data from X and save the folder that you're 

@@ -38,17 +38,30 @@ $$ y = \beta_0+\beta_1  x_{age} + \epsilon$$
 
 Where $y$ represents the proportion of voters who will vote for Donald Trump. Similarly, $\beta_0$ represents the intercept of the model, and is the probability of voting for Donald Trump at age 0. Additionally, $\beta_1$ represents the slope of the model. So, for everyone one unit increase in age, we expect a $\beta_1$ increase in the probability of voting for Donald Trump.
 
-```{r, include=FALSE}
+```{r, include=T}
 
 # Creating the Model
+<<<<<<< HEAD
 model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income, 
+=======
+model <- glmer(vote_trump ~ age_group + gender + race_ethnicity + education + (1|household_income), 
+            data=survey_data, family = binomial)
+model2 <- glm(vote_trump ~ age_group + gender + race_ethnicity + education + household_income, 
+>>>>>>> 4b53e77b3702dc9a2bef06bf7efef78b7c9de2b9
             data=survey_data)
 
+#voting for Biden
+model_b <- glmer(vote_Biden ~ age_group + gender + race_ethnicity + education + (1|household_income), 
+            data=survey_data, family = binomial)
+model2_b <- glm(vote_Biden ~ age_group + gender + race_ethnicity + education + household_income, 
+            data=survey_data)
 # Model Results (to Report in Results section)
-#summary(model)
-# OR
-broom::tidy(model)
+summary(model)
+summary(model_b)
 
+# OR
+broom::tidy(model2)
+broom::tidy(model2_b)
 ```
 
 ## Post-Stratification 
