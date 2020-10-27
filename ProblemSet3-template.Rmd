@@ -68,27 +68,63 @@ total_estimate <-
 total_estimate
   
 ```
+
 ```{r}
 library(broom)
 library(brms)
 library(here)
 library(tidybayes)
 
-model <- glmer(as.factor(vote_trump) ~ gender + (1|age_group),
-              data = survey_data, family = binomial)
+#Trump
+model <- lmer(vote_trump ~ gender + age_group + race + state + education + (1|state),
+              data = survey_data)
 summary(model)
 
 census_data$estimate <-
   model %>%
   predict(newdata = census_data)
 
+estimate_age_group <-
+  census_data %>%
+  mutate(vote_prop = estimate*n) %>%
+  group_by(age_group) %>%
+  summarise(vote_for_trump_estimate = sum(vote_prop)/sum(n))
+
 total_estimate <-
   census_data %>%
   mutate(vote_prop = estimate*n) %>%
-  summarise(vote_props = sum(vote_prop)/sum(n))
+  summarise(vote_for_trump_estimate = sum(vote_prop)/sum(n))
 
-head(census_data)
+
+
+##Biden
+
+model2 <- lmer(vote_Biden ~ gender + age_group + race + state + education + (1|state),
+              data = survey_data)
+summary(model2)
+
+census_data$estimate_B <-
+  model2 %>%
+  predict(newdata = census_data)
+
+B_estimate_age_group <-
+  census_data %>%
+  mutate(vote_prop = estimate_B*n) %>%
+  group_by(age_group) %>%
+  summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
+
+B_total_estimate <-
+  census_data %>%
+  mutate(vote_prop = estimate_B*n) %>%
+  summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
+
+estimate_age_group
 total_estimate
+B_estimate_age_group
+B_total_estimate
+
+
+
 ```
 
 ```{r, include=T}
