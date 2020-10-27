@@ -63,14 +63,11 @@ census_data %>%
 ```{r, include=T}
 
 # Creating the Model
-<<<<<<< HEAD
-model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income, 
-=======
+#model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income) 
+
 model <- glmer(vote_trump ~ age_group + gender + race_ethnicity + education + (1|household_income), 
             data=survey_data, family = binomial)
-model2 <- glm(vote_trump ~ age_group + gender + race_ethnicity + education + household_income, 
->>>>>>> 4b53e77b3702dc9a2bef06bf7efef78b7c9de2b9
-            data=survey_data)
+model2 <- glm(vote_trump ~ age_group + gender + race_ethnicity + education + household_income, data=survey_data)
 
 #voting for Biden
 model_b <- glmer(vote_Biden ~ age_group + gender + race_ethnicity + education + (1|household_income), 
