@@ -69,11 +69,8 @@ total_estimate
   
 ```
 
-```{r}
-library(broom)
-library(brms)
-library(here)
-library(tidybayes)
+```{r} 
+#Woolim
 
 #Trump
 model <- lmer(vote_trump ~ gender + age_group + race + state + education + (1|state),
@@ -84,10 +81,10 @@ census_data$estimate <-
   model %>%
   predict(newdata = census_data)
 
-estimate_age_group <-
+estimate_each_state <-
   census_data %>%
   mutate(vote_prop = estimate*n) %>%
-  group_by(age_group) %>%
+  group_by(state) %>%
   summarise(vote_for_trump_estimate = sum(vote_prop)/sum(n))
 
 total_estimate <-
@@ -107,10 +104,10 @@ census_data$estimate_B <-
   model2 %>%
   predict(newdata = census_data)
 
-B_estimate_age_group <-
+B_estimate_each_state <-
   census_data %>%
   mutate(vote_prop = estimate_B*n) %>%
-  group_by(age_group) %>%
+  group_by(state) %>%
   summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
 
 B_total_estimate <-
@@ -119,9 +116,9 @@ B_total_estimate <-
   summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
 
 
-estimate_age_group
+head(estimate_each_state)
 total_estimate
-B_estimate_age_group
+head(B_estimate_each_state)
 B_total_estimate
 
 ##Total estimate of Vote for Trump is higher than Biden's estimate.
