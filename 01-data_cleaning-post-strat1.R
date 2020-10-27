@@ -1,8 +1,8 @@
 #### Preamble ####
-# Purpose: Prepare and clean the survey data downloaded from [...UPDATE ME!!!!!]
-# Author: Rohan Alexander and Sam Caetano [CHANGE THIS TO YOUR NAME!!!!]
-# Data: 22 October 2020
-# Contact: rohan.alexander@utoronto.ca [PROBABLY CHANGE THIS ALSO!!!!]
+# Purpose: Prepare and clean the survey data downloaded from IPUMS USA
+# Author: Guemin Kim, Woolim Kim and Yena Joo
+# Data: 27 October 2020
+# Contact: guemin.kim@mail.utoronto.ca, 
 # License: MIT
 # Pre-requisites: 
 # - Need to have downloaded the ACS data and saved it to inputs/data
@@ -13,7 +13,7 @@
 library(haven)
 library(tidyverse)
 # Read in the raw data.
-raw_data <- read_dta("usa_00001.dta.gz")
+raw_data <- read_dta("usa_00004.dta.gz")
 
 
 # Add the labels
@@ -29,9 +29,10 @@ reduced_data <-
          hinscaid ,
          hinscare,
          educ,
-         ind,
-         incwage)
-         
+         ftotinc,
+         bpl,
+         statefip)
+
 
 #### What's next? ####
 
@@ -43,9 +44,21 @@ reduced_data <-
   reduced_data %>% 
   filter(age != "less than 1 year old") %>%
   filter(age != "90 (90+ in 1980 and 1990)")
-  
+
 
 reduced_data$age <- as.integer(reduced_data$age)
+reduced_data$ftotinc <- as.integer(reduced_data$ftotinc)
+
+state <- c("alabama", "alaska", "arizona", "arkansas", "california", "colorado",
+           "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
+           "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana",
+           "maine", "maryland", "massachusetts", "michigan", "minnesota",
+           "mississippi", "missouri", "montana", "nebraska", "nevada", "new hampshire",
+           "new jersey", "new mexico", "new york", "north carolina", "north dakota",
+           "ohio", "oklahoma", "oregon", "pennsylvania", "rhode island", "south carolina",
+           "south dakota", "tennessee", "texas", "utah", "vermont", "virginia",
+           "washington", "west virginia", "wisconsin", "wyoming", "american samoa",
+           "district of columbia")
 
 reduced_data <- 
   reduced_data %>%
@@ -57,64 +70,86 @@ reduced_data <-
   mutate(race = case_when(race == "white" ~ "White",
                           race == "black/african american/negro" ~ "Black",
                           race == "american indian or alaska native" ~ "Native",
-                          race == "chinese" ~ "Asian",
-                          race == "japanese" ~ "Asian",
-                          race == "other asian or pacific islander" ~ "Asian",
-                          race == "other race, nec" ~"Other",
-                          race == "two major races" ~ "Other",
-                          race == "three or more major races" ~ "Other")) %>%
-  mutate(educ = case_when(educ == "n/a or no schooling" ~ "Didn't graduate from high school",
-                          educ == "nursery school to grade 4" ~ "Didn't graduate from high school",
-                          educ == "grade 5, 6, 7, or 8" ~ "Didn't graduate from high school",
-                          educ == "grade 9" ~ "Didn't graduate from high school",
-                          educ == "grade 10" ~ "Didn't graduate from high school",
-                          educ == "grade 11" ~ "Didn't graduate from high school",
-                          educ == "grade 12" ~ "High school graduate",
-                          educ == "1 year of college" ~"Some College",
-                          educ == "2 years of college" ~ "Some College",
-                          educ == "4 years of college" ~ "Some College",
-                          educ == "5+ years of college" ~ "Some College"))%>%
-  mutate(industry = case_when(ind %in% c(170:490) ~ "Agriculture, Forestry, Fishing, Hunting, and Mining",
-                              ind == 770 ~ "Construction",
-                              ind %in% c(1070:3990) ~ "Manufacturing",
-                              ind %in% c(4070:4590) ~ "Wholesale Trade",
-                              ind %in% c(4670:5790) ~ "Retail Trade",
-                              ind %in% c(6070:6390) ~ "Transportation and Warehousing",
-                              ind %in% c(570:690) ~ "Utilities",
-                              ind %in% c(6470:6780) ~ "Information",
-                              ind %in% c(6870:6992) ~ "Finance and Insurance",
-                              ind %in% c(7071:7190) ~ "Real Estate and Rental/Leasing",
-                              ind %in% c(7270:7490) ~ "Professional, Scientific, and Technical Services",
-                              ind == 7570 ~ "Management of companies and enterprises",
-                              ind %in% c(7580:7790) ~ "Administrative and support and waste management services",
-                              ind %in% c(7860:7890) ~ "Educational Services",
-                              ind %in% c(7970:8470) ~ "Health Care and Social Assistance",
-                              ind %in% c(8561:8590) ~ "Arts, Entertainment, and Recreation",
-                              ind %in% c(8660:8690) ~ "Accommodation and Food Services",
-                              ind %in% c(8770:9290) ~ "Other Services, Except Public Administration",
-                              ind %in% c(9370:9590) ~ "Public Administration",
-                              ind %in% c(9670:9870) ~ "Military",
-                              ind == 9920 ~ "Unemployed or never worked")) %>%
-  filter(incwage != 999999, incwage != 999998) %>%
-  mutate(income = case_when(incwage %in% c(0:9999) ~ "Less than $10,000",
-                            incwage %in% c(10000:14999) ~ "$10,000 - $14,999",
-                            incwage %in% c(15000:19999) ~ "$15,000 - $19,999",
-                            incwage %in% c(20000:29999) ~ "$20,000 - $29,999",
-                            incwage %in% c(30000:39999) ~ "$30,000 - $39,999",
-                            incwage %in% c(40000:49999) ~ "$40,000 - $49,999",
-                            incwage %in% c(50000:74999) ~ "$50,000 - $74,999",
-                            incwage %in% c(75000:99999) ~ "$75,000 - $99,999",
-                            incwage %in% c(100000:149999) ~ "$100,000 - $149,999",
-                            incwage >= 150000 ~ "$150,000 and over")) %>%
-  mutate(sex = case_when(sex == "male" ~ "Male",
-                         sex == "female" ~ "Female")) %>%
-  count(age_group, sex, race, hinscaid, hinscare, educ, industry, income) %>%
-  group_by(age_group, sex, race, hinscaid, hinscare, educ, industry, income)
-           
+                          race %in% c("chinese", "japanese", "other asian or pacific islander") ~ "Asian",
+                          race %in% c("other race, nec", "two major races", "three or more major races") ~"Other")) 
+reduced_data <- 
+  reduced_data %>%
+  mutate(education = case_when(educ %in% c("n/a or no schooling", "nursery school to grade 4",
+                                           "grade 5, 6, 7, or 8", "grade 9", "grade 10", "grade 11") ~ "Didn't graduate from high school",
+                               educ == "grade 12" ~ "High school graduate",
+                               educ %in% c("1 year of college", "2 years of college") ~ "Some college or associate degree",
+                               educ %in% c("4 years of college", "5+ years of college") ~ "Bachelor's degree or higher"))%>%
+  mutate(household_income = case_when(ftotinc %in% c(0:14999) ~ "Less than $14,999",
+                                      ftotinc %in% c(15000:24999) ~ "$15,000 to $24,999",
+                                      ftotinc %in% c(25000:34999) ~ "$25,000 to $34,999",
+                                      ftotinc %in% c(35000:44999) ~ "$35,000 to $44,999",
+                                      ftotinc %in% c(45000:54999) ~ "$45,000 to $54,999",
+                                      ftotinc %in% c(55000:74999) ~ "$55,000 to $74,999",
+                                      ftotinc %in% c(75000:99999) ~ "$75,000 to $99,999",
+                                      ftotinc %in% c(100000:149999) ~ "$100,000 to $149,999",
+                                      ftotinc >= 150000 ~ "$150,000 and over")) %>%
+  mutate(gender = case_when(sex == "male" ~ "Male",
+                            sex == "female" ~ "Female")) 
+reduced_data <- 
+  reduced_data %>%
+  mutate(state = case_when(statefip == "alaska" ~ "AK",
+                           statefip == "alabama" ~ "AL",
+                           statefip == "arizona" ~ "AZ",
+                           statefip == "arkansas" ~ "AR",
+                           statefip == "california" ~ "CA",
+                           statefip == "colorado" ~"CO",
+                           statefip == "connecticut" ~ "CT",
+                           statefip == "district of columbia" ~ "DC",
+                           statefip == "delaware" ~ "DE",
+                           statefip == "florida" ~ "FL",
+                           statefip == "georgia" ~ "GA",
+                           statefip == "hawaii" ~ "HI",
+                           statefip == "iowa" ~ "IA",
+                           statefip == "idaho" ~ "ID",
+                           statefip == "illinois" ~ "IL",
+                           statefip == "indiana" ~ "IN",
+                           statefip == "kansas" ~ "KS",
+                           statefip == "kentucky" ~ "KY",
+                           statefip == "louisiana" ~ "LA",
+                           statefip == "massachusetts" ~ "MA",
+                           statefip == "maryland" ~ "MD",
+                           statefip == "maine" ~ "ME",
+                           statefip == "michigan" ~ "MI",
+                           statefip == "minnesota" ~ "MN",
+                           statefip == "missouri" ~ "MO",
+                           statefip == "mississippi" ~ "MS",
+                           statefip == "montana" ~ "MT",
+                           statefip == "north carolina" ~ "NC",
+                           statefip == "north dakota" ~ "ND",
+                           statefip == "nebraska" ~ "NE",
+                           statefip == "new hampshire" ~ "NH",
+                           statefip == "new jersey" ~ "NJ",
+                           statefip == "new mexico" ~ "NM",
+                           statefip == "nevada" ~ "NV",
+                           statefip == "new york" ~ "NY",
+                           statefip == "ohio" ~ "OH",
+                           statefip == "oklahoma" ~ "OK",
+                           statefip == "oregon" ~ "OR",
+                           statefip == "pennsylvania" ~ "PA",
+                           statefip == "rhode island" ~ "RI",
+                           statefip == "south carolina" ~ "SC",
+                           statefip == "south dakota" ~ "SD",
+                           statefip == "tennessee" ~ "TN",
+                           statefip == "texas" ~ "TX",
+                           statefip == "utah" ~ "UT",
+                           statefip == "virginia" ~ "VA",
+                           statefip == "vermont" ~ "VT",
+                           statefip == "washington" ~ "WA",
+                           statefip == "wisconsin" ~ "WI",
+                           statefip == "west virginia" ~ "WV",
+                           statefip == "wyoming" ~ "WY")) %>%
+  mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
+
+reduced_data <- 
+  reduced_data %>%
+  count(age_group, sex, race, state, hinscaid, hinscare, education, household_income, foreign_born) %>%
+  group_by(age_group, sex, race, state, hinscaid, hinscare, education, household_income, foreign_born)
+
 # Saving the census data as a csv file in my
 # working directory
- write_csv(reduced_data, "census_data.csv")
-
-
-
-         
+write_csv(reduced_data, "census_data.csv")

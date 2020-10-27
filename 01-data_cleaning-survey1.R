@@ -1,8 +1,8 @@
 #### Preamble ####
-# Purpose: Prepare and clean the survey data downloaded from [...UPDATE ME!!!!!]
-# Author: Rohan Alexander and Sam Caetano [CHANGE THIS TO YOUR NAME!!!!]
-# Data: 22 October 2020
-# Contact: rohan.alexander@utoronto.ca [PROBABLY CHANGE THIS ALSO!!!!]
+# Purpose: Prepare and clean the survey data downloaded from voterstudygroup.org
+# Author: Guemin Kim, Yena Joo, Woolim Kim
+# Data: 27 October 2020
+# Contact: guemin.kim@mail.utoronto.ca, 
 # License: MIT
 # Pre-requisites: 
 # - Need to have downloaded the data from X and save the folder that you're 
@@ -36,7 +36,10 @@ reduced_data <-
          education,
          state,
          congress_district,
-         age)
+         age,
+         health_subsidies,
+         medicare_for_all,
+         foreign_born)
 
 
 #### What else???? ####
@@ -46,8 +49,7 @@ reduced_data <-
 reduced_data <-
   reduced_data %>% 
   filter(age != "less than 1 year old") %>%
-  filter(age != "90 (90+ in 1980 and 1990)") %>%
-  rename(sex = gender)
+  filter(age != "90 (90+ in 1980 and 1990)")
 
 reduced_data$age <- as.integer(reduced_data$age)
 
@@ -57,16 +59,37 @@ reduced_data <-
   mutate(age_group = case_when(age <= 29 ~ "18-29 year olds",
                                age %in% c(30:44) ~ "30-44 year olds",
                                age %in% c(45:64) ~ "45-64 year olds",
-                               age >=65 ~ "65 years and older"))
-
-reduced_data<-
-  reduced_data %>%
+                               age >=65 ~ "65 years and older")) %>%
   mutate(vote_trump = 
-           ifelse(vote_2020=="Donald Trump", 1, 0))
-reduced_data<-
-  reduced_data %>%
+           ifelse(vote_2020=="Donald Trump", 1, 0)) %>%
   mutate(vote_Biden = 
-            ifelse(vote_2020=="Joe Biden", 1, 0))
+           ifelse(vote_2020=="Joe Biden", 1, 0)) %>%
+  mutate(household_income = case_when(household_income == "Less than $14,999" ~ "Less than $14,999",
+                                      household_income %in% c("$15,000 to $19,999", "$20,000 to $24,999") ~ "$15,000 to $24,999",
+                                      household_income %in% c("$25,000 to $29,999", "$30,000 to $34,999") ~ "$25,000 to $34,999",
+                                      household_income %in% c("$35,000 to $39,999", "$40,000 to $44,999 ") ~ "$35,000 to $44,999",
+                                      household_income %in% c("$45,000 to $49,999", "$50,000 to $54,999") ~ "$45,000 to $54,999",
+                                      household_income %in% c("$55,000 to $59,999", "$60,000 to $64,999",
+                                                              "$65,000 to $69,999", "$70,000 to $74,999") ~ "$55,000 to $74,999",
+                                      household_income %in% c("$75,000 to $79,999", "$80,000 to $84,999",
+                                                              "$85,000 to $89,999", "$90,000 to $94,999",
+                                                              "$95,000 to $99,999") ~ "$75,000 to $99,999",
+                                      household_income %in% c("$100,000 to $124,999", "$125,000 to $149,999") ~ "$100,000 to $149,999",
+                                      household_income %in% c("$150,000 to $174,999", "$175,000 to $199,999",
+                                                              "$200,000 to $249,999", "$250,000 and above") ~ "$150,000 and over")) %>%
+  mutate(race = case_when(race_ethnicity == "White" ~ "White",
+                                    race_ethnicity == "Black, or African American" ~ "Black",
+                                    race_ethnicity %in% c("American Indian or Alaska Native", "Pacific Islander (Native Hawaiian)") ~ "Native",
+                                    race_ethnicity %in% c("Asian (Asian Indian)", "Asian (Chinese)",
+                                                          "Asian (Filipino)", "Asian (Japanese)", "Asian (Korean)",
+                                                          "Asian (Other)", "Asian (Vietnamese)") ~ "Asian",
+                                    race_ethnicity %in% c("Pacific Islander (Guamanian)", "Pacific Islander (Other)",
+                                                          "Pacific Islander (Samoan)", "Some other race") ~ "Other")) %>%
+  mutate(education = case_when(education %in% c("3rd Grade or less", "Middle School - Grades 4 - 8", "Completed some high school") ~ "Didn't graduate from high school",
+                               education  == "High school graduate" ~ "High school graduate",
+                               education %in% c("Associate Degree", "Completed some college, but no degree",
+                                                "Completed some graduate, but no degree", "Other post high school vocational training") ~ "Some college or associate degree",
+                               education %in% c("College Degree (such as B.A., B.S.)", "Doctorate degree ", "Masters degree") ~ "Bachelor's degree or higher"))
 
 # Saving the survey/sample data as a csv file in my
 # working directory
