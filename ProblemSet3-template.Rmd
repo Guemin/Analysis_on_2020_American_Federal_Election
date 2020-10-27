@@ -118,13 +118,13 @@ B_total_estimate <-
   mutate(vote_prop = estimate_B*n) %>%
   summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
 
+
 estimate_age_group
 total_estimate
 B_estimate_age_group
 B_total_estimate
 
-
-
+##Total estimate of Vote for Trump is higher than Biden's estimate.
 ```
 
 ```{r, include=T}
