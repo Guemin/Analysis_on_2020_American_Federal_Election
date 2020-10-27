@@ -41,7 +41,7 @@ Where $y$ represents the proportion of voters who will vote for Donald Trump. Si
 ```{r, include=FALSE}
 
 # Creating the Model
-model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income + , 
+model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income, 
             data=survey_data)
 
 # Model Results (to Report in Results section)

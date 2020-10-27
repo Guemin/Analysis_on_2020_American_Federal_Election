@@ -144,11 +144,17 @@ reduced_data <-
                            statefip == "west virginia" ~ "WV",
                            statefip == "wyoming" ~ "WY")) %>%
   mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
-
 reduced_data <- 
   reduced_data %>%
-  count(age_group, sex, race, state, hinscaid, hinscare, education, household_income, foreign_born) %>%
-  group_by(age_group, sex, race, state, hinscaid, hinscare, education, household_income, foreign_born)
+  rename(gender = sex) 
+reduced_data <- 
+  reduced_data %>%
+  mutate(gender = case_when(gender == "male" ~ "Male",
+                            gender == "female" ~ "Female"))
+reduced_data <- 
+  reduced_data %>%
+  count(age_group, gender, race, state, hinscaid, hinscare, education, household_income, foreign_born) %>%
+  group_by(age_group, gender, race, state, hinscaid, hinscare, education, household_income, foreign_born)
 
 # Saving the census data as a csv file in my
 # working directory
