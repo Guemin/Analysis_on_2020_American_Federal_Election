@@ -87,9 +87,7 @@ reduced_data <-
                                       ftotinc %in% c(55000:74999) ~ "$55,000 to $74,999",
                                       ftotinc %in% c(75000:99999) ~ "$75,000 to $99,999",
                                       ftotinc %in% c(100000:149999) ~ "$100,000 to $149,999",
-                                      ftotinc >= 150000 ~ "$150,000 and over")) %>%
-  mutate(gender = case_when(sex == "male" ~ "Male",
-                            sex == "female" ~ "Female")) 
+                                      ftotinc >= 150000 ~ "$150,000 and over"))
 reduced_data <- 
   reduced_data %>%
   mutate(state = case_when(statefip == "alaska" ~ "AK",
@@ -142,8 +140,8 @@ reduced_data <-
                            statefip == "washington" ~ "WA",
                            statefip == "wisconsin" ~ "WI",
                            statefip == "west virginia" ~ "WV",
-                           statefip == "wyoming" ~ "WY")) %>%
-  mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
+                           statefip == "wyoming" ~ "WY")) #%>%
+  #mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
 reduced_data <- 
   reduced_data %>%
   rename(gender = sex) 
@@ -153,9 +151,10 @@ reduced_data <-
                             gender == "female" ~ "Female"))
 reduced_data <- 
   reduced_data %>%
-  count(age_group, gender, race, state, hinscaid, hinscare, education, household_income, foreign_born) %>%
-  group_by(age_group, gender, race, state, hinscaid, hinscare, education, household_income, foreign_born)
+  count(age_group, gender, race, state, hinscaid, hinscare, education, household_income) %>%
+  group_by(age_group, gender, race, state, hinscaid, hinscare, education, household_income)
 
+#head(reduced_data)
 # Saving the census data as a csv file in my
 # working directory
 write_csv(reduced_data, "census_data.csv")

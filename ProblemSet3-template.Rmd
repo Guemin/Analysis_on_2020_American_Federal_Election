@@ -38,6 +38,28 @@ $$ y = \beta_0+\beta_1  x_{age} + \epsilon$$
 
 Where $y$ represents the proportion of voters who will vote for Donald Trump. Similarly, $\beta_0$ represents the intercept of the model, and is the probability of voting for Donald Trump at age 0. Additionally, $\beta_1$ represents the slope of the model. So, for everyone one unit increase in age, we expect a $\beta_1$ increase in the probability of voting for Donald Trump.
 
+```{r}
+#naive model
+head(survey_data)
+
+mod <- lm(vote_trump ~ gender + age_group, 
+           data = survey_data)
+
+broom::tidy(mod)
+
+head(census_data)
+
+census_data$estimate <-
+  mod %>%
+  predict(newdata = census_data)
+
+census_data %>%
+  mutate(vote_prop = estimate*n) %>%
+  group_by(state) %>%
+  summarise(vote_props = sum(vote_prop)/sum(n))
+```
+
+
 ```{r, include=T}
 
 # Creating the Model
