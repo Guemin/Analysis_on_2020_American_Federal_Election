@@ -125,51 +125,55 @@ B_total_estimate
 ```
 
 ```{r, include=T}
-
+####have negative estimates
 # Creating the Model
 #model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income) 
 
 #vote for Trump
-model_t <- glmer(vote_trump ~ age_group + gender + race + education + (1|household_income), 
-            data=survey_data, family = binomial)
-model2_t <- glm(vote_trump ~ age_group + gender + race + education + household_income, data=survey_data)
+#model_t <- glmer(vote_trump ~ age_group + gender + race + education + (1|household_income), 
+            #data=survey_data, family = binomial)
+model2_t <- glm(vote_trump ~ age_group + gender + race + education + household_income + state, data=survey_data, family="binomial")
 
 #voting for Biden
-model_b <- glmer(vote_Biden ~ age_group + gender + race + education + household_income + (1|state), 
-            data=survey_data, family = binomial)
-model2_b <- glm(vote_Biden ~ age_group + gender + race + education + household_income + state, 
-            data=survey_data)
+#model_b <- glmer(vote_Biden ~ age_group + gender + race + education + household_income + (1|state), 
+            #data=survey_data, family = binomial)
+model2_b <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
+            data=survey_data, family="binomial")
 # Model Results (to Report in Results section)
-summary(model_t)
-summary(model_b)
+#summary(model_t)
+#summary(model_b)
 
 # OR
 broom::tidy(model2_t)
 broom::tidy(model2_b)
 
 #yps for glm trump 
-census_data$estimate_t <-
+census_data$estimate2_t <-
   model2_t %>%
   predict(newdata = census_data)
 
-ypsTrump<- 
+predict_t <- 
 census_data %>%
-  mutate(vote_prop_t = estimate_t*n) %>%
-  summarise(estimate_vote_t = sum(vote_prop_t)/sum(n))
+  filter(!is.na(estimate2_t))%>%
+  mutate(vote_prop2 = estimate2_t*count) %>%
+  summarise(alp_predict = sum(vote_prop2)/sum(count))
 
-ypsTrump
+predict_t
+
 
 #yps for glm Biden
 census_data$estimate_b <-
   model2_b %>%
   predict(newdata = census_data)
 
+predict_b<-
 census_data %>%
-  mutate(alp_predict_prop2 = estimate_b*n) %>%
-  group_by(state) %>%
-  summarise(alp_predict2 = sum(alp_predict_prop2)/sum(n))
+  filter(!is.na(estimate_b))%>%
+  mutate(vote_prop_b = estimate_b*count) %>%
+  summarise(alp_predict_b = sum(vote_prop_b)/sum(count))
 
-alp_predict2
+predict_b
+
 
 summary(census_data)
 ```
