@@ -187,7 +187,7 @@ model_t <- glm(vote_trump ~ as.factor(age_group) + as.factor(gender) + as.factor
 
 # Biden model
 model_b <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
-               data=survey_data, , family="binomial")
+               data=survey_data, family="binomial")
 
 #broom::tidy(model_t)
 #broom::tidy(model_b)
