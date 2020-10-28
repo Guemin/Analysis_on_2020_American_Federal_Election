@@ -55,15 +55,15 @@ census_data$estimate <-
 
 #estimate for each age group
 census_data %>%
-  mutate(vote_prop = estimate*n) %>%
+  mutate(vote_prop = estimate*count) %>%
   group_by(age_group) %>%
-  summarise(vote_props = sum(vote_prop)/sum(n))
+  summarise(vote_props = sum(vote_prop)/sum(count))
 
 
 total_estimate <-
   census_data %>%
-  mutate(vote_prop = estimate*n) %>%
-  summarise(vote_props = sum(vote_prop)/sum(n))
+  mutate(vote_prop = estimate*count) %>%
+  summarise(vote_props = sum(vote_prop)/sum(count))
   
 total_estimate
   
