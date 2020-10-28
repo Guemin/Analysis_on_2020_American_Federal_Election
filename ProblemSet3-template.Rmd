@@ -38,95 +38,13 @@ $$ y = \beta_0+\beta_1  x_{age} + \epsilon$$
 
 Where $y$ represents the proportion of voters who will vote for Donald Trump. Similarly, $\beta_0$ represents the intercept of the model, and is the probability of voting for Donald Trump at age 0. Additionally, $\beta_1$ represents the slope of the model. So, for everyone one unit increase in age, we expect a $\beta_1$ increase in the probability of voting for Donald Trump.
 
-#Model specifics (woolim)
-We will be using the logistic regression model and post-stratification to predict the proportion of voters who will vote for Donald Trump and Joe Biden. 
+## Model specifics (woolim)
+We will be using the logistic regression model and post-stratification to predict the proportion of voters who will vote for Donald Trump and Joe Biden. Using 6 different variables(age_group, gender, race, education, household_income , and state) to model the probability of voting for Trump and Biden. Since the vote intention variable is binary(either 'vote for' or 'not vote'), the logistic regression model is a suitable model to be used. The logistic regression model we are using is:
 
-$$ log(p_{i}/1-p_{i}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{race}+\beta_3 x_{race}+\beta_4x_{education}+\beta_5x_{household\ income}+\beta_6x_{state}$$
-```{r}
-#naive model for estimating trump
-head(survey_data)
+$$ log(p_{i}/1-p_{i}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{gender}+\beta_3 x_{race}+\beta_4x_{education}+\beta_5x_{household\ income}+\beta_6x_{state}$$
 
-mod <- lm(vote_trump ~ gender + age_group + race + state + education,
-           data = survey_data)
-
-broom::tidy(mod)
-
-head(census_data)
-
-census_data$estimate <-
-  mod %>%
-  predict(newdata = census_data)
-
-#estimate for each age group
-census_data %>%
-  mutate(vote_prop = estimate*count) %>%
-  group_by(age_group) %>%
-  summarise(vote_props = sum(vote_prop)/sum(count))
-
-
-total_estimate <-
-  census_data %>%
-  mutate(vote_prop = estimate*count) %>%
-  summarise(vote_props = sum(vote_prop)/sum(count))
-  
-total_estimate
-  
-```
-
-```{r} 
-#Woolim
-
-#Trump
-model <- lmer(vote_trump ~ gender + age_group + race + state + education + household_income + (1|state),
-              data = survey_data)
-summary(model)
-
-census_data$estimate <-
-  model %>%
-  predict(newdata = census_data)
-
-estimate_each_state <-
-  census_data %>%
-  mutate(vote_prop = estimate*n) %>%
-  group_by(state) %>%
-  summarise(vote_for_trump_estimate = sum(vote_prop)/sum(n))
-
-total_estimate <-
-  census_data %>%
-  mutate(vote_prop = estimate*n) %>%
-  summarise(vote_for_trump_estimate = sum(vote_prop)/sum(n))
-
-
-
-##Biden
-
-model2 <- lmer(vote_Biden ~ gender + age_group + race + state + education + (1|state),
-              data = survey_data)
-summary(model2)
-
-census_data$estimate_B <-
-  model2 %>%
-  predict(newdata = census_data)
-
-B_estimate_each_state <-
-  census_data %>%
-  mutate(vote_prop = estimate_B*n) %>%
-  group_by(state) %>%
-  summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
-
-B_total_estimate <-
-  census_data %>%
-  mutate(vote_prop = estimate_B*n) %>%
-  summarise(vote_for_Biden_estimate = sum(vote_prop)/sum(n))
-
-
-head(estimate_each_state)
-total_estimate
-head(B_estimate_each_state)
-B_total_estimate
-
-##Total estimate of Vote for Trump is higher than Biden's estimate.
-```
+Explanation...
+where $(p_{i}/1-p_{i})$ represents the ratio of two odds, where $p_{i}$ is the probability of voters who will vote for Donald trump or Joe Biden, $1-p_{i}$ is the probability of not voting.Then we use the log function to find the proportion of voters who will vote for Trump or Biden. Similarly, $\beta_0$, $\beta_1$, ..., $\beta_6$ is our parameters of interest, the probability of voting for every one unit of age_group, gender, race, education, household income, and state.
 
 ```{r, include=T}
 #Yena
@@ -195,18 +113,22 @@ census_data %>%
 predict_b
 
 #without grouping
-predict_t_nogroup <- 
+predict_b_nogroup <- 
 census_data %>%
   filter(!is.na(estimate2_b))%>%
   mutate(vote_prop_b = estimate2_b*count) %>%
   summarise(alp_predict_2b = sum(vote_prop_b)/sum(count))
-predict_t_nogroup
+predict_b_nogroup
 
 
 summary(census_data)
 ```
+## Post-Stratification 
 
-# new model
+In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
+
+
+
 ```{r}
 # exclude na observations for vote_trump and vote_Biden from survey_data
 survey_data <- 
@@ -257,24 +179,7 @@ prob_Trump
 prob_Biden
 ```
 
-## Post-Stratification 
 
-In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
-
-```{r, include=FALSE}
-
-# Here I will perform the post-stratification calculation
-census_data$estimate <-
-  model %>%
-  predict(newdata = census_data)
-
-census_data %>%
-  mutate(alp_predict_prop = estimate*n) %>%
-  summarise(alp_predict = sum(alp_predict_prop)/sum(n))
-
-summary(census_data)
-
-```
 
 
 # Results
@@ -282,6 +187,16 @@ summary(census_data)
 Here you will include all results. This includes descriptive statistics, graphs, figures, tables, and model results. Please ensure that everything is well formatted and in a report style. You must also provide an explanation of the results in this section. 
 
 Please ensure that everything is well labelled. So if you have multiple histograms and plots, calling them Figure 1, 2, 3, etc. and referencing them as Figure 1, Figure 2, etc. in your report will be expected. The reader should not get lost in a sea of information. Make sure to have the results be clean, well formatted and digestible.
+
+```{r}
+predict_t_nogroup
+predict_b_nogroup
+
+prob_Trump
+prob_Biden
+```
+
+We have created the logistic regression model on proportion of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.4>? and Joe Biden to be <0.3>?.From the result of our estimation, We can predict that Donald Trump will win the 2020 president election. 
 
 # Discussion
 
