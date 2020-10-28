@@ -220,6 +220,7 @@ census_data %>%
   summarise(estimate_vote_b = sum(vote_prop_b), predict_vote_B = sum(vote_prop_B)/sum(count))
 
 prob_Biden <- exp(ypsBiden$predict_vote_B)/(1+exp(ypsBiden$predict_vote_B))
+
 prob_Trump
 prob_Biden
 ```
