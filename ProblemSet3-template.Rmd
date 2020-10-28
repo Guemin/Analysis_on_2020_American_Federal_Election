@@ -129,14 +129,15 @@ B_total_estimate
 # Creating the Model
 #model <- glmer(vote_trump ~ age_group + sex + race + educ + household_income) 
 
+#vote for Trump
 model_t <- glmer(vote_trump ~ age_group + gender + race + education + (1|household_income), 
             data=survey_data, family = binomial)
 model2_t <- glm(vote_trump ~ age_group + gender + race + education + household_income, data=survey_data)
 
 #voting for Biden
-model_b <- glmer(vote_Biden ~ age_group + gender + race + education + (1|household_income), 
+model_b <- glmer(vote_Biden ~ age_group + gender + race + education + household_income + (1|state), 
             data=survey_data, family = binomial)
-model2_b <- glm(vote_Biden ~ age_group + gender + race + education + household_income, 
+model2_b <- glm(vote_Biden ~ age_group + gender + race + education + household_income + state, 
             data=survey_data)
 # Model Results (to Report in Results section)
 summary(model_t)
@@ -146,17 +147,29 @@ summary(model_b)
 broom::tidy(model2_t)
 broom::tidy(model2_b)
 
-#error
-census_data$estimate <-
+#yps for glm trump 
+census_data$estimate_t <-
   model2_t %>%
   predict(newdata = census_data)
 
+ypsTrump<- 
 census_data %>%
-  mutate(alp_predict_prop = estimate*n) %>%
-  gimo <- (alp_predict = sum(alp_predict_prop)/sum(n))
+  mutate(vote_prop_t = estimate_t*n) %>%
+  summarise(estimate_vote_t = sum(vote_prop_t)/sum(n))
 
-gimo
+ypsTrump
 
+#yps for glm Biden
+census_data$estimate_b <-
+  model2_b %>%
+  predict(newdata = census_data)
+
+census_data %>%
+  mutate(alp_predict_prop2 = estimate_b*n) %>%
+  group_by(state) %>%
+  summarise(alp_predict2 = sum(alp_predict_prop2)/sum(n))
+
+alp_predict2
 
 summary(census_data)
 ```
