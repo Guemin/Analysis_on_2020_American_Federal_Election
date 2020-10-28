@@ -38,6 +38,10 @@ $$ y = \beta_0+\beta_1  x_{age} + \epsilon$$
 
 Where $y$ represents the proportion of voters who will vote for Donald Trump. Similarly, $\beta_0$ represents the intercept of the model, and is the probability of voting for Donald Trump at age 0. Additionally, $\beta_1$ represents the slope of the model. So, for everyone one unit increase in age, we expect a $\beta_1$ increase in the probability of voting for Donald Trump.
 
+#Model specifics (woolim)
+We will be using the logistic regression model and post-stratification to predict the proportion of voters who will vote for Donald Trump and Joe Biden. 
+
+$$ log(p_{i}/1-p_{i}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{race}+\beta_3 x_{race}+\beta_4x_{education}+\beta_5x_{household\ income}+\beta_6x_{state}$$
 ```{r}
 #naive model for estimating trump
 head(survey_data)
@@ -73,7 +77,7 @@ total_estimate
 #Woolim
 
 #Trump
-model <- lmer(vote_trump ~ gender + age_group + race + state + education + (1|state),
+model <- lmer(vote_trump ~ gender + age_group + race + state + education + household_income + (1|state),
               data = survey_data)
 summary(model)
 
