@@ -147,32 +147,56 @@ model2_b <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.facto
 broom::tidy(model2_t)
 broom::tidy(model2_b)
 
-#yps for glm trump 
-census_data$estimate2_t <-
+###yps for glm trump 
+census_data$logodds_estimate_t <-
   model2_t %>%
   predict(newdata = census_data)
 
+census_data$estimate2_t <-
+  exp(census_data$logodds_estimate_t)/(1+exp(census_data$logodds_estimate_t))
+#using group_by(income)
 predict_t <- 
 census_data %>%
   filter(!is.na(estimate2_t))%>%
   mutate(vote_prop2 = estimate2_t*count) %>%
+  group_by(household_income)%>%
   summarise(alp_predict = sum(vote_prop2)/sum(count))
 
 predict_t
 
+#individual
+predict_t_nogroup <- 
+census_data %>%
+  filter(!is.na(estimate2_t))%>%
+  mutate(vote_prop2 = estimate2_t*count) %>%
+  summarise(alp_predict_2t = sum(vote_prop2)/sum(count))
+predict_t_nogroup
 
-#yps for glm Biden
-census_data$estimate_b <-
+###yps for glm Biden
+census_data$logodds_b <-
   model2_b %>%
   predict(newdata = census_data)
 
+census_data$estimate2_b <-
+  exp(census_data$logodds_b)/(1+exp(census_data$logodds_b))
+
+#using group_by()  
 predict_b<-
 census_data %>%
-  filter(!is.na(estimate_b))%>%
-  mutate(vote_prop_b = estimate_b*count) %>%
+  filter(!is.na(estimate2_b))%>%
+  mutate(vote_prop_b = estimate2_b*count) %>%
+  group_by(household_income)%>%
   summarise(alp_predict_b = sum(vote_prop_b)/sum(count))
 
 predict_b
+
+#without grouping
+predict_t_nogroup <- 
+census_data %>%
+  filter(!is.na(estimate2_b))%>%
+  mutate(vote_prop_b = estimate2_b*count) %>%
+  summarise(alp_predict_2b = sum(vote_prop_b)/sum(count))
+predict_t_nogroup
 
 
 summary(census_data)
