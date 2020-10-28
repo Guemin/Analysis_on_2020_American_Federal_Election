@@ -45,9 +45,9 @@ reduced_data <-
   filter(age != "less than 1 year old") %>%
   filter(age != "90 (90+ in 1980 and 1990)")
 
-
 reduced_data$age <- as.integer(reduced_data$age)
 reduced_data$ftotinc <- as.integer(reduced_data$ftotinc)
+
 
 state <- c("alabama", "alaska", "arizona", "arkansas", "california", "colorado",
            "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
@@ -87,7 +87,9 @@ reduced_data <-
                                       ftotinc %in% c(55000:74999) ~ "$55,000 to $74,999",
                                       ftotinc %in% c(75000:99999) ~ "$75,000 to $99,999",
                                       ftotinc %in% c(100000:149999) ~ "$100,000 to $149,999",
-                                      ftotinc >= 150000 ~ "$150,000 and over"))
+                                      ftotinc >= 150000 ~ "$150,000 and over")) %>%
+  mutate(gender = case_when(sex == "male" ~ "Male",
+                            sex == "female" ~ "Female")) 
 reduced_data <- 
   reduced_data %>%
   mutate(state = case_when(statefip == "alaska" ~ "AK",
@@ -140,21 +142,20 @@ reduced_data <-
                            statefip == "washington" ~ "WA",
                            statefip == "wisconsin" ~ "WI",
                            statefip == "west virginia" ~ "WV",
-                           statefip == "wyoming" ~ "WY")) #%>%
-  #mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
-reduced_data <- 
-  reduced_data %>%
-  rename(gender = sex) 
-reduced_data <- 
-  reduced_data %>%
-  mutate(gender = case_when(gender == "male" ~ "Male",
-                            gender == "female" ~ "Female"))
-reduced_data <- 
-  reduced_data %>%
-  count(age_group, gender, race, state, hinscaid, hinscare, education, household_income) %>%
-  group_by(age_group, gender, race, state, hinscaid, hinscare, education, household_income)
+                           statefip == "wyoming" ~ "WY")) %>%
+  mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
 
-#head(reduced_data)
+data <- 
+  reduced_data %>%
+  select(age_group, gender, race, state, education, household_income) %>%
+  count(age_group, gender, race, state, education, household_income) %>%
+  group_by(age_group, gender, race, state, education, household_income) %>%
+  rename(count = n)
+
+data <- 
+  data %>% 
+  mutate(cell_prop = count/sum(data$count))
+
 # Saving the census data as a csv file in my
 # working directory
-write_csv(reduced_data, "census_data.csv")
+write_csv(data, "census_data.csv")
