@@ -174,6 +174,56 @@ alp_predict2
 summary(census_data)
 ```
 
+# new model
+```{r}
+# exclude na observations for vote_trump and vote_Biden from survey_data
+survey_data <- 
+  survey_data %>%
+  filter(!is.na(vote_trump), !is.na(vote_Biden))
+
+# Trump model
+model_t <- glm(vote_trump ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
+                data=survey_data, family="binomial")
+
+# Biden model
+model_b <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
+               data=survey_data, , family="binomial")
+
+#broom::tidy(model_t)
+#broom::tidy(model_b)
+
+#yps for glm trump 
+census_data$estimate_T <-
+  model_t %>%
+  predict(newdata = census_data)
+
+ypsTrump<- 
+census_data %>%
+  filter(!is.na(estimate_T))%>%
+  mutate(vote_prop_t = estimate_T*cell_prop) %>%
+  mutate(vote_prop_T = estimate_T*count) %>%
+  summarise(estimate_vote_t = sum(vote_prop_t), predict_vote_T = sum(vote_prop_T)/sum(count))
+
+prob_Trump <- exp(ypsTrump$predict_vote_T)/(1+exp(ypsTrump$predict_vote_T))
+
+#yps for glm Biden
+
+census_data$estimate_B <-
+  model_b %>%
+  predict(newdata = census_data)
+
+ypsBiden<- 
+census_data %>%
+  filter(!is.na(estimate_B))%>%
+  mutate(vote_prop_b = estimate_B*cell_prop) %>%
+  mutate(vote_prop_B = estimate_B*count) %>%
+  summarise(estimate_vote_b = sum(vote_prop_b), predict_vote_B = sum(vote_prop_B)/sum(count))
+
+prob_Biden <- exp(ypsBiden$predict_vote_B)/(1+exp(ypsBiden$predict_vote_B))
+prob_Trump
+prob_Biden
+```
+
 ## Post-Stratification 
 
 In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
