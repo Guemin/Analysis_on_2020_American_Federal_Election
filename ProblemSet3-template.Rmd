@@ -15,6 +15,9 @@ library(lme4)
 # Loading in the cleaned survey Data
 survey_data <- read_csv("survey_data.csv")
 
+# exclude responses from those who are not eligible to vote
+survey_data <- survey_data %>% filter(vote_intention != "No, I am not eligible to vote")
+
 # Loading in the cleaned census Data
 census_data <- read_csv("census_data.csv")
 
@@ -46,21 +49,29 @@ $$ log(p_{i}/1-p_{i}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{gender}+\bet
 Explanation...
 where $(p_{i}/1-p_{i})$ represents the ratio of two odds, where $p_{i}$ is the probability of voters who will vote for Donald trump or Joe Biden, $1-p_{i}$ is the probability of not voting.Then we use the log function to find the proportion of voters who will vote for Trump or Biden. Similarly, $\beta_0$, $\beta_1$, ..., $\beta_6$ is our parameters of interest, the probability of voting for every one unit of age_group, gender, race, education, household income, and state.
 
-```{r, include=T}
+```{r, include=T, warning= FALSE}
 #Yena
 # Creating the Model
 
 #vote for Trump
-model_trump <- glm(vote_trump ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), data=survey_data, family="binomial")
+model_trump <- glm(vote_Trump ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), data=survey_data, family="binomial")
 
 #voting for Biden
 model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
             data=survey_data, family="binomial")
 
-#Model results
-broom::tidy(model_trump)
-broom::tidy(model_biden)
+```
+## Post-Stratification 
 
+In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
+
+
+To find the proportion of voters who will vote for Trump and Biden estimates, we are going to use the post stratification analysis. Post-stratification is a technique used in sample survey design to improve the quality of population estimates.In order to use this technique, we subdivide the population having similar characteristics into cells. From previous logic regression model we created, we will estimate the probability of voters in each cells. The 6 categories that subdivides the population into a certain bin is age group, gender, race, education, household income, and state. Then we weight the each proportion of voting estimate by the respective population size of the cells and sum those values and divide it by the entire population size.
+
+reason for Choice of the variables...
+
+```{r}
+# Post-Stratification
 
 ###yps for glm trump 
 census_data$logodds_estimate_trump <-
@@ -76,7 +87,7 @@ census_data %>%
   filter(!is.na(estimate_trump))%>%
   mutate(vote_prop_trump = estimate_trump*count) %>%
   group_by(household_income)%>%
-  summarise(alp_predict_trump = sum(vote_prop_trump)/sum(count))
+  summarise(predict_trump= sum(vote_prop_trump)/sum(count))
 
 predict_income_trump
 
@@ -84,8 +95,8 @@ predict_income_trump
 predict_trump <- 
 census_data %>%
   filter(!is.na(estimate_trump))%>%
-  mutate(vote_prop_trump_2 = estimate_trump*count) %>%
-  summarise(alp_predict_trump_2 = sum(vote_prop_trump_2)/sum(count))
+  mutate(total_vote_prop_trump = estimate_trump*count) %>%
+  summarise(total_predict_trump = sum(total_vote_prop_trump)/sum(count))
 
 predict_trump
 
@@ -104,7 +115,7 @@ census_data %>%
   filter(!is.na(estimate_biden))%>%
   mutate(vote_prop_biden = estimate_biden*count) %>%
   group_by(household_income)%>%
-  summarise(alp_predict_biden = sum(vote_prop_biden)/sum(count))
+  summarise(predict_biden = sum(vote_prop_biden)/sum(count))
 
 predict_income_biden
 
@@ -112,73 +123,14 @@ predict_income_biden
 predict_biden <- 
 census_data %>%
   filter(!is.na(estimate_biden))%>%
-  mutate(vote_prop_biden_2 = estimate_biden*count) %>%
-  summarise(alp_predict_biden_2 = sum(vote_prop_biden_2)/sum(count))
+  mutate(total_vote_prop_biden = estimate_biden*count) %>%
+  summarise(total_predict_biden = sum(total_vote_prop_biden)/sum(count))
 
 predict_biden
 
 
 summary(census_data)
 ```
-## Post-Stratification 
-
-In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
-
-
-To find the proportion of voters who will vote for Trump and Biden estimates, we are going to use the post stratification analysis. Post-stratification is a technique used in sample survey design to improve the quality of population estimates.In order to use this technique, we subdivide the population having similar characteristics into cells. From previous logic regression model we created, we will estimate the probability of voters in each cells. The 6 categories that subdivides the population into a certain bin is age group, gender, race, education, household income, and state. Then we weight the each proportion of voting estimate by the respective population size of the cells and sum those values and divide it by the entire population size.
-
-reason for Choice of the variables...
-
-```{r}
-# exclude na observations for vote_trump and vote_Biden from survey_data
-survey_data <- 
-  survey_data %>%
-  filter(!is.na(vote_trump), !is.na(vote_Biden))
-
-# Trump model
-model_t <- glm(vote_trump ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
-                data=survey_data, family="binomial")
-
-# Biden model
-model_b <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
-               data=survey_data, family="binomial")
-
-#broom::tidy(model_t)
-#broom::tidy(model_b)
-
-#yps for glm trump 
-census_data$estimate_T <-
-  model_t %>%
-  predict(newdata = census_data)
-
-ypsTrump<- 
-census_data %>%
-  filter(!is.na(estimate_T))%>%
-  mutate(vote_prop_t = estimate_T*cell_prop) %>%
-  mutate(vote_prop_T = estimate_T*count) %>%
-  summarise(estimate_vote_t = sum(vote_prop_t), predict_vote_T = sum(vote_prop_T)/sum(count))
-
-prob_Trump <- exp(ypsTrump$predict_vote_T)/(1+exp(ypsTrump$predict_vote_T))
-
-#yps for glm Biden
-
-census_data$estimate_B <-
-  model_b %>%
-  predict(newdata = census_data)
-
-ypsBiden<- 
-census_data %>%
-  filter(!is.na(estimate_B))%>%
-  mutate(vote_prop_b = estimate_B*cell_prop) %>%
-  mutate(vote_prop_B = estimate_B*count) %>%
-  summarise(estimate_vote_b = sum(vote_prop_b), predict_vote_B = sum(vote_prop_B)/sum(count))
-
-prob_Biden <- exp(ypsBiden$predict_vote_B)/(1+exp(ypsBiden$predict_vote_B))
-
-prob_Trump
-prob_Biden
-```
-
 
 
 
@@ -189,11 +141,18 @@ Here you will include all results. This includes descriptive statistics, graphs,
 Please ensure that everything is well labelled. So if you have multiple histograms and plots, calling them Figure 1, 2, 3, etc. and referencing them as Figure 1, Figure 2, etc. in your report will be expected. The reader should not get lost in a sea of information. Make sure to have the results be clean, well formatted and digestible.
 
 ```{r}
+
+#Model results
+broom::tidy(model_trump)
+broom::tidy(model_biden)
+
+#Post-Stratification result
+## total probability of voting for Trump and Biden
 predict_trump
 predict_biden
-
-prob_Trump
-prob_Biden
+## probabilites of voting for Trump and Biden in each household income group
+predict_income_trump
+predict_income_biden
 ```
 
 We have created the logistic regression model on proportion of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.4>? and Joe Biden to be <0.3>?.From the result of our estimation, We can predict that Donald Trump will win the 2020 president election. 

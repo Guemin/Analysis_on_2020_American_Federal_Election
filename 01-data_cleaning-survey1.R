@@ -60,7 +60,7 @@ reduced_data <-
                                age %in% c(30:44) ~ "30-44 year olds",
                                age %in% c(45:64) ~ "45-64 year olds",
                                age >=65 ~ "65 years and older")) %>%
-  mutate(vote_trump = 
+  mutate(vote_Trump = 
            ifelse(vote_2020=="Donald Trump", 1, 0)) %>%
   mutate(vote_Biden = 
            ifelse(vote_2020=="Joe Biden", 1, 0)) %>%
@@ -91,6 +91,9 @@ reduced_data <-
                                                 "Completed some graduate, but no degree", "Other post high school vocational training") ~ "Some college or associate degree",
                                education %in% c("College Degree (such as B.A., B.S.)", "Doctorate degree ", "Masters degree") ~ "Bachelor's degree or higher"))
 
+reduced_data <- 
+  reduced_data %>% 
+  select(gender, age_group, race, education, household_income, state, vote_Trump, vote_Biden, vote_intention)
 # Saving the survey/sample data as a csv file in my
 # working directory
 write_csv(reduced_data, "survey_data.csv")
