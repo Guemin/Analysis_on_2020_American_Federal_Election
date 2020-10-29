@@ -125,6 +125,9 @@ summary(census_data)
 In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
 
 
+To find the proportion of voters who will vote for Trump and Biden estimates, we are going to use the post stratification analysis. Post-stratification is a technique used in sample survey design to improve the quality of population estimates.In order to use this technique, we subdivide the population having similar characteristics into cells. From previous logic regression model we created, we will estimate the probability of voters in each cells. The 6 categories that subdivides the population into a certain bin is age group, gender, race, education, household income, and state. Then we weight the each proportion of voting estimate by the respective population size of the cells and sum those values and divide it by the entire population size.
+
+reason for Choice of the variables...
 
 ```{r}
 # exclude na observations for vote_trump and vote_Biden from survey_data
