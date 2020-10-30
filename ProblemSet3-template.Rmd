@@ -97,6 +97,12 @@ vif_mod_b <- tibble(Predictor = c("age_group", "gender", "race", "education",
 vif_mod_t
 vif_mod_b
 ```
+###Yena
+2. Cook's distance is used in regression analysis to find influential outliers in predictor variables, which identifies points that negatively affect your regression model. Cook's distance is higher when residuals and leverage are high. (Infulential/outlier points can be removed for a better analysis)
+
+3. 
+
+4. VIF is the Variance inflation factor, which measures the amount of multicollinearity in a set of multiple regression variables. Bigger the VIF, the bigger the multicollinearity is. As shown above, (Figure 3?) there is no sign of multicollinearity (not correlated) since VIF values do not exceed 2 for both models of Trump and Biden. Therefore, it is safe to say that the last assumption, multicollinearity among predictors is not too high is satisfied.
 
 ## Post-Stratification 
 
