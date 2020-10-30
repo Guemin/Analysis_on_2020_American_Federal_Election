@@ -31,7 +31,7 @@ As the 2020 presidential election of the United States approaches, people across
 Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, population is partitioned into subgroups and estimates are predicted within the subgroups. With the estimates, the sum of the estimate times the respective population size in each group is calculated, and finally, the sum is divided with the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models.  
 In the following sub-sections, we will describe the model specifics, the post-stratification calculation and the result of the analysis.
 
-## Model specifics (woolim)
+## Model specifics
 
 As already mentioned, we will be using the logistic regression models and post-stratification technique with R software to predict the proportions of voters who will vote for either Donald Trump or Joe Biden. Specifically, we will create two models, each for proportions of voters for Trump or Biden, using 6 different variables(age_group, gender, race, education, household_income , and state)^[* age_group is divided into 4 different groups: "18-29 year olds", "30-44 year olds", "45-64 year olds", "65 years and older".  
 \    \    \ * gender indicates either "Male" or "Female".  
@@ -201,12 +201,14 @@ predict_state_biden
 
 ```
 
-We have created the logistic regression model on proportion of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.4>? and Joe Biden to be <0.3>?.From the result of our estimation, We can predict that Donald Trump is more likely to win the 2020 president election. 
+We have created the logistic regression model on proportion of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.433> and Joe Biden to be <0.394>.From the result of our estimation, We can predict that Donald Trump is more likely to win the 2020 president election. 
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
 # Discussion
 
 Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.
+
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. We have 
 
 ## Weaknesses
 
@@ -216,6 +218,9 @@ Here we discuss weaknesses of the study, data, analysis, etc. You can also discu
 
 Here you discuss subsequent work to be done after this report. This can include next steps in terms of statistical analysis (perhaps there is a more efficient algorithm available, or perhaps there is a caveat in the data that would allow for some new technique). Future steps should also be specified in terms of the study setting (eg. including a follow-up survey on something, or a subsequent study that would complement the conclusions of your report).
 
+- Create visualization of the results to view the groups of the voting estimates at once.
+- In our future analysis, we can try to analyze the  multilevel regression models using Bayes coding techniques.
+- We can compare our prediction and the result of the actual 2020 president election.
 
 # References
 1. Survey data: https://www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c
