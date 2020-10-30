@@ -11,7 +11,7 @@ output:
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(lme4)
-#library(knitr)
+library(knitr)
 #library(kableExtra)
 
 # Loading in the cleaned survey Data
@@ -96,9 +96,14 @@ vif_mod_t <- tibble(Predictor = c("age_group", "gender", "race", "education",
 vif_mod_b <- tibble(Predictor = c("age_group", "gender", "race", "education",
                                   "household_income", "state"), 
                     VIF = car::vif(model_biden)[,1])
-vif_mod_t
-vif_mod_b
+#vif_mod_t
+#vif_mod_b
 
+knitr::kable(
+  list(vif_mod_t, vif_mod_b),
+  caption = 'Two tables placed side by side.',
+  #booktabs = TRUE, valign = 't'
+)
 
 ```
 ###Yena
