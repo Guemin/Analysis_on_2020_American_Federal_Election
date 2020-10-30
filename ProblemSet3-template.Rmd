@@ -23,15 +23,17 @@ census_data <- read_csv("census_data.csv")
 
 ```
 
+## Predictions on the 2020 US Presidential Election based on the voter survey responses.
+*Code and data supporting this analysis is available at: https://github.com/Guemin/Problem_Set_3 *
 
 # Model
 As the 2020 presidential election of the United States approaches, people across the world are interested in to which candidate the vote of the US citizens will be concentrated, either to Donald Trump or to Joe Biden. Since the election outcome will also affect our community in Canada, we are going to analyze and predict the winner of the popular vote in the 2020 American federal election.  
-Using the survey and census data obtained from voterstudygroup.org and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique with the models.  
-In the following sub-sections we will describe the model specifics,the post-stratification calculation and the result of the analysis.
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, population is partitioned into subgroups and estimates are predicted within the subgroups. With the estimates, the sum of the estimate times the respective population size in each group is calculated, and finally, the sum is divided with the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models.  
+In the following sub-sections, we will describe the model specifics, the post-stratification calculation and the result of the analysis.
 
 ## Model specifics (woolim)
 
-As already mentioned, we will be using the logistic regression models and post-stratification technique to predict the proportions of voters who will vote for Donald Trump and Joe Biden. Specifically, we will create two models, each for probabilites of voting for Trump or Biden, using 6 different variables(age_group, gender, race, education, household_income , and state)^[* age_group is divided into 4 different groups: "18-29 year olds", "30-44 year olds", "45-64 year olds", "65 years and older".  
+As already mentioned, we will be using the logistic regression models and post-stratification technique with R software to predict the proportions of voters who will vote for either Donald Trump or Joe Biden. Specifically, we will create two models, each for proportions of voters for Trump or Biden, using 6 different variables(age_group, gender, race, education, household_income , and state)^[* age_group is divided into 4 different groups: "18-29 year olds", "30-44 year olds", "45-64 year olds", "65 years and older".  
 \    \    \ * gender indicates either "Male" or "Female".  
 \    \    \ * race is divided into 5 different categories: "White", "Black", "Native", "Asian", "Other".  
 \    \    \ * education is divided into 4 different categories: "Didn't graduate from high school", "High school graduate",   
@@ -44,18 +46,21 @@ The logistic regression models we are using are:
 
 $$ log(\frac{p_{i}}{1-p_{i}}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{gender}+\beta_3 x_{race}+\beta_4x_{education}+\beta_5x_{household\ income}+\beta_6x_{state}$$
 
-where $log(\frac{p_{i}}{1-p_{i}})$ represents log odds in each model, and $p_{i}$ is the probability of voters who will vote for Donald trump or Joe Biden. Similarly, $\beta_0$ represents the intercept, and $\beta_1$,...,  $\beta_6$ indicate the slope parameters of the model. (Detailed descriptions on the x variables can be found in the footnote^[* $x_{age\ group}$ represents one of the four age groups that the respondent is in.  
+where $log(\frac{p_{i}}{1-p_{i}})$ represents log odds in each model, and $p_{i}$ is the proportions of voters who will vote for Donald trump or Joe Biden. Similarly, $\beta_0$ represents the intercept, and $\beta_1$,...,  $\beta_6$ indicate the slope parameters of the model. (Detailed descriptions on the x variables can be found in the footnote^[* $x_{age\ group}$ represents one of the four age groups that the respondent is in.  
 \    \    \ * $x_{gender}$ indicates the gender of the respondent(either "Male" or "Female").  
 \    \    \ * $x_{race}$ indicates the race ethnicity of the respondent.  
 \    \    \ * $x_{education}$ indicates the education attainment of the respondent.  
 \    \    \ * $x_{household\ income}$ indicates the total pre-tax income of the respondent's household.  
 \    \    \ * $x_{state}$ indicates the state where the respondent is located in.]).  
 
-Using the log odds estimates, we are going to find the probability of voting for Donald Trump and Joe Biden in every possible combinations of categories in our predictor variables, age_group, gender, race, education, household income, and state.
+
+Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combinations of categories in our predictor variables, age_group, gender, race, education, household income, and state.
 
 ```{r, include=FALSE, warning= FALSE}
-#Yena
-# Creating the Model
+#remove na observations from the survey data
+survey_data <- survey_data %>%
+  filter(!is.na(age_group), !is.na(gender), !is.na(race), !is.na(education), !is.na(household_income), !is.na(state), !is.na(vote_Trump), !is.na(vote_Biden))
+# create logistic regression models for each candidate
 
 #vote for Trump
 model_trump <- glm(vote_Trump ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), data=survey_data, family="binomial")
@@ -66,12 +71,39 @@ model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.fa
 
 ```
 
+The assumptions on logistic regression model:
+1. linearity between the log odds and the predictor variables
+2. independent errors
+3. multicollinearity among predictors is not too high
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# Model diagnostics
+plot(residuals.glm(model_trump, type="pearson"))
+plot(residuals.glm(model_biden, type="pearson"))
+
+# check for linear relationship between predictor variables and the log odds
+
+# identify influential values
+plot(model_trump, which =4)
+plot(model_biden, which =4)
+
+# check for multicollinearity of predictors in each model
+vif_mod_t <- tibble(Predictor = c("age_group", "gender", "race", "education",
+                                  "household_income", "state"), 
+                    VIF = car::vif(model_trump)[,1])
+vif_mod_b <- tibble(Predictor = c("age_group", "gender", "race", "education",
+                                  "household_income", "state"), 
+                    VIF = car::vif(model_biden)[,1])
+vif_mod_t
+vif_mod_b
+```
+
 ## Post-Stratification 
 
-In order to estimate the proportion of voters who will vote for Donald Trump I need to perform a post-stratification analysis. Here I create cells based off different ages. Using the model described in the previous sub-section I will estimate the proportion of voters in each age bin. I will then weight each proportion estimate (within each bin) by the respective population size of that bin and sum those values and divide that by the entire population size. 
-
-
-To find the proportion of voters who will vote for Trump and Biden estimates, we are going to use the post stratification analysis. Post-stratification is a technique used in sample survey design to improve the quality of population estimates.In order to use this technique, we subdivide the population having similar characteristics into cells. From previous logic regression model we created, we will estimate the probability of voters in each cells. The 6 categories that subdivides the population into a certain bin is age group, gender, race, education, household income, and state. Then we weight the each proportion of voting estimate by the respective population size of the cells and sum those values and divide it by the entire population size.
+In order to estimate the probabilities of voting for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based off different age group, gender, race ethnicity, education attainment, household income, and state.  
+Using the logistic regression models presented in the previous sub-section, we will estimate the probabilities of voting in each cell for each candidate. Then, we will weight each estimate within each cell by the respective population size of the cell, sum those values and divide that by the entire population size. This process can also be described by the expression:
+$$\hat{y}^{ps}\ =\ \frac{\sum N_j*\hat{y_j}}{\sum{N_j}}$$
+where $\hat{y_j}$ is the estimate of the probability of voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell based off demographics.
 
 reason for Choice of the variables...
 
@@ -189,4 +221,5 @@ Here you discuss subsequent work to be done after this report. This can include 
 1. Survey data: https://www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c
 2. Census data: https://usa.ipums.org/usa-action/extract_requests/summary?
 3. Post-Stratification technique: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/04/forecasting-with-nonrepresentative-polls.pdf
-
+4. Logit Regression Assumptions: https://rpubs.com/guptadeepak/logit-assumptions
+5. Variance Inflation Factor(VIF): https://www.statisticshowto.com/variance-inflation-factor/
