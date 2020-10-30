@@ -220,9 +220,12 @@ We have created the logistic regression model on proportion of voters voting for
 
 Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.
 
-1. Summary : Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. We have 
+1. Summary : Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. 
+- Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state. 
+- (After making the models for each candidate) $y^ps$ is measured using post-stratification method to estimate the proportion ofvoters in favor of voting for each candidate.
+- *discuss about the result*
 
-2. Conclusion: Based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%), we predict that Trump will win the election (......)
+2. Conclusion: To conclude, based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%), we predict that Trump will win the election (......)
 
 ## Weaknesses
 
@@ -230,7 +233,6 @@ Here we discuss weaknesses of the study, data, analysis, etc. You can also discu
 1. Weakness: Some variables could not be included in the generalized logistic model because either census data or survey data did not include the particular variables. If there is an important variable that could have affected the vote outcome, there might exist an omitted variable bias. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).
 - the Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.
 
-2. Future steps: *(something about comparing with the actual election results and do a post-hoc analysis (or at least a survey) of how to better improve estimation in future elections.)*
 
 ## Next Steps
 
@@ -239,6 +241,7 @@ Here you discuss subsequent work to be done after this report. This can include 
 - Create visualization of the results to view the groups of the voting estimates at once.
 - In our future analysis, we can try to analyze the  multilevel regression models using Bayes coding techniques.
 - We can compare our prediction and the result of the actual 2020 president election.
+*(something about comparing with the actual election results and do a post-hoc analysis (or at least a survey) of how to better improve estimation in future elections.)*
 
 # References
 1. Survey data: https://www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c
