@@ -11,6 +11,8 @@ output:
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(lme4)
+#library(knitr)
+#library(kableExtra)
 
 # Loading in the cleaned survey Data
 survey_data <- read_csv("survey_data.csv")
@@ -68,7 +70,6 @@ model_trump <- glm(vote_Trump ~ as.factor(age_group) + as.factor(gender) + as.fa
 #voting for Biden
 model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
             data=survey_data, family="binomial")
-
 ```
 
 The assumptions on logistic regression model:
@@ -84,6 +85,7 @@ plot(residuals.glm(model_biden, type="pearson"))
 # check for linear relationship between predictor variables and the log odds
 
 # identify influential values
+par(mfrow=c(1,2))
 plot(model_trump, which =4)
 plot(model_biden, which =4)
 
@@ -96,13 +98,15 @@ vif_mod_b <- tibble(Predictor = c("age_group", "gender", "race", "education",
                     VIF = car::vif(model_biden)[,1])
 vif_mod_t
 vif_mod_b
+
+
 ```
 ###Yena
+1. Model diagnostics: 
+
 2. Cook's distance is used in regression analysis to find influential outliers in predictor variables, which identifies points that negatively affect your regression model. Cook's distance is higher when residuals and leverage are high. (Infulential/outlier points can be removed for a better analysis)
 
-3. 
-
-4. VIF is the Variance inflation factor, which measures the amount of multicollinearity in a set of multiple regression variables. Bigger the VIF, the bigger the multicollinearity is. As shown above, (Figure 3?) there is no sign of multicollinearity (not correlated) since VIF values do not exceed 2 for both models of Trump and Biden. Therefore, it is safe to say that the last assumption, multicollinearity among predictors is not too high is satisfied.
+3. VIF is the Variance inflation factor, which measures the amount of multicollinearity in a set of multiple regression variables. Bigger the VIF, the bigger the multicollinearity is. As shown above, (Figure 3?) there is no sign of multicollinearity (not correlated) since VIF values do not exceed 2 for both models of Trump and Biden. Therefore, it is safe to say that the last assumption, multicollinearity among predictors is not too high is satisfied.
 
 ## Post-Stratification 
 
@@ -210,15 +214,23 @@ predict_state_biden
 We have created the logistic regression model on proportion of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.433> and Joe Biden to be <0.394>.From the result of our estimation, We can predict that Donald Trump is more likely to win the 2020 president election. 
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
+
+
 # Discussion
 
 Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.
 
-Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. We have 
+1. Summary : Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. We have 
+
+2. Conclusion: Based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%), we predict that Trump will win the election (......)
 
 ## Weaknesses
 
 Here we discuss weaknesses of the study, data, analysis, etc. You can also discuss areas for improvement.
+1. Weakness: Some variables could not be included in the generalized logistic model because either census data or survey data did not include the particular variables. If there is an important variable that could have affected the vote outcome, there might exist an omitted variable bias. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).
+- the Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.
+
+2. Future steps: *(something about comparing with the actual election results and do a post-hoc analysis (or at least a survey) of how to better improve estimation in future elections.)*
 
 ## Next Steps
 
