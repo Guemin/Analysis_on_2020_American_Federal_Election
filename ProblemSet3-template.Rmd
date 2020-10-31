@@ -200,13 +200,15 @@ Here you will include all results. This includes descriptive statistics, graphs,
 
 Please ensure that everything is well labelled. So if you have multiple histograms and plots, calling them Figure 1, 2, 3, etc. and referencing them as Figure 1, Figure 2, etc. in your report will be expected. The reader should not get lost in a sea of information. Make sure to have the results be clean, well formatted and digestible.
 
-In the previous sub-sections, we have created the logistic regression models on proportions of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.433> and Joe Biden to be <0.394>. From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.  
+In the previous sub-sections, we have created the Logistic Regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is 0.433 (43.3%) and Joe Biden to be 0.394(39.4%). From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.  
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 #Model results
 broom::tidy(model_trump)
 broom::tidy(model_biden)
+summary(model_trump)
+summary(model_biden)
 #knitr::kables(list(model_trump_tidy, model_biden_tidy))
 
 
@@ -223,17 +225,19 @@ kable(list(predict_trump, predict_biden), caption = "Comparison of predicted est
 
 
 ```
+- Trump: 45-64 year olds, 65 years and older more likely 
+- Trump: Black(-1.42192)
+- $15,000 to $24,999        -0.45018
 
-  
-
-- individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)  
-
+- individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower-income people?)  
+- Individuals with a household income " \$100,000 to \$149,999" or "$150,000 or more" show a higher probability of voting for Trump over Biden.
 
 # Discussion
 
 Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.  
 
-Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state. Then, by using the post stratification technique, 55,325 cells are made using the census data, based on the 6 variables that were used in the Logistic Regression model, and the probability of voting estimates is estimated for each cell. $\hat{y}^{ps}$ is measured to estimate the proportion of voters in favor of voting for each candidate.   
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state.  
+Then, by using the post stratification technique, 55,325 cells are made using the census data, based on the 6 variables that were used in the Logistic Regression model, and the probability of voting estimates is estimated for each cell. $\hat{y}^{ps}$ is measured to estimate the proportion of voters in favor of voting for each candidate.   
 
 For an additional estimate, we grouped each cell estimates into states and predicted who is expected to have more. The result shows that Trump is ahead of Biden by 11 counts in the estimate for each state, where Trump is more likely to win in 31 states, and Biden has a higher probability to win in 20 states.  
 
@@ -244,11 +248,12 @@ For an additional estimate, we grouped each cell estimates into states and predi
 To conclude, based on the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states, we predict that Trump will win the 2020 presidential election.  (......)
 
 ## Weaknesses
-
-Here we discuss weaknesses of the study, data, analysis, etc. You can also discuss areas for improvement.
+**improvement**
 1. Weakness: Some variables could not be included in the generalized logistic model because either census data or survey data did not include the particular variables. If there is an important variable that could have affected the vote outcome, there might exist an omitted variable bias. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).  
 
-- the Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.  
+the Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.  
+
+Even if a candidate wins in the public vote, he/she can lose the presidency if the electoral college gives the candidate a majority, and vice versa. Therefore, using the popular vote to predict the winner of the presidential election is not the most accurate way to use it.  
 
 
 ## Next Steps
