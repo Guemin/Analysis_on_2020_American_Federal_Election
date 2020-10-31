@@ -43,7 +43,7 @@ As already mentioned, we will be using the logistic regression models and post-s
 \    \    \ * household income consists of 9 categories range from "Less than $14,999" to "$150,000 and over".  
 \    \    \ * state indicates abbreviated names of 52 states in the United States.].  
 
-Since our response variables, vote_Trump and vote_Biden, are binary(either 'vote for' or 'not vote/not sure'), the logistic regression model is a suitable model to be used.  
+Since our response variables, vote_Trump and vote_Biden, are binary(either 'vote for' or 'not vote/not sure'), the logistic regression model is a suitable model to be used. Logistic regression is a mathematical model used to estimate the probability of an event occurring using binary data.  
 The logistic regression models we are using are:
 
 $$ log(\frac{p_{i}}{1-p_{i}}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{gender}+\beta_3 x_{race}+\beta_4x_{education}+\beta_5x_{household\ income}+\beta_6x_{state}$$
@@ -83,14 +83,18 @@ The assumptions on logistic regression model are:
 # Model diagnostics
 par(mfrow = c(1, 2))
 plot(residuals.glm(model_trump, type="pearson"))
+title("Figure 1")
 plot(residuals.glm(model_biden, type="pearson"))
+title("Figure 2")
 
 # check for linear relationship between predictor variables and the log odds
 
 # identify influential values
 par(mfrow = c(1, 2))
 plot(model_trump, which =4)
+title("Figure 3")
 plot(model_biden, which =4)
+title("Figure 4")
 
 # check for multicollinearity of predictors in each model
 vif_mod_t <- tibble(Predictor = c("age_group", "gender", "race", "education",
@@ -99,13 +103,12 @@ vif_mod_t <- tibble(Predictor = c("age_group", "gender", "race", "education",
 vif_mod_b <- tibble(Predictor = c("age_group", "gender", "race", "education",
                                   "household_income", "state"), 
                     VIF = car::vif(model_biden)[,1])
-#vif_mod_t
-#vif_mod_b
 
 knitr::kable(
   list(vif_mod_t, vif_mod_b),
-  caption = 'Two tables placed side by side.',
-  #booktabs = TRUE, valign = 't'
+  caption = 'VIF models',
+  #booktabs = TRUE, 
+  valign = 't'
 )
 
 ```
