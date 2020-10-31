@@ -121,6 +121,7 @@ knitr::kable(
 
 
 ## Post-Stratification 
+- Any decisions that your group made should be explained and justified. (For example, are you looking at the proportion of people voting for Trump or Biden? why did you exclude sex in the cell split (practical explanations are acceptable)? etc.)  
 
 In order to estimate the probabilities of voting for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based on different age groups, gender, race-ethnicity, education attainment, household income, and state.  
 Using the logistic regression models presented in the previous sub-section, we will estimate the probabilities of voting in each cell for each candidate. Then, we will weigh each estimate within each cell by the respective population size of the cell, sum those values, and divide that by the entire population size. This process can also be described by the expression:
@@ -227,6 +228,23 @@ We have created the logistic regression model on proportion of voters voting for
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
 
+- state: **맞는방법인지모르겠어요..**
+```{r}
+#compare the estimate for each state
+trump_state <- predict_state_trump$predict_trump2
+biden_state <- predict_state_biden$predict_biden2
+trump_win <- 0 
+biden_win <- 1 
+for (i in 1:45){
+  if (trump_state[i] > biden_state[i]){
+    trump_win <- trump_win + 1
+  }
+  else {biden_win <- biden_win + 1}
+}
+trump_win
+biden_win
+```
+Under the assumption that whoever gets a higher expected proportion for each state wins in that state, Trump is expected to win in 30 states, and Biden is expected to win in 16 states. 
 
 # Discussion
 
