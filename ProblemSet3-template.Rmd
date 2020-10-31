@@ -228,23 +228,31 @@ We have created the logistic regression model on proportion of voters voting for
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
 
-- state: **맞는방법인지모르겠어요..**
+- state: **맞는방법인지모르겠어요..**  
+Using the estimate proportion grouped by states,  ......
 ```{r}
 #compare the estimate for each state
 trump_state <- predict_state_trump$predict_trump2
 biden_state <- predict_state_biden$predict_biden2
 trump_win <- 0 
-biden_win <- 1 
-for (i in 1:45){
+biden_win <- 0
+trump_biden <- c()
+for (i in 1:51){
   if (trump_state[i] > biden_state[i]){
     trump_win <- trump_win + 1
+    #append(trump_biden, "0")
+    trump_biden <- c(trump_biden, "Trump")
   }
-  else {biden_win <- biden_win + 1}
-}
+  else {biden_win <- biden_win + 1
+  #append(trump_biden, "1")}
+  trump_biden <- c(trump_biden, "Biden")
+}}
 trump_win
 biden_win
+ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
+  geom_bar()
 ```
-Under the assumption that whoever gets a higher expected proportion for each state wins in that state, Trump is expected to win in 30 states, and Biden is expected to win in 16 states. 
+Under the assumption that whoever gets a higher expected proportion for each state wins in that state, Trump is expected to win in 31 states, and Biden is expected to win in 20 states. 
 
 # Discussion
 
