@@ -232,7 +232,9 @@ kable_styling(latex_options = "hold_position")
 
 ```
 In the summary model for Trump(Figure n), "45-64 year-olds" and "65 years and older" have relatively higher estimates(0.743 and 0.782) which mean for every one-unit increase in the predictor variable, we expect an increase in the log odds, which makes trump more likely to get voted. Similarly, estimates in household_income show that log-odds get lower for people who have relatively low household income (\$15,000 to $24,999). Black race significantly shows low estimates, -1.42192, which lowers the log odds by a significant amount. 
+
 (Figure n) For Biden, as opposed to Trump, shows a high estimate in the black race (0.999153), but has a low estimate in a native race(-0.441602). Also, younger people are more likely to vote, individuals with high income ($150,000 or more) lowers the log odds(-0.046616), but overall well distributed.
+
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower-income people?)  
 - Individuals with a household income " \$100,000 to \$149,999" or "$150,000 or more" show a higher probability of voting for Trump over Biden.
@@ -246,7 +248,7 @@ Then, by using the post stratification technique, 55,325 cells are made using th
 
 For an additional estimate, we grouped each cell estimates into states and predicted who is expected to have more. The result shows that Trump is ahead of Biden by 11 counts in the estimate for each state, where Trump is more likely to win in 31 states, and Biden has a higher probability to win in 20 states.  
 
-- The result shows that the estimated value for the proportion of voters voting for Joe Biden is 39.4% and Donald Trump 43.34%.  
+- The result shows that the estimated value $\hat{y}^{ps}$ for the proportion of voters voting for Joe Biden is 39.4% and for Donald Trump is 43.34%. Just by considering the six factors used in the model above, using the 2020 survey data and 2018 census data, there is a higher possibility of Donald Trump being the next president.    
 
 - *discuss the result*  
 
@@ -254,9 +256,9 @@ To conclude, based on the estimated proportion of voters in favor of voting for 
 
 ## Weaknesses
 **improvement**
-1. Weakness: Some variables could not be included in the generalized logistic model because either census data or survey data did not include the particular variables. If there is an important variable that could have affected the vote outcome, there might exist an omitted variable bias. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).  
+Some variables could not be included in the generalized logistic model because either census data or survey data did not include the particular variables. If there is an important variable that could have affected the vote outcome, there might exist an omitted variable bias. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).  
 
-the Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.  
+The Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.  
 
 Even if a candidate wins in the public vote, he/she can lose the presidency if the electoral college gives the candidate a majority, and vice versa. Therefore, using the popular vote to predict the winner of the presidential election is not the most accurate way to use it.  
 
@@ -293,6 +295,7 @@ knitr::kable(list(predict_state_trump, predict_state_biden))
 
 ## probabilites of voting for Trump and Biden in each household income group
 knitr::kable(list(predict_income_trump, predict_income_biden), caption = "Figure n ")
+
 #predict_income_trump
 #predict_income_biden
 ```
