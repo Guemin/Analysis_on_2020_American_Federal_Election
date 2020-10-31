@@ -226,31 +226,8 @@ kable(list(predict_trump, predict_biden), caption = "Comparison of predicted est
 
   
 
-- individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
+- individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)  
 
-- state: **idk**  
-Using the estimate proportion grouped by states,  ......
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-#compare the estimate for each state
-trump_state <- predict_state_trump$predict_trump2
-biden_state <- predict_state_biden$predict_biden2
-trump_win <- 0 
-biden_win <- 0
-trump_biden <- c()
-for (i in 1:51){
-  if (trump_state[i] > biden_state[i]){
-    trump_win <- trump_win + 1
-    trump_biden <- c(trump_biden, "Trump")
-  }
-  else {biden_win <- biden_win + 1
-  trump_biden <- c(trump_biden, "Biden")
-}}
-trump_win
-biden_win
-ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
-  geom_bar() + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count")
-```
-Under the assumption that whoever gets a higher expected proportion for each state wins in that state, Trump is expected to win in 31 states, and Biden is expected to win in 20 states. Both Figure x and Figure y show that Donald Trump has a higher possibility to win the election.   
 
 # Discussion
 
