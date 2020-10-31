@@ -30,8 +30,8 @@ census_data <- read_csv("census_data.csv")
 
 # Model
 As the 2020 presidential election of the United States approaches, people across the world are interested in to which candidate the vote of the US citizens will be concentrated, either to Donald Trump or to Joe Biden. Since the election outcome will also affect our community in Canada, we are going to analyze and predict the winner of the popular vote in the 2020 American federal election.  
-Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, population is partitioned into subgroups and estimates are predicted within the subgroups. With the estimates, the sum of the estimate times the respective population size in each group is calculated, and finally, the sum is divided with the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models.  
-In the following sub-sections, we will describe the model specifics, the post-stratification calculation and the result of the analysis.
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, the population is partitioned into subgroups, and estimates are predicted within the subgroups. With the estimates, the sum of the estimate times the respective population size in each group is calculated, and finally, the sum is divided by the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models.  
+In the following sub-sections, we will describe the model specifics, the post-stratification calculation, and the result of the analysis.
 
 ## Model specifics
 
@@ -56,7 +56,7 @@ where $log(\frac{p_{i}}{1-p_{i}})$ represents log odds in each model, and $p_{i}
 \    \    \ * $x_{state}$ indicates the state where the respondent is located in.]).  
 
 
-Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combinations of categories in our predictor variables, age_group, gender, race, education, household income, and state.
+Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combination of categories in our predictor variables, age_group, gender, race, education, household income, and state.
 
 ```{r, include=FALSE, warning= FALSE}
 #remove na observations from the survey data
@@ -106,6 +106,7 @@ knitr::kable(
 )
 
 ```
+
 ###Yena
 1. Model diagnostics: 
 
@@ -115,8 +116,8 @@ knitr::kable(
 
 ## Post-Stratification 
 
-In order to estimate the probabilities of voting for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based off different age group, gender, race ethnicity, education attainment, household income, and state.  
-Using the logistic regression models presented in the previous sub-section, we will estimate the probabilities of voting in each cell for each candidate. Then, we will weight each estimate within each cell by the respective population size of the cell, sum those values and divide that by the entire population size. This process can also be described by the expression:
+In order to estimate the probabilities of voting for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based on different age groups, gender, race-ethnicity, education attainment, household income, and state.  
+Using the logistic regression models presented in the previous sub-section, we will estimate the probabilities of voting in each cell for each candidate. Then, we will weigh each estimate within each cell by the respective population size of the cell, sum those values, and divide that by the entire population size. This process can also be described by the expression:
 $$\hat{y}^{ps}\ =\ \frac{\sum N_j*\hat{y_j}}{\sum{N_j}}$$
 where $\hat{y_j}$ is the estimate of the probability of voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell based off demographics.
 
@@ -227,7 +228,7 @@ Here you will summarize the previous sections and discuss conclusions drawn from
 
 1. Summary : Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. 
 - Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state. 
-- (After making the models for each candidate) $y^ps$ is measured using post-stratification method to estimate the proportion ofvoters in favor of voting for each candidate.
+- (After making the models for each candidate) $\hat{y}^{ps}$ is measured using post-stratification technique to estimate the proportion of voters in favor of voting for each candidate.
 - *discuss about the result*
 
 2. Conclusion: To conclude, based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%), we predict that Trump will win the election (......)
@@ -254,3 +255,4 @@ Here you discuss subsequent work to be done after this report. This can include 
 3. Post-Stratification technique: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/04/forecasting-with-nonrepresentative-polls.pdf
 4. Logit Regression Assumptions: https://rpubs.com/guptadeepak/logit-assumptions
 5. Variance Inflation Factor(VIF): https://www.statisticshowto.com/variance-inflation-factor/
+6. Tables side by side: https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
