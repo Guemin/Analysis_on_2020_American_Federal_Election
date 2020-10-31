@@ -207,8 +207,8 @@ In the previous sub-sections, we have created the Logistic Regression models on 
 #Model results
 broom::tidy(model_trump)
 broom::tidy(model_biden)
-summary(model_trump)
-summary(model_biden)
+#summary(model_trump)
+#summary(model_biden)
 #knitr::kables(list(model_trump_tidy, model_biden_tidy))
 
 
@@ -225,9 +225,8 @@ kable(list(predict_trump, predict_biden), caption = "Comparison of predicted est
 
 
 ```
-- Trump: 45-64 year olds, 65 years and older more likely 
-- Trump: Black(-1.42192)
-- $15,000 to $24,999        -0.45018
+In the summary model for Trump(Figure n), "45-64 year-olds" and "65 years and older" have relatively higher estimates(0.743 and 0.782) which mean for every one-unit increase in the predictor variable, we expect an increase in the log odds, which makes trump more likely to get voted. Similarly, estimates in household_income show that log-odds get lower for people who have relatively low household income (\$15,000 to $24,999). Black race significantly shows low estimates, -1.42192, which lowers the log odds by a significant amount. 
+(Figure n) For Biden, as opposed to Trump, shows a high estimate in the black race (0.999153), but has a low estimate in a native race(-0.441602). Also, younger people are more likely to vote, individual with high income ($150,000 or more) lowers the log odds(-0.046616), but overall well distributed.
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower-income people?)  
 - Individuals with a household income " \$100,000 to \$149,999" or "$150,000 or more" show a higher probability of voting for Trump over Biden.
