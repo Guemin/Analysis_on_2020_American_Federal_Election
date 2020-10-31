@@ -81,16 +81,16 @@ The assumptions on logistic regression model are:
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Model diagnostics
-par(mfrow = c(1, 2))
-plot(residuals.glm(model_trump, type="pearson"))
+par(mfrow = c(2, 2))
+plot(residuals.glm(model_trump, type="pearson"),  ylab = "glm_residuals")
 title("Figure 1")
-plot(residuals.glm(model_biden, type="pearson"))
+plot(residuals.glm(model_biden, type="pearson"), ylab = "glm_residuals")
 title("Figure 2")
 
 # check for linear relationship between predictor variables and the log odds
 
 # identify influential values
-par(mfrow = c(1, 2))
+#par(mfrow = c(1, 2))
 plot(model_trump, which =4)
 title("Figure 3")
 plot(model_biden, which =4)
@@ -214,11 +214,12 @@ Please ensure that everything is well labelled. So if you have multiple histogra
 #Model results
 broom::tidy(model_trump)
 broom::tidy(model_biden)
-#knitr::kable(list(broom::tidy(model_trump), broom::tidy(model_biden)))
+#knitr::kables(list(model_trump_tidy, model_biden_tidy))
+
 
 #Post-Stratification result
 ## total probability of voting for Trump and Biden
-knitr::kable(list(predict_trump, predict_biden))
+kable(list(predict_trump, predict_biden), caption = "Comparison of predicted estimate between Trump and Biden")
 #kables(list(
   #kable(head(predict_trump), "latex", align = "c"), 
   #kable(head(predict_biden), "latex", align = "c")))
@@ -226,19 +227,7 @@ knitr::kable(list(predict_trump, predict_biden))
 #predict_trump
 #predict_biden
 
-## probabilites of voting for Trump and Biden in each household income group
-knitr::kable(list(predict_income_trump, predict_income_biden), caption = "Figure n ")
-#predict_income_trump
-#predict_income_biden
 
-## probabilites of voting for Trump and Biden in each state
-#predict_state_trump
-#predict_state_biden
-knitr::kable(list(predict_state_trump, predict_state_biden))
-#kables(list(
-  #kable(predict_state_trump, "latex", align = "c"), 
-  #kable(predict_state_biden, "latex", align = "c")), 
-  #caption = "Figure n: ")
 
 ```
 
@@ -307,3 +296,22 @@ Here you discuss subsequent work to be done after this report. This can include 
 4. Logit Regression Assumptions: https://rpubs.com/guptadeepak/logit-assumptions
 5. Variance Inflation Factor(VIF): https://www.statisticshowto.com/variance-inflation-factor/
 6. Tables side by side: https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
+
+#Appendix 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+## probabilites of voting for Trump and Biden in each state
+#predict_state_trump
+#predict_state_biden
+knitr::kable(list(predict_state_trump, predict_state_biden))
+#kables(list(
+  #kable(predict_state_trump, "latex", align = "c"), 
+  #kable(predict_state_biden, "latex", align = "c")), 
+  #caption = "Figure n: ")
+
+## probabilites of voting for Trump and Biden in each household income group
+knitr::kable(list(predict_income_trump, predict_income_biden), caption = "Figure n ")
+#predict_income_trump
+#predict_income_biden
+```
+
+
