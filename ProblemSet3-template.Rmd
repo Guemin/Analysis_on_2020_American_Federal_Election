@@ -8,7 +8,9 @@ output:
     df_print: paged
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+# please install the following package prior to knitting 
+# install.packages("kableExtra")
 library(tidyverse)
 library(lme4)
 library(knitr)
@@ -30,7 +32,7 @@ census_data <- read_csv("census_data.csv")
 
 # Model
 As the 2020 presidential election of the United States approaches, people across the world are interested in to which candidate the vote of the US citizens will be concentrated, either to Donald Trump or to Joe Biden. Since the election outcome will also affect our community in Canada, we are going to analyze and predict the winner of the popular vote in the 2020 American federal election.  
-Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, the population is partitioned into subgroups, and estimates are predicted within the subgroups. With the estimates, the sum of the estimate times the respective population size in each group is calculated, and finally, the sum is divided by the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models.  
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, the population is partitioned into subgroups, and estimates are predicted within the subgroups. Then, the sum of the estimate times the respective population size in each group is calculated, and finally, it is divided by the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models.  
 In the following sub-sections, we will describe the model specifics, the post-stratification calculation, and the result of the analysis.
 
 ## Model specifics
@@ -41,24 +43,23 @@ As already mentioned, we will be using the logistic regression models and post-s
 \    \    \ * education is divided into 4 different categories: "Didn't graduate from high school", "High school graduate",   
 \    \    \   "Some college or associate degree", "Bachelor's degree or higher".  
 \    \    \ * household income consists of 9 categories range from "Less than $14,999" to "$150,000 and over".  
-\    \    \ * state indicates abbreviated names of 52 states in the United States.].  
+\    \    \ * state indicates abbreviated names of 52 states in the US.].  
 
 Since our response variables, vote_Trump and vote_Biden, are binary(either 'vote for' or 'not vote/not sure'), the logistic regression model is a suitable model to be used. Logistic regression is a mathematical model used to estimate the probability of an event occurring using binary data.  
 The logistic regression models we are using are:
 
 $$ log(\frac{p_{i}}{1-p_{i}}) = \beta_0+\beta_1  x_{age\ group} +\beta_2 x_{gender}+\beta_3 x_{race}+\beta_4x_{education}+\beta_5x_{household\ income}+\beta_6x_{state}$$
 
-where $log(\frac{p_{i}}{1-p_{i}})$ represents log odds in each model, and $p_{i}$ is the proportions of voters who will vote for Donald trump or Joe Biden. Similarly, $\beta_0$ represents the intercept, and $\beta_1$,...,  $\beta_6$ indicate the slope parameters of the model. (Detailed descriptions on the x variables can be found in the footnote^[* $x_{age\ group}$ represents one of the four age groups that the respondent is in.  
+where $log(\frac{p_{i}}{1-p_{i}})$ represents log odds in each model, and $p_{i}$ is the proportion of voters who will vote for Donald trump or Joe Biden. Similarly, $\beta_0$ represents the intercept, and $\beta_1$,...,  $\beta_6$ indicate the slope parameters of the model. (Detailed descriptions on the x variables can be found in the footnote^[* $x_{age\ group}$ represents one of the four age groups that the respondent is in.  
 \    \    \ * $x_{gender}$ indicates the gender of the respondent(either "Male" or "Female").  
 \    \    \ * $x_{race}$ indicates the race ethnicity of the respondent.  
 \    \    \ * $x_{education}$ indicates the education attainment of the respondent.  
 \    \    \ * $x_{household\ income}$ indicates the total pre-tax income of the respondent's household.  
-\    \    \ * $x_{state}$ indicates the state where the respondent is located in.]).  
+\    \    \ * $x_{state}$ indicates the state in which the respondent is located.]).  
 
 
-Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combination of categories in our predictor variables, age_group, gender, race, education, household income, and state.
 
-```{r, include=FALSE, warning= FALSE}
+```{r, include=FALSE, warning= FALSE, message=FALSE}
 #remove na observations from the survey data
 survey_data <- survey_data %>%
   filter(!is.na(age_group), !is.na(gender), !is.na(race), !is.na(education), !is.na(household_income), !is.na(state), !is.na(vote_Trump), !is.na(vote_Biden))
@@ -71,36 +72,25 @@ model_trump <- glm(vote_Trump ~ as.factor(age_group) + as.factor(gender) + as.fa
 model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.factor(race) + as.factor(education) + as.factor(household_income) + as.factor(state), 
             data=survey_data, family="binomial")
 ```
+
 **model diagnostics**  
-Logistic regression could be well performed under several assumptions.  
-
-The assumptions on logistic regression model are:  
+With the logistic regression models we created above, we are going to study diagnostics of the models.
+First, we need to keep in mind that logistic regressions are well performed under the following assumptions:  
 1. linearity between the log odds and the predictor variables (independent variables should be linearly related to the log odds)  
-2. independent errors (logistic regression requires each observation to be independent. )  
-3. multicollinearity among predictors is not too high (predictor variables should be independent to each other)  
-
+2. Binary logistic regression requires the response variable to be binary.
+3. large sample size
+4. multicollinearity among predictors is not too high (predictor variables should be independent to each other)  
+In our models, we do not need to worry about the violation of the first assumption since all of our predictor variables are categorical; hence, categorization of the independent variables is not neccessary.  
+Similarly, since our reponse variables, vote_trump and vote_biden are binary, and the size of the survey data is large enough, we can confirm that the second and the thrid assumptions are also satisfied.  
+Now, we want to check if the multicollinearity among predictor variables is not too high. This can be done by calculating the variance inflation factor(VIF) for each predictor variable, which measures the amount of multicollinearity in a set of multiple regression variables; the bigger the VIF, the bigger the multicollinearity is. When the variance inflation factor is greater than 5, the corresponding predictor is said to be highly correlated with other predictors. 
+Here are the values of variance inflation factors for predictors in each model:  
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Model diagnostics
-par(mfrow = c(2, 2))
-plot(residuals.glm(model_trump, type="pearson"),  ylab = "glm_residuals")
-title("Figure 1")
-plot(residuals.glm(model_biden, type="pearson"), ylab = "glm_residuals")
-title("Figure 2")
-
-# check for linear relationship between predictor variables and the log odds
-
-# identify influential values
-#par(mfrow = c(1, 2))
-plot(model_trump, which =4)
-title("Figure 3")
-plot(model_biden, which =4)
-title("Figure 4")
-
-# check for multicollinearity of predictors in each model
-vif_mod_t <- tibble(Predictor = c("age_group", "gender", "race", "education",
+## check for multicollinearity of predictors in each model
+vif_mod_t <- tibble(model_trump_predictor = c("age_group", "gender", "race", "education",
                                   "household_income", "state"), 
                     VIF = car::vif(model_trump)[,1])
-vif_mod_b <- tibble(Predictor = c("age_group", "gender", "race", "education",
+vif_mod_b <- tibble(model_biden_predictor = c("age_group", "gender", "race", "education",
                                   "household_income", "state"), 
                     VIF = car::vif(model_biden)[,1])
 
@@ -112,13 +102,7 @@ kable(
 )
 
 ```
-
-###Yena
-1. Model diagnostics:  
-
-2. Cook's distance is used in regression analysis to find influential outliers in predictor variables, which identifies points that negatively affect your regression model. Cook's distance is higher when residuals and leverage are high. (Infulential/outlier points can be removed for a better analysis)  
-
-3. VIF is the Variance inflation factor, which measures the amount of multicollinearity in a set of multiple regression variables. Bigger the VIF, the bigger the multicollinearity is. As shown above, (Figure 3?) there is no sign of multicollinearity (not correlated) since VIF values do not exceed 2 for both models of Trump and Biden. Therefore, it is safe to say that the last assumption, multicollinearity among predictors is not too high is satisfied.  
+As shown above, VIF values do not exceed 2 for both models for Trump and Biden, which suggest that there is no sign of multicollinearity among predictors. Therefore, it is safe to say that the last assumption is also satisfied.
 
 ###Model content
 - Ages that are younger than 18 or older than 90(?) are removed from the data because...(also mention briefly what other samples are mutated/removed from the data)
@@ -126,6 +110,9 @@ kable(
 
 ## Post-Stratification 
 - Any decisions that your group made should be explained and justified. (For example, are you looking at the proportion of people voting for Trump or Biden? why did you exclude sex in the cell split (practical explanations are acceptable)? etc.)  
+
+
+Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combinations of categories in our predictor variables, age_group, gender, race, education, household income, and state.
 
 In order to estimate the probabilities of voting for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based on different age groups, gender, race-ethnicity, education attainment, household income, and state.  
 Using the logistic regression models presented in the previous sub-section, we will estimate the probabilities of voting in each cell for each candidate. Then, we will weigh each estimate within each cell by the respective population size of the cell, sum those values, and divide that by the entire population size. This process can also be described by the expression:
@@ -237,7 +224,7 @@ We have created the logistic regression model on proportion of voters voting for
 
 - state: **idk**  
 Using the estimate proportion grouped by states,  ......
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 #compare the estimate for each state
 trump_state <- predict_state_trump$predict_trump2
 biden_state <- predict_state_biden$predict_biden2
@@ -293,9 +280,10 @@ Here you discuss subsequent work to be done after this report. This can include 
 1. Survey data: https://www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c
 2. Census data: https://usa.ipums.org/usa-action/extract_requests/summary?
 3. Post-Stratification technique: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/04/forecasting-with-nonrepresentative-polls.pdf
-4. Logit Regression Assumptions: https://rpubs.com/guptadeepak/logit-assumptions
-5. Variance Inflation Factor(VIF): https://www.statisticshowto.com/variance-inflation-factor/
-6. Tables side by side: https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
+4. Logit Regression Assumptions source 1: https://rpubs.com/guptadeepak/logit-assumptions
+5. Logit Regression Assumptions source 2: https://www.statisticssolutions.com/wp-content/uploads/wp-post-to-pdf-enhanced-cache/1/assumptions-of-logistic-regression.pdf
+6. Variance Inflation Factor(VIF): https://www.statisticshowto.com/variance-inflation-factor/
+7. Tables side by side: https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
 
 #Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -313,5 +301,4 @@ knitr::kable(list(predict_income_trump, predict_income_biden), caption = "Figure
 #predict_income_trump
 #predict_income_biden
 ```
-
 
