@@ -27,7 +27,7 @@ census_data <- read_csv("census_data.csv")
 
 ```
 
-## Predictions on the 2020 US Presidential Election based on the voter survey responses.
+### Predictions on the 2020 US Presidential Election based on the voter survey responses.
 *Code and data supporting this analysis is available at: https://github.com/Guemin/Problem_Set_3 *
 
 # Model
@@ -76,14 +76,18 @@ model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.fa
 **model diagnostics**  
 With the logistic regression models we created above, we are going to study diagnostics of the models.
 First, we need to keep in mind that logistic regressions are well performed under the following assumptions:  
-1. linearity between the log odds and the predictor variables (independent variables should be linearly related to the log odds)  
-2. Binary logistic regression requires the response variable to be binary.
-3. large sample size
-4. multicollinearity among predictors is not too high (predictor variables should be independent to each other)  
+1. linearity between the log odds and the predictor variables  
+   (independent variables should be linearly related to the log odds)  
+2. Binary logistic regression requires the response variable to be binary.  
+3. large sample size  
+4. multicollinearity among predictors is not too high  
+   (predictor variables should be independent to each other)   
+   
 In our models, we do not need to worry about the violation of the first assumption since all of our predictor variables are categorical; hence, categorization of the independent variables is not neccessary.  
 Similarly, since our reponse variables, vote_trump and vote_biden are binary, and the size of the survey data is large enough, we can confirm that the second and the thrid assumptions are also satisfied.  
 Now, we want to check if the multicollinearity among predictor variables is not too high. This can be done by calculating the variance inflation factor(VIF) for each predictor variable, which measures the amount of multicollinearity in a set of multiple regression variables; the bigger the VIF, the bigger the multicollinearity is. When the variance inflation factor is greater than 5, the corresponding predictor is said to be highly correlated with other predictors. 
 Here are the values of variance inflation factors for predictors in each model:  
+
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Model diagnostics
 ## check for multicollinearity of predictors in each model
@@ -104,9 +108,9 @@ kable(
 ```
 As shown above, VIF values do not exceed 2 for both models for Trump and Biden, which suggest that there is no sign of multicollinearity among predictors. Therefore, it is safe to say that the last assumption is also satisfied.
 
-###Model content
-- Ages that are younger than 18 or older than 90(?) are removed from the data because...(also mention briefly what other samples are mutated/removed from the data)
-
+### Model content  
+Prior to the modelings, we mutated variables in the survey data to create new variables that could be used in the analysis. Our response variables, vote_trump and vote_biden are also mutated from a variable named "vote_2020", which provides a name of a candidate that the respondent supports^[vote_trump is 1 when vote_2020 is "Donald Trump", and 0 otherwise; vote_biden is 1 when vote_2020 is "Joe Biden", and 0 otherwise.]. Also, the predictor variables, age_group, gender, race, education, household_income and state are mutated in the data cleaning process so that the categories in each variable in the survey data match with those in the census data.  
+Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_trump and vote_biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistc or not necessary in our analysis. 
 
 ## Post-Stratification 
 - Any decisions that your group made should be explained and justified. (For example, are you looking at the proportion of people voting for Trump or Biden? why did you exclude sex in the cell split (practical explanations are acceptable)? etc.)  
@@ -114,8 +118,8 @@ As shown above, VIF values do not exceed 2 for both models for Trump and Biden, 
 
 Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combinations of categories in our predictor variables, age_group, gender, race, education, household income, and state.
 
-In order to estimate the probabilities of voting for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based on different age groups, gender, race-ethnicity, education attainment, household income, and state.  
-Using the logistic regression models presented in the previous sub-section, we will estimate the probabilities of voting in each cell for each candidate. Then, we will weigh each estimate within each cell by the respective population size of the cell, sum those values, and divide that by the entire population size. This process can also be described by the expression:
+In order to estimate the proportions of voters for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. In order to use this technique, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based on different age groups, gender, race-ethnicity, education attainment, household income, and state.  
+Using the logistic regression models presented in the previous sub-section, we will estimate the proportions of voters in each cell for each candidate. Then, we will weight each estimate within each cell by the respective population size of the cell, and sum those values, and divide that by the entire population size. This process can also be described by the expression:
 $$\hat{y}^{ps}\ =\ \frac{\sum N_j*\hat{y_j}}{\sum{N_j}}$$
 where $\hat{y_j}$ is the estimate of the probability of voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell based off demographics.
 
@@ -196,6 +200,8 @@ Here you will include all results. This includes descriptive statistics, graphs,
 
 Please ensure that everything is well labelled. So if you have multiple histograms and plots, calling them Figure 1, 2, 3, etc. and referencing them as Figure 1, Figure 2, etc. in your report will be expected. The reader should not get lost in a sea of information. Make sure to have the results be clean, well formatted and digestible.
 
+In the previous sub-sections, we have created the logistic regression models on proportions of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.433> and Joe Biden to be <0.394>. From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.  
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 #Model results
@@ -218,7 +224,7 @@ kable(list(predict_trump, predict_biden), caption = "Comparison of predicted est
 
 ```
 
-We have created the logistic regression model on proportion of voters voting for Donald Trump and Joe Biden with 6 different following variables: age_group, gender, race, education, household_income, and state. Based off the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is <0.433> and Joe Biden to be <0.394>.From the result of our estimation, We can predict that Donald Trump is more likely to win the 2020 president election.  
+  
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
 
