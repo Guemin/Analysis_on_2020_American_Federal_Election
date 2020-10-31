@@ -118,8 +118,6 @@ Prior to the modelings, we mutated variables in the survey data to create new va
 Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_trump and vote_biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistic or not necessary in our analysis. 
 
 ## Post-Stratification 
-- Any decisions that your group made should be explained and justified. (For example, are you looking at the proportion of people voting for Trump or Biden? why did you exclude sex in the cell split (practical explanations are acceptable)? etc.)  
-
 
 Using the log odds estimates, we are going to find vote_Trump and vote_Biden (the proportions of voters each for Donald Trump and Joe Biden) in every possible combination of categories in our predictor variables, age_group, gender, race, education, household income, and state.
 
@@ -201,10 +199,6 @@ census_data %>%
 
 # Results
 
-Here you will include all results. This includes descriptive statistics, graphs, figures, tables, and model results. Please ensure that everything is well-formatted and in a report style. You must also provide an explanation of the results in this section. 
-
-Please ensure that everything is well labeled. So if you have multiple histograms and plots, calling them Figure 1, 2, 3, etc. and referencing them as Figure 1, Figure 2, etc. in your report will be expected. The reader should not get lost in a sea of information. Make sure to have the results be clean, well-formatted, and digestible.
-
 In the previous sub-sections, we have created the Logistic Regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different following variables: age_group, gender, race, education, household_income, and state. Based on the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is 0.433 (43.3%) and Joe Biden to be 0.394(39.4%). From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.  
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -212,6 +206,7 @@ In the previous sub-sections, we have created the Logistic Regression models on 
 #Model results
 broom::tidy(model_trump)
 broom::tidy(model_biden)
+
 #summary(model_trump)
 #summary(model_biden)
 #knitr::kables(list(model_trump_tidy, model_biden_tidy))
@@ -231,7 +226,7 @@ kable_styling(latex_options = "hold_position")
 
 
 ```
-In the summary model for Trump(Figure n), "45-64 year-olds" and "65 years and older" have relatively higher estimates(0.743 and 0.782) which mean for every one-unit increase in the predictor variable, we expect an increase in the log odds, which makes trump more likely to get voted. Similarly, estimates in household_income show that log-odds get lower for people who have relatively low household income (\$15,000 to $24,999). Black race significantly shows low estimates, -1.42192, which lowers the log odds by a significant amount. 
+In the summary model for Trump(Figure n), "45-64 year-olds" and "65 years and older" have relatively higher estimates(0.743 and 0.782) which mean for every one-unit increase in the predictor variable, we expect an increase in the log odds, which makes Trump more likely to get voted. Similarly, estimates in household_income show that log-odds get lower for people who have relatively low household income (\$15,000 to $24,999). Black race significantly shows low estimates, -1.42192, which lowers the log odds by a significant amount. 
 
 (Figure n) For Biden, as opposed to Trump, shows a high estimate in the black race (0.999153), but has a low estimate in a native race(-0.441602). Also, younger people are more likely to vote, individuals with high income ($150,000 or more) lowers the log odds(-0.046616), but overall well distributed.
 
@@ -243,16 +238,15 @@ In the summary model for Trump(Figure n), "45-64 year-olds" and "65 years and ol
 
 Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.  
 
-Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state.  
-Then, by using the post stratification technique, 55,325 cells are made using the census data, based on the 6 variables that were used in the Logistic Regression model, and the probability of voting estimates is estimated for each cell. $\hat{y}^{ps}$ is measured to estimate the proportion of voters in favor of voting for each candidate.   
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state. There is a possibility of having omitted variable bias^[* explanation of omitted variable bias is described in "Weakness section"] and measurement error bias, because people tend to hide their political orientation. 
 
-For an additional estimate, we grouped each cell estimates into states and predicted who is expected to have more. The result shows that Trump is ahead of Biden by 11 counts in the estimate for each state, where Trump is more likely to win in 31 states, and Biden has a higher probability to win in 20 states.  
+Then, by using the post stratification technique, 55,325 cells are made using the census data - based on the 6 variables that were used in the Logistic Regression model - and the probability of voting estimates is estimated for each cell. Using the probability for each cell, proportion estimates of voters for both Donald Trump and Joe Biden, $\hat{y}^{ps}$ are measured to estimate the proportion of voters in favor of voting for each candidate. 
 
-- The result shows that the estimated value $\hat{y}^{ps}$ for the proportion of voters voting for Joe Biden is 39.4% and for Donald Trump is 43.34%. Just by considering the six factors used in the model above, using the 2020 survey data and 2018 census data, there is a higher possibility of Donald Trump being the next president.    
+The result of the popular vote shows that the estimated value $\hat{y}^{ps}$ for the proportion of voters voting for Joe Biden is 39.4% and for Donald Trump is 43.34%. Just by considering the six factors used in the model above, using the 2020 survey data and 2018 census data, there is a higher possibility of Donald Trump being the next president.    
 
-- *discuss the result*  
+For an additional estimate to predict the electoral vote, we grouped each cell estimates into states and predicted who is expected to win in each state. The result shows that Trump is ahead of Biden by 11 counts in the estimate for each state, where Trump is more likely to win in 31 states, and Biden has a higher probability to win in 20 states.  
 
-To conclude, based on the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states, we predict that Trump will win the 2020 presidential election.  (......)
+To conclude, based on the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states out of 51 states, we predict that Trump will win the 2020 presidential election.  
 
 ## Weaknesses
 **improvement**
@@ -264,8 +258,6 @@ Even if a candidate wins in the public vote, he/she can lose the presidency if t
 
 
 ## Next Steps
-
-Here you discuss subsequent work to be done after this report. This can include next steps in terms of statistical analysis (perhaps there is a more efficient algorithm available, or perhaps there is a caveat in the data that would allow for some new technique). Future steps should also be specified in terms of the study setting (eg. including a follow-up survey on something, or a subsequent study that would complement the conclusions of your report).  
 
 - With the 2020 census data, we could estimate the proportion of voting for each candidate by state and estimate the winner of each state which would make a more reasonable and realistic prediction of the election.   
 - Create a visualization of the results to view the groups of the voting estimates at once.  
