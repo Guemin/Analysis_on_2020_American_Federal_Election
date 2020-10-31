@@ -76,18 +76,19 @@ Logistic regression could be well performed under several assumptions.
 
 The assumptions on logistic regression model are:  
 1. linearity between the log odds and the predictor variables (independent variables should be linearly related to the log odds)  
-2. independent errors (logistic regression requires each observation to be independtent. )  
+2. independent errors (logistic regression requires each observation to be independent. )  
 3. multicollinearity among predictors is not too high (predictor variables should be independent to each other)  
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 # Model diagnostics
+par(mfrow = c(1, 2))
 plot(residuals.glm(model_trump, type="pearson"))
 plot(residuals.glm(model_biden, type="pearson"))
 
 # check for linear relationship between predictor variables and the log odds
 
 # identify influential values
-par(mfrow=c(1,2))
+par(mfrow = c(1, 2))
 plot(model_trump, which =4)
 plot(model_biden, which =4)
 
@@ -228,7 +229,7 @@ We have created the logistic regression model on proportion of voters voting for
 
 - individuals with household_income "less than $14,999" are more likely to vote for Biden over Trump (due to Biden's election promises for lower income people?)
 
-- state: **맞는방법인지모르겠어요..**  
+- state: **idk**  
 Using the estimate proportion grouped by states,  ......
 ```{r}
 #compare the estimate for each state
@@ -240,11 +241,9 @@ trump_biden <- c()
 for (i in 1:51){
   if (trump_state[i] > biden_state[i]){
     trump_win <- trump_win + 1
-    #append(trump_biden, "0")
     trump_biden <- c(trump_biden, "Trump")
   }
   else {biden_win <- biden_win + 1
-  #append(trump_biden, "1")}
   trump_biden <- c(trump_biden, "Biden")
 }}
 trump_win
@@ -276,6 +275,7 @@ Here we discuss weaknesses of the study, data, analysis, etc. You can also discu
 ## Next Steps
 
 Here you discuss subsequent work to be done after this report. This can include next steps in terms of statistical analysis (perhaps there is a more efficient algorithm available, or perhaps there is a caveat in the data that would allow for some new technique). Future steps should also be specified in terms of the study setting (eg. including a follow-up survey on something, or a subsequent study that would complement the conclusions of your report).  
+
 - With the 2020 census data, we could estimate the proportion of voting for each candidate by state and estimate the winner of each state which would make a more reasonable and realistic prediction of the election.   
 - Create visualization of the results to view the groups of the voting estimates at once.  
 - In our future analysis, we can try to analyze the  multilevel regression models using Bayes coding techniques.  
