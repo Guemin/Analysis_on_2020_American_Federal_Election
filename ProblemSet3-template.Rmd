@@ -249,7 +249,7 @@ for (i in 1:51){
 trump_win
 biden_win
 ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
-  geom_bar()
+  geom_bar() + ggtitle("Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count")
 ```
 Under the assumption that whoever gets a higher expected proportion for each state wins in that state, Trump is expected to win in 31 states, and Biden is expected to win in 20 states. 
 
@@ -260,9 +260,12 @@ Here you will summarize the previous sections and discuss conclusions drawn from
 1. Summary : Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA.  
 - Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state.   
 - (After making the models for each candidate) $\hat{y}^{ps}$ is measured using post-stratification technique to estimate the proportion of voters in favor of voting for each candidate.  
+- By using the post stratification, we created 55,325 cells based on the 6 variables that was used in the model, and found the probability of voting estimates for each cells.
+- Then we grouped each cell estimates into states and predicted who is expected to have more 
+- The result shows that estimate value for proportion of voters voting for Joe Biden is 39.4% and Donald Trump 43.34%. Also Trump is ahead of Biden by 21 counts in estimate for each state.
 - *discuss about the result*
 
-2. Conclusion: To conclude, based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%), we predict that Trump will win the election (......)
+2. Conclusion: To conclude, based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states, we predict that Trump will win the 2020 president election.  (......)
 
 ## Weaknesses
 
