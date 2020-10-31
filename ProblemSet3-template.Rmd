@@ -259,7 +259,10 @@ Even if a candidate wins in the public vote, he/she can lose the presidency if t
 
 ## Next Steps
 
-- With the 2020 census data, we could estimate the proportion of voting for each candidate by state and estimate the winner of each state which would make a more reasonable and realistic prediction of the election.   
+The analysis does not include the possible effect of other factors - such as an individual's Health insurance state - on the vote result. Analyzing the vote outcome focusing on the election promise would be a more realistic and reasonable prediction of the election. Also, 2016 census data is used for the analysis so it does not reflect the most accurate population. With the 2020 census data, we could estimate the proportion of voting for each candidate by the factors that are closely related to the election promises such as health care, market industry, etc.  
+
+Also, throughout the analysis, popular vote and a brief idea of the electoral vote (group the estimate by states, and compare the probability to determine who wins for each state), but did not use the actual election method that is used in the states. Following the procedure of the proper electoral vote, using more accurate data of the electoral colleges would make a huge difference in the analysis.    
+
 - Create a visualization of the results to view the groups of the voting estimates at once.  
 - In our future analysis, we can try to analyze the multilevel regression models using Bayes coding techniques.  
 - We can compare our prediction and the result of the actual 2020 presidential election.  
