@@ -233,13 +233,15 @@ kable(list(predict_trump, predict_biden), caption = "Comparison of predicted est
 
 Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.  
 
-Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 president election in USA. Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state. Then, $\hat{y}^{ps}$ is measured using post-stratification technique to estimate the proportion of voters in favor of voting for each candidate.  
-- By using the post stratification, we created 55,325 cells based on the 6 variables that was used in the model, and found the probability of voting estimates for each cells.
-- Then we grouped each cell estimates into states and predicted who is expected to have more 
-- The result shows that estimate value for proportion of voters voting for Joe Biden is 39.4% and Donald Trump 43.34%. Also Trump is ahead of Biden by 21 counts in estimate for each state.
-- *discuss about the result*  
+Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, Logistic Regression is used to predict who is more likely to be elected for the 2020 presidential election. Explanatory variables used for the logistic regression model are age_group, gender, race, education, household_income, and state. Then, by using the post stratification technique, 55,325 cells are made using the census data, based on the 6 variables that were used in the Logistic Regression model, and the probability of voting estimates is estimated for each cell. $\hat{y}^{ps}$ is measured to estimate the proportion of voters in favor of voting for each candidate.   
 
-To conclude, based off the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states, we predict that Trump will win the 2020 president election.  (......)
+For an additional estimate, we grouped each cell estimates into states and predicted who is expected to have more. The result shows that Trump is ahead of Biden by 11 counts in the estimate for each state, where Trump is more likely to win in 31 states, and Biden has a higher probability to win in 20 states.  
+
+- The result shows that the estimated value for the proportion of voters voting for Joe Biden is 39.4% and Donald Trump 43.34%.  
+
+- *discuss the result*  
+
+To conclude, based on the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states, we predict that Trump will win the 2020 presidential election.  (......)
 
 ## Weaknesses
 
