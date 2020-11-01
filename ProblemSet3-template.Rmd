@@ -246,7 +246,7 @@ The result of the popular vote shows that the estimated value $\hat{y}^{ps}$ for
 
 For an additional estimate to predict the electoral vote, we grouped each cell estimates into states and predicted who is expected to win in each state. The result shows that Trump is ahead of Biden by 11 counts in the estimate for each state, where Trump is more likely to win in 31 states, and Biden has a higher probability to win in 20 states.  
 
-To conclude, based on the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states out of 51 states, we predict that Trump will win the 2020 presidential election.  
+To conclude, based on the estimated proportion of voters in favor of voting for Donald Trump being 0.4334 (43.34%) and expected to win 31 states out of 51 states, we predict that Trump will win the 2020 presidential election. However, this is just estimation based on the data given. Historically, in 2016, Hillary Clinton won in the popular vote but lost the election because Trump had a higher vote in Electoral College vote. Winning in the popular vote does not determine the winner of the election. 
 
 ## Weaknesses
 **improvement**
