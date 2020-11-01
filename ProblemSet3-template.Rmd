@@ -290,8 +290,9 @@ Stephanie. “Variance Inflation Factor.” Statistics How To, 9 July 2020, www.
 Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Knitr::Kable(), 21 Sept. 2020, bookdown.org/yihui/rmarkdown-cookbook/kable.html. 
 
 
-#Electoral vote kinda stuff 
-the presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. Since there is no information given about the electoral colleges, we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.  
+# Electoral vote kinda stuff
+
+The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. Since there is no information given about the electoral colleges, we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.  
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #compare the estimate for each state
 trump_state <- predict_state_trump$predict_trump2
@@ -314,7 +315,8 @@ ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
 ```
 The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
 
-#Appendix 
+
+# Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## probabilites of voting for Trump and Biden in each state
 #predict_state_trump
