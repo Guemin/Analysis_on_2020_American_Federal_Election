@@ -251,12 +251,14 @@ The result of the popular vote shows that the estimated value $\hat{y}^{ps}$ for
 To sum up, the overall results from the post-stratification analysis suggest that Donald Trump is more likely to win the popular vote in the 2020 US presidential election. However, this is just an estimation based on the provided data sets which do not provide enough information required for predicting the winner of the electoral vote. Historically, in 2016, Hillary Clinton won in the popular vote but lost the election, because Trump won the electoral College. Therefore, winning the popular vote does not determine the next president of USA. 
 
 ## Weaknesses
-**improvement**
-Some variables could not be included in the generalized logistic model because either census data or survey data did not include the particular variables. If there is an important variable that could have affected the vote outcome, there might exist an omitted variable bias. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).  
+**improvement**  
 
-The Census data used in the analysis is 2018 data, so it might not reflect the most accurate vote outcome. 2020 data is more suitable to analyze more accurate results. Also, people who were underage in 2016, hence not included in the estimate would have the right to vote in 2020.  
+One of the weaknesses in our analysis is regarding the omitted variables.
+In the data cleaning process, some of the variables were removed from the data sets prior to the modeling, because either the census data or the survey data did not include the particular variables. If there were any important variables among the omitted ones, that could affect the vote outcome and there might also exist an omitted variable bias in our models. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).  
 
-Even if a candidate wins in the public vote, he/she can lose the presidency if the electoral college gives the candidate a majority, and vice versa. Therefore, using the popular vote to predict the winner of the presidential election is not the most accurate way to use it.  
+Since the Census data used in the analysis is the 2018 data, it might not reflect the population in 2020 or to predict the election outcome most accurately. For example, in our analysis, those who are not eligible to vote( back in 2018) were omitted from the data set, however, they could be eligible to vote in the 2020 election. Hence, if the 2020 census data was available, it should be more suitable for our analysis.
+
+Another weakness we should note is that our prediction on the winner of the popular vote could not match with the winner of the electoral college. Even if a candidate wins in the public vote, it is the result of the electoral college that determines the next president of USA. Therefore, analyzing the winner of the popular vote is not the most accurate way to predict the winner of the presidential election.
 
 
 ## Next Steps
