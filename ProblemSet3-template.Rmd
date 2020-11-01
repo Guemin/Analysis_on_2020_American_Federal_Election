@@ -248,7 +248,7 @@ Furthermore, we grouped the cell estimates by states and predicted the candidate
 
 The result of the popular vote shows that the estimated value $\hat{y}^{ps}$ for the proportion of voters voting for Joe Biden is 39.4% and for Donald Trump is 43.34%.  
 
-To sum up, the overall results from the post-stratification analysis suggest that Donald Trump is more likely to win the popular vote in the 2020 US presidential election. However, this is just an estimation based on the provided data sets that are not suitable for predicting the winner of the electoral vote. Historically, in 2016, Hillary Clinton won in the popular vote but lost the election, because Trump won the electoral College. Therefore, winning the popular vote does not determine the next president of USA. 
+To sum up, the overall results from the post-stratification analysis suggest that Donald Trump is more likely to win the popular vote in the 2020 US presidential election. However, this is just an estimation based on the provided data sets which do not provide enough information required for predicting the winner of the electoral vote. Historically, in 2016, Hillary Clinton won in the popular vote but lost the election, because Trump won the electoral College. Therefore, winning the popular vote does not determine the next president of USA. 
 
 ## Weaknesses
 **improvement**
