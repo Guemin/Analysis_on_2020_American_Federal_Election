@@ -289,6 +289,31 @@ Stephanie. “Variance Inflation Factor.” Statistics How To, 9 July 2020, www.
 7. Tables side by side: https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
 Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Knitr::Kable(), 21 Sept. 2020, bookdown.org/yihui/rmarkdown-cookbook/kable.html. 
 
+
+#Electoral vote kinda stuff 
+the presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. Since there is no information given about the electoral colleges, we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.  
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#compare the estimate for each state
+trump_state <- predict_state_trump$predict_trump2
+biden_state <- predict_state_biden$predict_biden2
+trump_win <- 0 
+biden_win <- 0
+trump_biden <- c()
+for (i in 1:51){
+  if (trump_state[i] > biden_state[i]){
+    trump_win <- trump_win + 1
+    trump_biden <- c(trump_biden, "Trump")
+  }
+  else {biden_win <- biden_win + 1
+  trump_biden <- c(trump_biden, "Biden")
+}}
+#trump_win
+#biden_win
+ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
+  geom_bar() + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count")
+```
+The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
+
 #Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## probabilites of voting for Trump and Biden in each state
