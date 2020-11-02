@@ -89,7 +89,7 @@ First, we need to keep in mind that logistic regressions are well performed unde
    (predictor variables should be independent to each other)   
    
 In our models, we do not need to worry about the violation of the first assumption since all of our predictor variables are categorical; hence, the categorization of the independent variables is not necessary.  
-Similarly, since our response variables, vote_trump and vote_biden are binary, and the size of the survey data is large enough, we can confirm that the second and the third assumptions are also satisfied.  
+Similarly, since our response variables, vote_Trump and vote_Biden are binary, and the size of the survey data is large enough, we can confirm that the second and the third assumptions are also satisfied.  
 
 Now, we want to check if the multicollinearity among predictor variables is not too high. This can be done by calculating the variance inflation factor(VIF) for each predictor variable, which measures the amount of multicollinearity in a set of multiple regression variables; the bigger the VIF, the bigger the multicollinearity is. When the variance inflation factor is greater than 5, the corresponding predictor is said to be highly correlated with other predictors. 
 Here are the values of variance inflation factors for predictors in each model:  
@@ -116,8 +116,8 @@ kable_styling(latex_options = "hold_position")
 As shown above, VIF values do not exceed 2 for both models for Trump and Biden, which suggest that there is no sign of multicollinearity among predictors. Therefore, it is safe to say that the last assumption is also satisfied.
 
 ### Model content  
-Prior to the modelings, we mutated variables in the survey data to create new variables that could be used in the analysis. Our response variables, vote_trump and vote_biden are also mutated from a variable named "vote_2020", which provides a name of a candidate that the respondent supports^[vote_trump is 1 when vote_2020 is "Donald Trump", and 0 otherwise; vote_biden is 1 when vote_2020 is "Joe Biden", and 0 otherwise.]. Also, the predictor variables, age_group, gender, race, education, household_income, and state are mutated in the data cleaning process so that the categories in each variable in the survey data match with those in the census data.  
-Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_trump and vote_biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistic or not necessary in our analysis. 
+Prior to the modelings, we mutated variables in the survey data to create new variables that could be used in the analysis. Our response variables, vote_Trump and vote_Biden are also mutated from a variable named "vote_2020", which provides a name of a candidate that the respondent supports^[vote_Trump is 1 when vote_2020 is "Donald Trump", and 0 otherwise; vote_Biden is 1 when vote_2020 is "Joe Biden", and 0 otherwise.]. Also, the predictor variables, age_group, gender, race, education, household_income, and state are mutated in the data cleaning process so that the categories in each variable in the survey data match with those in the census data.  
+Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_Trump and vote_Biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistic or not necessary in our analysis. 
 
 ## Post-Stratification 
 
@@ -273,25 +273,27 @@ Also, throughout the analysis, popular vote and a brief idea of the electoral vo
 *(something about comparing with the actual election results and do a post-hoc analysis (or at least a survey) of how to better improve estimation in future elections.)*
 
 # References (MLA8)
-1. Survey data: https://www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c
+1. Survey data: 
 “Insights into the Beliefs and Behaviors of American Voters.” Democracy Fund Voter Study Group, www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c. 
 
-2. Census data: https://usa.ipums.org/usa-action/extract_requests/summary?
+2. Census data:
 “Census Data.” IPUMS USA: Extract Summary, usa.ipums.org/usa-action/extract_requests/summary. 
 
-3. Post-Stratification technique: https://www.microsoft.com/en-us/research/wp-content/uploads/2016/04/forecasting-with-nonrepresentative-polls.pdf
+3. Post-Stratification technique: 
 Wang, Wei, et al. “Forecasting Elections with Non-Representative Polls.” International Journal of Forecasting, vol. 31, no. 3, 2015, pp. 980–991., doi:10.1016/j.ijforecast.2014.06.001. 
 
 4. Logit Regression Assumptions source 1: https://rpubs.com/guptadeepak/logit-assumptions
 Gupta, Deepak. “Logit Reression Assumptions.” RPubs, 18 May 2018, rpubs.com/guptadeepak/logit-assumptions. 
 
-5. Logit Regression Assumptions source 2: https://www.statisticssolutions.com/wp-content/uploads/wp-post-to-pdf-enhanced-cache/1/assumptions-of-logistic-regression.pdf
+5. Logit Regression Assumptions source 2: "Assumptions of Logistic Regression." pp.1-2., https://www.statisticssolutions.com/wp-content/uploads/wp-post-to-pdf-enhanced-cache/1/assumptions-of-logistic-regression.pdf
 
-6. Variance Inflation Factor(VIF): https://www.statisticshowto.com/variance-inflation-factor/
+6. Variance Inflation Factor(VIF):
 Stephanie. “Variance Inflation Factor.” Statistics How To, 9 July 2020, www.statisticshowto.com/variance-inflation-factor/. 
 
-7. Tables side by side: https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
+7. Tables side by side: 
 Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Knitr::Kable(), 21 Sept. 2020, bookdown.org/yihui/rmarkdown-cookbook/kable.html. 
+
+8. Comparing the campaign promises of Trump and Biden: D'Souza, Deborah. “Comparing the Economic Plans of Trump and Biden.” Investopedia, Investopedia, 23 Oct. 2020, www.investopedia.com/comparing-the-economic-plans-of-trump-and-biden-4843240. 
 
 
 # Electoral vote kinda stuff
