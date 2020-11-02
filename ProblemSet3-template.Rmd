@@ -133,8 +133,9 @@ Using the log odds estimates, we are going to find vote_Trump and vote_Biden (th
 In order to estimate the proportions of voters for both Donald Trump and Joe Biden, we are going to perform a post-stratification analysis. First, we need to subdivide the population having similar characteristics into cells. Hence, we are going to create a total of 55,325 cells based on different age groups, gender, race-ethnicity, education attainment, household income, and state.  
 Using the logistic regression models presented in the previous sub-section, we will estimate the proportions of voters in each cell for each candidate. Then, we will weigh each estimate within each cell by the respective population size of the cell, and sum those values, and divide that by the entire population size. This process can also be described by the expression:
 $$\hat{y}^{ps}\ =\ \frac{\sum N_j*\hat{y_j}}{\sum{N_j}}$$
-where $\hat{y_j}$ is the estimate of the proportion of voters voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell-based on demographics.
-With the post-stratification, we can find the total estimate of the proportions of voters for the two candidates. After finding the total estimate we will subdivide the estimates into states to find the estimates of proportions in each state, with this we can predict who will win the vote in each state. We will also find the estimates per income groups, to see if the income will affect people's decision on their voting preferences.  
+where $\hat{y_j}$ is the estimate of the proportion of voters voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell-based on demographics.  
+
+With the post-stratification, we can find the total estimate of the proportions of voters for the two candidates. After finding the total estimate, we will subdivide the estimates into states to find the estimates of proportions in each state - to perform somewhat similar prediction to the electoral vote. With the grouped estimates, we can predict who will win the vote in each state. We will also find the estimates for each household_income group, to see if the income affects people's decision on their voting preferences.  
 
 ```{r include = FALSE, warning = FALSE, message=FALSE}
 # Post-Stratification
@@ -266,32 +267,7 @@ predict_trump_swing <- predict_state_trump %>% filter(`state` %in% swing_states)
 predict_biden_swing <- predict_state_biden %>% filter(`state` %in% swing_states)
 kable(list(predict_trump_swing, predict_biden_swing), caption = "Comparison of predicted estimates between Trump and Biden in swing states")%>%
 kable_styling(latex_options = "hold_position")
-## state in which Trump receives the most support
-most_vote_trump <- predict_state_trump %>%
-  filter(predict_trump2 == as.double(predict_state_trump$predict_trump2) %>%
-  max(predict_state_trump$predict_trump2))
-## state in which Biden receives the most support
-most_vote_biden <- predict_state_biden %>%
-  filter(predict_biden2 == as.double(predict_state_biden$predict_biden2) %>% 
-  max(predict_state_biden$predict_biden2))
 
-
-# the most intense battleground state
-# calculate the difference in estimates for each state
-trump_state <- as.double(predict_state_trump$predict_trump2)
-biden_state <- as.double(predict_state_biden$predict_biden2)
-difference <- 1
-for (i in 1:51){
-  if (abs(trump_state[i] - biden_state[i]) <= difference){
-    intense_state = predict_state_trump %>% filter(predict_trump2 == trump_state[i])
-    difference = abs(trump_state[i] - biden_state[i])
-  }
-}
-difference_in_proportions <- data.frame(difference_in_proportions = difference)
-battleground_state <- data.frame(battleground_state = intense_state$state )
-
-#kable(list(battleground_state = battleground_state, difference_in_propportions = difference_in_proportions), caption = "The most intense battleground state")%>%
-#kable_styling(latex_options = "hold_position")
 ```
 
 **State**  
@@ -312,7 +288,7 @@ The result shows that the estimated value $\hat{y}^{ps}$ for Joe Biden is 39.4% 
 
 Moving on, the result in Table 3 (where we grouped the estimates of proportion by household income level) shows that individuals with the income "Less than \$14,999" are more likely to vote for Biden (39.31%) over Trump(32.19%). On the other hand, Trump is expected to have a higher proportion of getting voted from individuals with higher household income level; individuals with the income "\$150,000 and over" tend to vote for Trump by 50.13%. These outcomes may possibly be affected by the campaign promises of each candidate; for example, Biden's promise of raising taxes for those with income greater than $400,000 could affect people with higher income to not vote for him.
 
-Furthermore, we grouped the cell estimates by states and predicted the candidate who is expected to win in each state. The result shows that Trump has greater probabilities to win in 31 states, whereas Biden has higher probabilities to win in 20 states; Trump is ahead of Biden by 11 states. Also, as already explained in the Result section, the outcome in the Swing States shows that Trump is expected to win in 4 out of 6 swing states. !!!!The "grouping by states" method provides us with better intuition of what the expected result is in the actual election since the method is more accurate to the electoral voting method than the popular vote previously done in the analysis.!!!! Likewise, both popular vote and "grouping by states" vote predict Trump to win in the 2020 presidential election.  
+Furthermore, we grouped the cell estimates by states and predicted the candidate who is expected to win in each state. The result shows that Trump has greater probabilities to win in 31 states, whereas Biden has higher probabilities to win in 20 states; Trump is ahead of Biden by 11 states. Also, as already explained in the Result section, the outcome in the Swing States shows that Trump is expected to win in 4 out of 6 swing states. The "grouping by states" method with comparing the estimates between the swing states provides us with better intuition of what the expected result is in the actual election since the method is more accurate to the electoral voting method than the popular vote previously done in the analysis. Likewise, both popular vote and "grouping by states" vote predict Trump to win in the 2020 presidential election.  
 
 To sum up, the overall results from the post-stratification analysis suggest that Donald Trump is more likely to win the popular vote in the 2020 US presidential election. However, this is just an estimation based on the given data sets which do not provide enough information required for predicting the winner of the electoral vote^[The US presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state.]. Historically, in 2016, Hillary Clinton won the popular vote but lost the election, because Trump won the Electoral College. Therefore, winning the popular vote does not determine the next president of the USA.  
 
