@@ -202,7 +202,7 @@ census_data %>%
 
 # Results
 
-In the previous sub-sections, we have created the logistic Regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different variables: age_group, gender, race, education, household_income, and state. Based on the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is 0.433 (43.3%) and Joe Biden to be 0.394(39.4%). From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.  
+In the previous sub-sections, we have created the logistic Regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different variables: age_group, gender, race, education, household_income, and state. Based on the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is 0.433 (43.3%) and Joe Biden to be 0.394(39.4%). From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.   
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -217,8 +217,8 @@ In the previous sub-sections, we have created the logistic Regression models on 
 
 #Post-Stratification result
 ## total probability of voting for Trump and Biden
-kable(list(predict_trump, predict_biden), caption = "Comparison of predicted estimate between Trump and Biden")%>%
-kable_styling(latex_options = "hold_position")
+kable(list(predict_trump, predict_biden), caption = "Comparison of predicted estimate between Trump and Biden")%>% kable_styling(latex_options = "HOLD_position")
+
 #kables(list(
   #kable(head(predict_trump), "latex", align = "c"), 
   #kable(head(predict_biden), "latex", align = "c")))
@@ -229,6 +229,14 @@ kable_styling(latex_options = "hold_position")
 
 
 ```
+  
+It is noticeable that the estimated proportion value for Trump in Household income increases as an individual's household income increases. The lowest predicted value is 0.3219(32.2%) in the income category "Less than $14,999" and the highest predicted estimate is in "\$150,000 and over" which is	0.5013(50.13%).  
+
+For Biden, there is no strong deviation shown between the predicted estimates divided into household income. The proportions of voters voting for Biden in each income level sit in the range 0.3644576(\$100,000 to \$149,999) and 0.4305907(\$75,000 to $99,999). 
+The prediction shows individuals with an income "Less than \$14,999" are more likely to vote for Biden	(0.3930797) than Trump(0.3219549).  
+
+Also, Trump is expected to have a higher proportion of getting voted from individuals with the income "\$100,000 to $149,999", where Trump has an estimate of	0.4788905, and Biden has an estimate of 0.3644576. Individuals with the income "\$150,000 and over" have 0.5013108-0.3746106 % higher chance to vote for Trump(can we say this tho?), whereas Biden is expected to get more votes from individuals with lower income. Individuals with the income "Less than \$14,999" are more likely to vote for Biden by 	0.3930797-0.3219549 %(can we assume this as well?)  
+
 
 # Discussion
 
