@@ -210,7 +210,7 @@ census_data %>%
 In the previous sub-sections, we have created the logistic regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different variables such as age_group, gender, race, education, household_income, and state, and employed the post-stratification technique using the models.   
 
 **Model Summary**  
-Figure N is the summarized result of the logistic regression, and it is going to be used to find the significance of the independent variables using the p-value^[The p-value for each independent variable tests the null hypothesis that the variable has no correlation with the dependent variable. If the p-value is smaller than the significance level, you can reject the null hypothesis measures the significance of the independent variable on the dependent variable]. "(age_group)30-44 year olds" shows a p-value of 1.43e-09 which is the biggest p-value among the age variable, and the smallest p-value among them is 2.59e-15 in "(age_group)45-64 year olds". The age variable is highly significant to the model. Similarly, the gender variable shows a p-value of 4.10e-13 which is significant at a 0% significance level, as well as race, income, and education variables. The state variable has at least one state that is statistically significant, so we can conclude every variable is statistically significant and is going to be used in further analysis.  
+Figure 7 and 8 are the summarized result of the logistic regression, and they are going to be used to find the significance of the independent variables using the p-value^[The p-value for each independent variable tests the null hypothesis that the variable has no correlation with the dependent variable. If the p-value is smaller than the significance level, you can reject the null hypothesis measures the significance of the independent variable on the dependent variable]. "(age_group)30-44 year olds" shows a p-value of 1.43e-09 which is the biggest p-value among the age variable, and the smallest p-value among them is 2.59e-15 in "(age_group)45-64 year olds". The age variable is highly significant to the model. Similarly, the gender variable shows a p-value of 4.10e-13 which is significant at a 0% significance level, as well as race, income, and education variables. The state variable has at least one state that is statistically significant, so we can conclude every variable is statistically significant and is going to be used in further analysis.  
 
 
 **Results of Post-Stratification**  
@@ -367,6 +367,14 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 9. Making plots side by side: “R Multiple Plot Using Par() Function.” DataMentor, 8 Oct. 2018, www.datamentor.io/r-programming/subplot/. 
 
 10. Hold kable position: Justas MundeikisJustas Mundeikis, et al. “Rmarkdown Setting the Position of Kable.” 1 Feb. 1968, stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable. 
+
+11. Knitr Package: Yihui Xie (2020). knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.30.
+
+12. kableExtra Package: Hao Zhu (2020). kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package
+  version 1.2.1. https://CRAN.R-project.org/package=kableExtra
+
+13. lme4 Package: Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of
+  Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01.
 
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
