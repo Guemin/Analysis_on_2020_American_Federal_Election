@@ -284,8 +284,8 @@ for (i in 1:51){
 difference_in_proportions <- data.frame(difference_in_proportions = difference)
 battleground_state <- data.frame(battleground_state = intense_state$state )
 
-kable(list(battleground_state = battleground_state, difference_in_propportions = difference_in_proportions), caption = "The most intense battleground state")%>%
-kable_styling(latex_options = "hold_position")
+#kable(list(battleground_state = battleground_state, difference_in_propportions = difference_in_proportions), caption = "The most intense battleground state")%>%
+#kable_styling(latex_options = "hold_position")
 ```
 
 **State**  
