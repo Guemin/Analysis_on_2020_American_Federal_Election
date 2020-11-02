@@ -40,7 +40,7 @@ In the following sub-sections, we will describe the model specifics, the post-st
 
 ## Model specifics
 
-As already mentioned, we will be using the logistic regression models^[glm() function in the “lme4” package is used to make the logistic regression model.] and post-stratification technique with R software to predict the proportions of voters who will vote for either Donald Trump or Joe Biden. Specifically, we will create two models, each for proportions of voters for Trump or Biden, using 6 different variables(age_group, gender, race, education, household_income , and state)^[* age_group is divided into 4 different groups: "18-29 year olds", "30-44 year olds", "45-64 year olds", "65 years and older".  
+As already mentioned, we will be using the logistic regression models^[glm() function in the “lme4” package is used to make the logistic regression model.] and post-stratification technique with R software to predict the proportions of voters who will vote for either Donald Trump or Joe Biden. Specifically, we will create two models, each for proportions of voters for Trump or Biden, using 6 different variables(age_group, gender, race, education, household_income , and state)^[* age_group is divided into 4 different groups: "18-29 years old", "30-44 years old", "45-64 years old", "65 years and older".  
 \    \    \ * gender indicates either "Male" or "Female".  
 \    \    \ * race is divided into 5 different categories: "White", "Black", "Native", "Asian", "Other".  
 \    \    \ * education is divided into 4 different categories: "Didn't graduate from high school", "High school graduate",   
