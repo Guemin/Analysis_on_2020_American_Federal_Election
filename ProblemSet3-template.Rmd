@@ -317,7 +317,7 @@ for (i in 1:51){
 #trump_win
 #biden_win
 ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
-  geom_bar() + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count")
+  geom_bar(width = 0.3) + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
 ```
 The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
 
