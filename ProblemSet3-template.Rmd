@@ -246,6 +246,39 @@ ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
   geom_bar(width = 0.3) + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
 
 
+# compare proportions of voters in swing states
+swing_states <- c("NC", "FL", "PA", "MI", "AZ", "WI", "OH")
+predict_trump_swing <- predict_state_trump %>% filter(`state` %in% swing_states)
+predict_biden_swing <- predict_state_biden %>% filter(`state` %in% swing_states)
+kable(list(predict_trump_swing, predict_biden_swing), caption = "Comparison of predicted estimate between Trump and Biden in swing states")%>%
+kable_styling(latex_options = "hold_position")
+
+# state in which Trump receives the most support
+most_vote_trump <- predict_state_trump %>%
+  filter(predict_trump2 == as.double(predict_state_trump$predict_trump2) %>%
+  max(predict_state_trump$predict_trump2))
+# state in which Biden receives the most support
+most_vote_biden <- predict_state_biden %>%
+  filter(predict_biden2 == as.double(predict_state_biden$predict_biden2) %>% 
+  max(predict_state_biden$predict_biden2))
+
+# the most intense battleground state
+
+#compare the estimate for each state
+trump_state <- as.double(predict_state_trump$predict_trump2)
+biden_state <- as.double(predict_state_biden$predict_biden2)
+difference <- 1
+for (i in 1:51){
+  if (abs(trump_state[i] - biden_state[i]) <= difference){
+    intense_state = predict_state_trump %>% filter(predict_trump2 == trump_state[i])
+    difference = abs(trump_state[i] - biden_state[i])
+  }
+}
+difference_in_proportions <- difference
+battleground_state <- intense_state$state
+
+kable(list(battleground_state, difference_in_proportions), caption = "The most intense battleground state")%>%
+kable_styling(latex_options = "hold_position")
 ```
 
 **Income**  
