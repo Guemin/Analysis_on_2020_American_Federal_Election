@@ -292,6 +292,11 @@ Also, Trump is expected to have a higher proportion of getting voted from indivi
 The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. However, there is no information given about the electoral colleges, and since there are more than 50 states showed in the result^[Check Appendix N for the full result], we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.    
 The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
 
+**Swing State** 
+Swing States are the key battleground states that will determine the outcome of the election: North Carolina, Florida, Pennsylvania, Michigan, Arizona, Wisconsin, and Ohio. Figure N shows a brief result of the proportion for each swing state. Looking at the difference of proportion between Trump and Biden for each state, Trump is expected to get the inside track in most of the states, except for Michigan(0.4562030) and Wisconsin(0.4124047), where Biden is expected to have a higher proportion to get voted with 0.4562(45.62%) and 0.4124(41.24%).  
+Figure N also expects Trump to win by a landslide, since he wins 4 states out of 6 major swing states. 
+
+
 
 # Discussion
 
@@ -311,7 +316,7 @@ To sum up, the overall results from the post-stratification analysis suggest tha
 **improvement**  
 
 One of the weaknesses in our analysis is regarding the omitted variables.
-In the data cleaning process, some of the variables were removed from the data sets prior to the modeling, because either the census data or the survey data did not include the particular variables. If there were any important variables among the omitted ones, that could affect the vote outcome and there might also exist an omitted variable bias in our models. (The omitted variables should be correlated with the dependent variable and with the explanatory variables included in the model).  
+In the data cleaning process, some of the variables were removed from the data sets prior to the modeling, because either the census data or the survey data did not include the particular variables. If there were any important variables among the omitted ones, that could affect the vote outcome and there might also exist an omitted variable bias in our models. (The omitted variables should be correlated with the dependent variable in the model).  
 
 Since the Census data used in the analysis is the 2018 data, it might not reflect the population in 2020 or to predict the election outcome most accurately. For example, in our analysis, those who are not eligible to vote( back in 2018) were omitted from the data set, however, they could be eligible to vote in the 2020 election. Hence, if the 2020 census data was available, it should be more suitable for our analysis.
 
@@ -320,10 +325,14 @@ Another weakness we should note is that our prediction on the winner of the popu
 
 ## Next Steps
 
-The analysis does not include the possible effect of other factors - such as an individual's Health insurance state - on the vote result. Analyzing the vote outcome focusing on the election promise would be a more realistic and reasonable prediction of the election. Also, 2016 census data is used for the analysis so it does not reflect the most accurate population. With the 2020 census data, we could estimate the proportion of voting for each candidate by the factors that are closely related to the election promises such as health care, market industry, etc.  
+The analysis does not include the possible effect of other factors - such as an individual's Health insurance state - on the vote result. Analyzing the vote outcome focusing on the election promise would be a more realistic and reasonable prediction of the election. Also, 2018 census data is used for the analysis so it does not reflect the most accurate population. With the 2020 census data, we could estimate the proportion of voting for each candidate by the factors that are closely related to the election promises such as health care, market industry, etc.    
 
-Also, throughout the analysis, popular vote and a brief idea of the electoral vote (group the estimate by states, and compare the probability to determine who wins for each state), but did not use the actual election method that is used in the states. Following the procedure of the proper electoral vote, using more accurate data of the electoral colleges would make a huge difference in the analysis. We could also show more visualizations in our report and create plots or graphs of the results to display the groups of the voting estimates at once. Furthermore, We can compare our prediction to the 2020 presidential election and see if our prediction was accurate to the real results.
-*(something about comparing with the actual election results and do a post-hoc analysis (or at least a survey) of how to better improve estimation in future elections.)*
+Also, throughout the analysis, we did not use the actual election method that is used in the states. Following the procedure of the proper electoral vote, using more accurate data of the electoral colleges would make a huge difference in the analysis. We can get a census and survey data about the electoral colleges, do a similar analysis using the additional information, and compare it with the original analysis that was done in the report.  
+
+Furthermore, we can compare our prediction to the 2020 presidential election and see if our prediction was accurate to the real results.  
+
+
+
 
 # References (MLA8)
 1. Survey data: 
