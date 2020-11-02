@@ -131,8 +131,6 @@ Using the logistic regression models presented in the previous sub-section, we w
 $$\hat{y}^{ps}\ =\ \frac{\sum N_j*\hat{y_j}}{\sum{N_j}}$$
 where $\hat{y_j}$ is the estimate of the probability of voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell based off demographics.
 
-reason for Choice of the variables...
-
 ```{r include = FALSE, warning = FALSE, message=FALSE}
 # Post-Stratification
 
