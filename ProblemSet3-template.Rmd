@@ -226,16 +226,38 @@ kable(list(predict_trump, predict_biden), caption = "Comparison of predicted est
 #predict_trump
 #predict_biden
 
+#compare the estimate for each state
+trump_state <- predict_state_trump$predict_trump2
+biden_state <- predict_state_biden$predict_biden2
+trump_win <- 0 
+biden_win <- 0
+trump_biden <- c()
+for (i in 1:51){
+  if (trump_state[i] > biden_state[i]){
+    trump_win <- trump_win + 1
+    trump_biden <- c(trump_biden, "Trump")
+  }
+  else {biden_win <- biden_win + 1
+  trump_biden <- c(trump_biden, "Biden")
+}}
+#trump_win
+#biden_win
+ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
+  geom_bar(width = 0.3) + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
 
 
 ```
-  
+
+**Income**  
 It is noticeable that the estimated proportion value for Trump in Household income increases as an individual's household income increases. The lowest predicted value is 0.3219(32.2%) in the income category "Less than $14,999" and the highest predicted estimate is in "\$150,000 and over" which is	0.5013(50.13%).  
 
 For Biden, there is no strong deviation shown between the predicted estimates divided into household income. The proportions of voters voting for Biden in each income level sit in the range 0.3644576(\$100,000 to \$149,999) and 0.4305907(\$75,000 to $99,999). 
 The prediction shows individuals with an income "Less than \$14,999" are more likely to vote for Biden	(0.3930797) than Trump(0.3219549).  
-
 Also, Trump is expected to have a higher proportion of getting voted from individuals with the income "\$100,000 to $149,999", where Trump has an estimate of	0.4788905, and Biden has an estimate of 0.3644576. Individuals with the income "\$150,000 and over" have 0.5013108-0.3746106 % higher chance to vote for Trump(can we say this tho?), whereas Biden is expected to get more votes from individuals with lower income. Individuals with the income "Less than \$14,999" are more likely to vote for Biden by 	0.3930797-0.3219549 %(can we assume this as well?)  
+
+**State**  
+The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. However, there is no information given about the electoral colleges, and since there are more than 50 states showed in the result^[Check Appendix N for the full result], we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.    
+The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
 
 
 # Discussion
@@ -292,32 +314,6 @@ Stephanie. “Variance Inflation Factor.” Statistics How To, 9 July 2020, www.
 Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Knitr::Kable(), 21 Sept. 2020, bookdown.org/yihui/rmarkdown-cookbook/kable.html. 
 
 8. Comparing the campaign promises of Trump and Biden: D'Souza, Deborah. “Comparing the Economic Plans of Trump and Biden.” Investopedia, Investopedia, 23 Oct. 2020, www.investopedia.com/comparing-the-economic-plans-of-trump-and-biden-4843240. 
-
-
-# Electoral vote kinda stuff
-
-The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. Since there is no information given about the electoral colleges, we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.  
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-#compare the estimate for each state
-trump_state <- predict_state_trump$predict_trump2
-biden_state <- predict_state_biden$predict_biden2
-trump_win <- 0 
-biden_win <- 0
-trump_biden <- c()
-for (i in 1:51){
-  if (trump_state[i] > biden_state[i]){
-    trump_win <- trump_win + 1
-    trump_biden <- c(trump_biden, "Trump")
-  }
-  else {biden_win <- biden_win + 1
-  trump_biden <- c(trump_biden, "Biden")
-}}
-#trump_win
-#biden_win
-ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
-  geom_bar(width = 0.3) + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
-```
-The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
 
 
 # Appendix 
