@@ -48,7 +48,7 @@ As already mentioned, we will be using the logistic regression models^[glm() fun
 \    \    \ * household income consists of 9 categories range from "Less than $14,999" to "$150,000 and over".  
 \    \    \ * state indicates abbreviated names of 52 states in the US.].  
 
-To breifly explain, we will include demographic variables such as age group, gender, race, and eucation attainment in the models; here, we will organize ages by categorizing them into different age groups.
+To briefly explain, we will include demographic variables such as age group, gender, race, and education attainment in the models; here, we will organize ages by categorizing them into different age groups.
 Also, we will include household income variable to see how the campaign promises of each candidate affect the voters with different income, and state variable to compare the winner in each state.
 
 Since our response variables, vote_Trump and vote_Biden, are binary(either 'vote for' or 'not vote/not sure'), the logistic regression model is a suitable model to be used. Logistic regression is a mathematical model used to estimate the probability of an event occurring using binary data.  
