@@ -27,7 +27,7 @@ census_data <- read_csv("census_data.csv")
 
 ```
 
-### Predictions on the 2020 US Presidential Election based on the voter survey responses.
+### Predictions on the proportions of voters for Donald Trump and Joe Biden in the 2020 US Presidential Election based on the voter survey responses.
 *Code and data supporting this analysis is available at: https://github.com/Guemin/Problem_Set_3 *
 
 # Model
