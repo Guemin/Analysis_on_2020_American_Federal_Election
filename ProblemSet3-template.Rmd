@@ -243,7 +243,7 @@ for (i in 1:51){
 #trump_win
 #biden_win
 ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
-  geom_bar(width = 0.3) + ggtitle("Figure n: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
+  geom_bar(width = 0.3) + ggtitle("Figure 1: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
 
 
 # compare proportions of voters in swing states
@@ -281,7 +281,7 @@ kable(list(battleground_state, difference_in_proportions), caption = "The most i
 kable_styling(latex_options = "hold_position")
 ```
 
-**Income**  
+**Income**(Table...N?)  
 It is noticeable that the estimated proportion value for Trump in Household income increases as an individual's household income increases. The lowest predicted value is 0.3219(32.2%) in the income category "Less than $14,999" and the highest predicted estimate is in "\$150,000 and over" which is	0.5013(50.13%).  
 
 For Biden, there is no strong deviation shown between the predicted estimates divided into household income. The proportions of voters voting for Biden in each income level sit in the range 0.3644576(\$100,000 to \$149,999) and 0.4305907(\$75,000 to $99,999). 
@@ -289,12 +289,13 @@ The prediction shows individuals with an income "Less than \$14,999" are more li
 Also, Trump is expected to have a higher proportion of getting voted from individuals with the income "\$100,000 to $149,999", where Trump has an estimate of	0.4788905, and Biden has an estimate of 0.3644576. Individuals with the income "\$150,000 and over" have 0.5013108-0.3746106 % higher chance to vote for Trump(can we say this tho?), whereas Biden is expected to get more votes from individuals with lower income. Individuals with the income "Less than \$14,999" are more likely to vote for Biden by 	0.3930797-0.3219549 %(can we assume this as well?)  
 
 **State**  
-The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. However, there is no information given about the electoral colleges, and since there are more than 50 states showed in the result^[Check Appendix N for the full result], we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.    
-The histogram above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
+The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. However, there is no information given about the electoral colleges, and since there are more than 50 states showed in the result^[Check Appendix N for the full result], we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.  
 
-**Swing State** 
-Swing States are the key battleground states that will determine the outcome of the election: North Carolina, Florida, Pennsylvania, Michigan, Arizona, Wisconsin, and Ohio. Figure N shows a brief result of the proportion for each swing state. Looking at the difference of proportion between Trump and Biden for each state, Trump is expected to get the inside track in most of the states, except for Michigan(0.4562030) and Wisconsin(0.4124047), where Biden is expected to have a higher proportion to get voted with 0.4562(45.62%) and 0.4124(41.24%).  
-Figure N also expects Trump to win by a landslide, since he wins 4 states out of 6 major swing states. 
+The histogram(Figure 1) above shows the predicted win counts per state. Trump is expected to have a higher proportion of being elected in 31 states, and Biden has a higher proportion of voters voting for him in 20 states, which makes Trump the winner of the presidential election. Both popular vote and electoral vote shows same prediction where Trump wins the election.   
+
+**Swing State**  
+Swing States are the key battleground states that will determine the outcome of the election: North Carolina, Florida, Pennsylvania, Michigan, Arizona, Wisconsin, and Ohio. Table 3 shows a brief result of the proportion for each swing state. Looking at the difference of proportion between Trump and Biden for each state, Trump is expected to get the inside track in most of the states, except for Michigan(0.4562030) and Wisconsin(0.4124047), where Biden is expected to have a higher proportion to get voted with 0.4562(45.62%) and 0.4124(41.24%).  
+Table 3 also expects Trump to win by a landslide, since he wins 4 states out of 6 major swing states. 
 
 
 
@@ -370,7 +371,7 @@ knitr::kable(list(predict_state_trump, predict_state_biden))
   #caption = "Figure n: ")
 
 ## probabilites of voting for Trump and Biden in each household income group
-knitr::kable(list(predict_income_trump, predict_income_biden), caption = "Figure n ")
+knitr::kable(list(predict_income_trump, predict_income_biden))
 
 #predict_income_trump
 #predict_income_biden
