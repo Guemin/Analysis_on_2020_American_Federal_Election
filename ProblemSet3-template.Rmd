@@ -134,6 +134,7 @@ In order to estimate the proportions of voters for both Donald Trump and Joe Bid
 Using the logistic regression models presented in the previous sub-section, we will estimate the proportions of voters in each cell for each candidate. Then, we will weight each estimate within each cell by the respective population size of the cell, and sum those values, and divide that by the entire population size. This process can also be described by the expression:
 $$\hat{y}^{ps}\ =\ \frac{\sum N_j*\hat{y_j}}{\sum{N_j}}$$
 where $\hat{y_j}$ is the estimate of the proportion of voters voting for either Trump or Biden in each cell, and $N_j$ is the population size of the $j^{th}$ cell based off demographics.
+With the post stratification we can find the total estimate of the proportions of voters for the two candidates. After finding the total estimate we will subdivide the estimates into states to find the estimates of proportions in each states, with this we can predict who will win the vote in each states. We will also find the estimates per income groups, to see if the income will affect people's decision on their voting preferences.
 
 ```{r include = FALSE, warning = FALSE, message=FALSE}
 # Post-Stratification
@@ -345,8 +346,8 @@ Lastly, we can compare our predictions with the 2020 presidential election outco
 “Insights into the Beliefs and Behaviors of American Voters.” Democracy Fund Voter Study Group, www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c. 
 
 2. Census data:
-“Census Data.” IPUMS USA: Extract Summary, 
-usa.ipums.org/usa-action/extract_requests/summary. 
+"Census Data." IPUMS USA: Extract Summary,
+usa.ipums.org/usa-action/extract_requests/summary.
 
 3. Post-Stratification technique: 
 Wang, Wei, et al. “Forecasting Elections with Non-Representative Polls.” International Journal of Forecasting, vol. 31, no. 3, 2015, pp. 980–991., doi:10.1016/j.ijforecast.2014.06.001. 
@@ -366,7 +367,7 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 
 9. Making plots side by side: “R Multiple Plot Using Par() Function.” DataMentor, 8 Oct. 2018, www.datamentor.io/r-programming/subplot/. 
 
-10. Hold kable position: Justas MundeikisJustas Mundeikis 56144 silver badges1414 bronze badges, et al. “Rmarkdown Setting the Position of Kable.” Stack Overflow, 1 Feb. 1968, stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable. 
+10. Hold kable position: Justas MundeikisJustas Mundeikis, et al. “Rmarkdown Setting the Position of Kable.” 1 Feb. 1968, stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable. 
 
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
