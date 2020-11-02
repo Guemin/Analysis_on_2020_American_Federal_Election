@@ -371,10 +371,17 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## probabilites of voting for Trump and Biden in each state
-knitr::kable(list(predict_state_trump, predict_state_biden), caption = "Comparison of predicted estimate grouped by states") %>% kable_styling(latex_options = "HOLD_position")
+knitr::kable(list(predict_state_trump, predict_state_biden), caption = "Comparison of predicted estimate grouped by states") %>% kable_styling(latex_options = "HOLD_position") %>% kable_styling(font_size = 9)
 
 #glm()Model results
-broom::tidy(model_trump)
-broom::tidy(model_biden)
+##trump 
+tidydata_t <- broom::tidy(model_trump)
+tidy_data_trump <- tidydata_t[-c(25:65), ]
+kable(tidy_data_trump, caption = "Logistic Regression Model Results-Biden")%>% kable_styling(latex_options="scale_down")
+
+##biden 
+tidydata_b <- broom::tidy(model_biden)
+tidy_data_biden <- tidydata_b[-c(25:65), ]
+kable(tidy_data_biden, caption = "Logistic Regression Model Results-Biden")%>% kable_styling(latex_options="scale_down")
 ```
 
