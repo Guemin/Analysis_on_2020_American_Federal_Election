@@ -34,7 +34,7 @@ census_data <- read_csv("census_data.csv")
 As the 2020 presidential election of the United States approaches, people across the world are interested in to which candidate the vote of the US citizens will be concentrated, either to Donald Trump or to Joe Biden. Since the election outcome will also affect our community in Canada, we are going to analyze and predict the winner of the popular vote in the 2020 American federal election.  
 
 Using the survey and census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we are going to predict the popular vote outcome of the election. To be more specific, we are going to use two logistic regression models, one for each candidate, and employ a post-stratification technique^[Post-stratification is a technique used in sample survey design to improve the quality of population estimates. In the post-stratification analysis, the population is partitioned into subgroups, and estimates are predicted within the subgroups. Then, the sum of the estimate times the respective population size in each group is calculated, and finally, it is divided by the sum of the total population size. Detailed procedures on post-stratification for our analysis will be shown in the following sub-sections.] with the models. 
-Then, we will predict the electoral vote outcome of the election, using a post-stratification outcome divided into states and compare it with the popular vote prediction.
+Then, we will predict the winner of the election in each state, using a post-stratification outcome and compare it with the popular vote prediction.
 
 In the following sub-sections, we will describe the model specifics, the post-stratification calculation, and the result of the analysis.
 
