@@ -358,10 +358,9 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 
 8. Comparing the campaign promises of Trump and Biden: D'Souza, Deborah. “Comparing the Economic Plans of Trump and Biden.” Investopedia, Investopedia, 23 Oct. 2020, www.investopedia.com/comparing-the-economic-plans-of-trump-and-biden-4843240. 
 
-9. Making plots side by side: https://www.datamentor.io/r-programming/subplot/
+9. Making plots side by side: “R Multiple Plot Using Par() Function.” DataMentor, 8 Oct. 2018, www.datamentor.io/r-programming/subplot/. 
 
-10. Hold kable position: https://stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable
-
+10. Hold kable position: Justas MundeikisJustas Mundeikis 56144 silver badges1414 bronze badges, et al. “Rmarkdown Setting the Position of Kable.” Stack Overflow, 1 Feb. 1968, stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable. 
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## probabilites of voting for Trump and Biden in each state
