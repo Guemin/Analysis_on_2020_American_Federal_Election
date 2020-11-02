@@ -81,7 +81,9 @@ model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.fa
 
 ### Data cleaning process 
 Prior to the modelings, we mutated variables in the survey data to create new variables that could be used in the analysis. Our response variables, vote_Trump and vote_Biden are also mutated from a variable named "vote_2020", which provides a name of a candidate that the respondent supports^[vote_Trump is 1 when vote_2020 is "Donald Trump", and 0 otherwise; vote_Biden is 1 when vote_2020 is "Joe Biden", and 0 otherwise.]. Also, the predictor variables, age_group, gender, race, education, household_income, and state are mutated in the data cleaning process so that the categories in each variable in the survey data match with those in the census data.  
-Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_Trump and vote_Biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistic or not necessary in our analysis. 
+Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_Trump and vote_Biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistic or not necessary in our analysis.   
+
+
 
 **Model Diagnostics**  
 
@@ -110,7 +112,7 @@ vif_mod_t <- tibble(model_trump_predictor = c("age_group", "gender", "race", "ed
 vif_mod_b <- tibble(model_biden_predictor = c("age_group", "gender", "race", "education",
                                   "household_income", "state"), 
                     VIF = car::vif(model_biden)[,1])
-
+## create a VIF model table
 kable(
   list(vif_mod_t, vif_mod_b),
   caption = 'VIF models',
@@ -121,6 +123,7 @@ kable_styling(latex_options = "hold_position")
 
 ```
 As shown above, VIF values do not exceed 2 for both models for Trump and Biden, which suggest that there is no sign of multicollinearity among predictors. Therefore, it is safe to say that the last assumption is also satisfied.
+
 
 ## Post-Stratification 
 
@@ -202,30 +205,35 @@ census_data %>%
 
 # Results
 
-In the previous sub-sections, we have created the logistic Regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different variables: age_group, gender, race, education, household_income, and state. Based on the post-stratification analysis we made, our estimation of the proportion of voters voting for Donald Trump is 0.433 (43.3%) and Joe Biden to be 0.394(39.4%). From the result of our estimations, We can predict that Donald Trump is more likely to win the popular vote in the 2020 American federal election.   
+In the previous sub-sections, we have created the logistic Regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different variables: age_group, gender, race, education, household_income, and state.   
+
+Based on the post-stratification analysis we made in Table 2, our estimation of the proportion of voters voting for Donald Trump is 0.433 (43.3%) and Joe Biden to be 0.394(39.4%).
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
-#Model results
+#glm()Model results
 #broom::tidy(model_trump)
 #broom::tidy(model_biden)
-
-#summary(model_trump)
-#summary(model_biden)
-#knitr::kables(list(model_trump_tidy, model_biden_tidy))
 
 
 #Post-Stratification result
 ## total probability of voting for Trump and Biden
 kable(list(predict_trump, predict_biden), caption = "Comparison of predicted estimate between Trump and Biden")%>% kable_styling(latex_options = "HOLD_position")
 
-#kables(list(
-  #kable(head(predict_trump), "latex", align = "c"), 
-  #kable(head(predict_biden), "latex", align = "c")))
+## probabilites of voting for Trump and Biden in each household income group
+kable(list(predict_income_trump, predict_income_biden), caption = "Comparison of predicted estimate grouped by household income level")%>% kable_styling(latex_options = "HOLD_position")
 
-#predict_trump
-#predict_biden
+```
 
+**Income**  
+In Table 3, It is noticeable that the estimated proportion value for Trump in Household income increases as an individual's household income increases. The lowest predicted value is 0.3219 (32.2%) in the income category "Less than $14,999" and the highest predicted estimate is in "\$150,000 and over" which is	0.5013 (50.13%).  
+
+For Biden, there is no strong deviation shown between the predicted estimates divided into household income. The proportions of voters voting for Biden in each income level sit in the range 0.3644 (Income level "\$100,000 to \$149,999") and 0.4305907 ("\$75,000 to $99,999").  
+
+The result shows individuals with an income "Less than \$14,999" are more likely to vote for Biden (39.31%) than Trump(32.19%), and the estimates of individuals with the income "\$150,000 and over" are 0.5013 (50.13%) for Trump and 0.3746 (37.46%) for Biden.  
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 #compare the estimate for each state
 trump_state <- predict_state_trump$predict_trump2
 biden_state <- predict_state_biden$predict_biden2
@@ -240,10 +248,9 @@ for (i in 1:51){
   else {biden_win <- biden_win + 1
   trump_biden <- c(trump_biden, "Biden")
 }}
-#trump_win
-#biden_win
+## make histogram of the result
 ggplot(data.frame(trump_biden), aes(x=trump_biden)) +
-  geom_bar(width = 0.3) + ggtitle("Figure 1: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.5,1,1.5,1, "cm"))
+  geom_bar(width = 0.3) + ggtitle("Figure 1: Predicted Win Counts Per State") + xlab("Biden | Trump") + ylab("Count") + theme(plot.margin = margin(1.4,0.8,1.4,0.8, "cm"))
 
 
 # compare proportions of voters in swing states
@@ -252,18 +259,17 @@ predict_trump_swing <- predict_state_trump %>% filter(`state` %in% swing_states)
 predict_biden_swing <- predict_state_biden %>% filter(`state` %in% swing_states)
 kable(list(predict_trump_swing, predict_biden_swing), caption = "Comparison of predicted estimate between Trump and Biden in swing states")%>%
 kable_styling(latex_options = "hold_position")
-
-# state in which Trump receives the most support
+## state in which Trump receives the most support
 most_vote_trump <- predict_state_trump %>%
   filter(predict_trump2 == as.double(predict_state_trump$predict_trump2) %>%
   max(predict_state_trump$predict_trump2))
-# state in which Biden receives the most support
+## state in which Biden receives the most support
 most_vote_biden <- predict_state_biden %>%
   filter(predict_biden2 == as.double(predict_state_biden$predict_biden2) %>% 
   max(predict_state_biden$predict_biden2))
 
-# the most intense battleground state
 
+# the most intense battleground state
 #compare the estimate for each state
 trump_state <- as.double(predict_state_trump$predict_trump2)
 biden_state <- as.double(predict_state_biden$predict_biden2)
@@ -281,13 +287,6 @@ kable(list(battleground_state, difference_in_proportions), caption = "The most i
 kable_styling(latex_options = "hold_position")
 ```
 
-**Income**(Table...N?)  
-It is noticeable that the estimated proportion value for Trump in Household income increases as an individual's household income increases. The lowest predicted value is 0.3219(32.2%) in the income category "Less than $14,999" and the highest predicted estimate is in "\$150,000 and over" which is	0.5013(50.13%).  
-
-For Biden, there is no strong deviation shown between the predicted estimates divided into household income. The proportions of voters voting for Biden in each income level sit in the range 0.3644576(\$100,000 to \$149,999) and 0.4305907(\$75,000 to $99,999). 
-The prediction shows individuals with an income "Less than \$14,999" are more likely to vote for Biden	(0.3930797) than Trump(0.3219549).  
-Also, Trump is expected to have a higher proportion of getting voted from individuals with the income "\$100,000 to $149,999", where Trump has an estimate of	0.4788905, and Biden has an estimate of 0.3644576. Individuals with the income "\$150,000 and over" have 0.5013108-0.3746106 % higher chance to vote for Trump(can we say this tho?), whereas Biden is expected to get more votes from individuals with lower income. Individuals with the income "Less than \$14,999" are more likely to vote for Biden by 	0.3930797-0.3219549 %(can we assume this as well?)  
-
 **State**  
 The presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state. Electors vote based on the results of the popular vote in their respective states. However, there is no information given about the electoral colleges, and since there are more than 50 states showed in the result^[Check Appendix N for the full result], we are instead going to see how we can predict using a similar method. For each state, we will compare Trump and Biden's $\hat{y}^{ps}$ value, and whoever has the bigger value wins in the state. This way, we would have a better idea who would win, rather than predict using just a popular vote.  
 
@@ -301,20 +300,19 @@ Table 3 also expects Trump to win by a landslide, since he wins 4 states out of 
 
 # Discussion
 
-Here you will summarize the previous sections and discuss conclusions drawn from the results. Make sure to elaborate and connect your analysis to the goal of the study.  
-
-Using the 2020 survey data and 2018 census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, logistic regression models are used to predict the candidate who is more likely to win the popular vote in the election. Explanatory variables used for the logistic regression models are age_group, gender, race, education, household_income, and state. There is a possibility of having omitted variable bias^[* explanation of omitted variable bias is described in "Weakness section"] and measurement error bias, because people tend to hide their political orientation. 
+Using the 2020 survey data and 2018 census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, logistic regression models are used to predict the candidate who is more likely to win the popular vote in the election. Explanatory variables used for the logistic regression models are age_group, gender, race, education, household_income, and state. There is a possibility of having omitted variable bias^[* explanation of omitted variable bias is described in "Weakness section"] and measurement error bias, where people hide their political orientation and give false information. 
 
 Then, by using the post stratification technique, the census data is partitioned into 55,325 cells - based on the 6 variables used in the logistic Regression models - and the proportions of voters for each candidate are estimated for each cell. Using the estimates in each cell, the total proportions of voters for both Donald Trump and Joe Biden, $\hat{y}^{ps}$ are measured to predict the winner of the popular vote.  
+The result of the popular vote shows that the estimated value $\hat{y}^{ps}$ for the proportion of voters voting for Joe Biden is 39.4% and for Donald Trump is 43.34%.   
 
-Furthermore, we grouped the cell estimates by states and predicted the candidate who is expected to win in each state. The result shows that Trump has greater probabilities to win in 31 states, whereas Biden has higher probabilities to win in 20 states; Trump is ahead of Biden by 11 states.  
+The result in Table 3 (grouping the estimates of proportion by household income level) shows individuals with an income "Less than \$14,999" are more likely to vote for Biden (39.31%) than Trump(32.19%). On the other hand, Trump is expected to have a higher proportion of getting voted from individuals with higher household income level. Individuals with the income "\$150,000 and over" have about 12.67% higher chance to vote for Trump, whereas individuals with the income "Less than \$14,999" are more likely to vote for Biden by 7.11%. Based on the campaign promises(.....)**add**
 
-The result of the popular vote shows that the estimated value $\hat{y}^{ps}$ for the proportion of voters voting for Joe Biden is 39.4% and for Donald Trump is 43.34%.  
+Furthermore, we grouped the cell estimates by states and predicted the candidate who is expected to win in each state. The result shows that Trump has greater probabilities to win in 31 states, whereas Biden has higher probabilities to win in 20 states; Trump is ahead of Biden by 11 states. Also, the outcome in the Swing States shows Trump expected to win in 4 out of 6 swing states, which is explained in the Result section. The "grouping by states" method gives us better intuition of what the expected result is in the actual election since the method is more accurate to the electoral voting method than the popular vote previously done in the analysis. Both popular vote and "grouping by states" vote predict Trump to win the 2020 presidential election.  
 
 To sum up, the overall results from the post-stratification analysis suggest that Donald Trump is more likely to win the popular vote in the 2020 US presidential election. However, this is just an estimation based on the provided data sets which do not provide enough information required for predicting the winner of the electoral vote. Historically, in 2016, Hillary Clinton won in the popular vote but lost the election, because Trump won the electoral College. Therefore, winning the popular vote does not determine the next president of USA. 
 
 ## Weaknesses
-**improvement**  
+**write about improvement**
 
 One of the weaknesses in our analysis is regarding the omitted variables.
 In the data cleaning process, some of the variables were removed from the data sets prior to the modeling, because either the census data or the survey data did not include the particular variables. If there were any important variables among the omitted ones, that could affect the vote outcome and there might also exist an omitted variable bias in our models. (The omitted variables should be correlated with the dependent variable in the model).  
@@ -358,22 +356,13 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 
 8. Comparing the campaign promises of Trump and Biden: D'Souza, Deborah. “Comparing the Economic Plans of Trump and Biden.” Investopedia, Investopedia, 23 Oct. 2020, www.investopedia.com/comparing-the-economic-plans-of-trump-and-biden-4843240. 
 
+9. making plots side by side: https://www.datamentor.io/r-programming/subplot/
+
+10. hold kable position: https://stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable
 
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ## probabilites of voting for Trump and Biden in each state
-#predict_state_trump
-#predict_state_biden
-knitr::kable(list(predict_state_trump, predict_state_biden))
-#kables(list(
-  #kable(predict_state_trump, "latex", align = "c"), 
-  #kable(predict_state_biden, "latex", align = "c")), 
-  #caption = "Figure n: ")
-
-## probabilites of voting for Trump and Biden in each household income group
-knitr::kable(list(predict_income_trump, predict_income_biden))
-
-#predict_income_trump
-#predict_income_biden
+knitr::kable(list(predict_state_trump, predict_state_biden), caption = "Comparison of predicted estimate grouped by states") %>% kable_styling(latex_options = "HOLD_position")
 ```
 
