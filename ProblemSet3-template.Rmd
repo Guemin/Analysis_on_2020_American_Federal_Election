@@ -321,8 +321,8 @@ Lastly, we can compare our predictions with the 2020 presidential election outco
 “Insights into the Beliefs and Behaviors of American Voters.” Democracy Fund Voter Study Group, www.voterstudygroup.org/downloads?key=9337162e-e5ef-49d7-96fd-48a5c5dba31c. 
 
 2. Census data:
-"Census Data." IPUMS USA: Extract Summary,
-usa.ipums.org/usa-action/extract_requests/summary.
+"Census Data." IPUMS USA: Extract Summary, usa.ipums.org/usa-action/extract_requ
+ests/summary.
 
 3. Post-Stratification technique: 
 Wang, Wei, et al. “Forecasting Elections with Non-Representative Polls.” International Journal of Forecasting, vol. 31, no. 3, 2015, pp. 980–991., doi:10.1016/j.ijforecast.2014.06.001. 
