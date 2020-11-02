@@ -1,12 +1,12 @@
 #### Preamble ####
-# Purpose: Prepare and clean the survey data downloaded from voterstudygroup.org
+# Purpose: Prepare and clean the survey data downloaded from Democracy Fund + UCLA Nationscape
 # Author: Guemin Kim, Yena Joo, Woolim Kim
 # Data: 27 October 2020
 # Contact: guemin.kim@mail.utoronto.ca, yena.joo@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: 
-# - Need to have downloaded the data from X and save the folder that you're 
-# interested in to inputs/data 
+# - Need to have downloaded the data from Democracy Fund + UCLA Nationscape and save the folder that you're 
+# interested in  
 # - Don't forget to gitignore it!
 
 
