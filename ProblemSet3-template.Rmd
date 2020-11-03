@@ -355,7 +355,9 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 13. lme4 Package: Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker. Fitting Linear Mixed-Effects Models Using lme4. Journal of
   Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01. 2015.
   
-14. Omitted Variable bias: Christoph Hanck, Martin Arnold. Introduction to Econometrics with R. 15 Sept. 2020, www.econometrics-with-r.org/6-1-omitted-variable-bias.html. 
+14. Omitted Variable bias: Christoph Hanck, Martin Arnold. Introduction to Econometrics with R. 15 Sept. 2020, www.econometrics-with-r.org/6-1-omitted-variable-bias.html.
+
+15. Information about the Electoral College: “US Election 2020: What Is the Electoral College?” BBC News, BBC, 27 Oct. 2020, www.bbc.com/news/world-us-canada-53558176. 
 
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
