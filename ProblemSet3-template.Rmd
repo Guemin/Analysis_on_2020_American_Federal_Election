@@ -211,9 +211,9 @@ In the previous sub-sections, we have created the logistic regression models on 
 
 
 **Model Summary**  
-Tables 6 and 7 in the Appendix are the summarized results of the logistic regression models of each candidate, and they are going to be used to find the significance of the independent variables using the p-value^[The p-value for each independent variable tests the null hypothesis that the variable has no correlation with the dependent variable. If the p-value is smaller than the significance level, you can reject the null hypothesis measures the significance of the independent variable on the dependent variable]. In Table 6(results of the regression model-Trump), "(age_group)30-44 year olds" shows a p-value of 1.43e-09 which is the biggest p-value among the age variable, and the smallest p-value among them is 2.59e-15 in "(age_group)45-64 year olds". The age variable is highly significant to the model. Similarly, the gender variable shows a p-value of 4.10e-13 which is significant at a 0% significance level, as well as race, income, and education variables.  
+Tables 6 and 7 in the Appendix are the summarized results of the logistic regression models of each candidate, and the p-values in each model are used to find the significance of the independent variables^[The p-value for each independent variable tests the null hypothesis that the variable has no correlation with the dependent variable. If the p-value is smaller than the significance level, you can reject the null hypothesis measures the significance of the independent variable on the dependent variable]. In Table 6(results of the regression model for Trump), "(age_group)30-44 year olds" shows a p-value of 1.43e-09 which is the biggest p-value among the age variable, and the smallest p-value among them is 2.59e-15 for "(age_group)45-64 year olds". Hence, the age variable is highly significant to the model. Similarly, the gender variable shows a p-value of 4.10e-13 which suggests that gender is a significant variable, as well as race, income, and education variables.  
 
-Likewise, the regression model of Biden(Table 7) shows a similar significance where the p-value of the age variable is 0.0008( in the variable "(age_group)45-64 year olds"), a p-value of 3.27e-07 in the gender variable, and a p-value of 4.61e-09 in one of the education categories. The state variable has at least one state that is statistically significant in both Table 6 and 7(State Vermont with a p-value of 0.0246 and 0.021). Therefore, we can conclude every variable is statistically significant and is going to be used in further analysis.  
+Furthermore, as we can see in Table 7, the regression model for Biden shows a similar significance as the model for Trump; the p-values for age, gender, and education variables that are much smaller than the significance level of 0.05 suggest that these variables are significant. On the other hand, the table shows that the state variable contains at least one state that is statistically significant in both models for Trump and Biden - "Vermont" with a p-value of 0.0246 and 0.021 in models for Trump and Biden respectively. Therefore, we can conclude every variable is statistically significant and is going to be used in further analysis.  
 
 
 **Results of Post-Stratification**  
@@ -362,11 +362,11 @@ knitr::kable(list(predict_state_trump, predict_state_biden), caption = "Comparis
 ##trump 
 tidydata_t <- broom::tidy(model_trump)
 tidy_data_trump <- tidydata_t[-c(25:55), ]
-kable(tidy_data_trump, caption = "Logistic Regression Model Results-Biden")%>% kable_styling(latex_options="scale_down")
+kable(tidy_data_trump, caption = "Logistic Regression Model Results for Trump")%>% kable_styling(latex_options="scale_down")
 
 ##biden 
 tidydata_b <- broom::tidy(model_biden)
 tidy_data_biden <- tidydata_b[-c(25:55), ]
-kable(tidy_data_biden, caption = "Logistic Regression Model Results-Biden")%>% kable_styling(latex_options="scale_down")
+kable(tidy_data_biden, caption = "Logistic Regression Model Results for Biden")%>% kable_styling(latex_options="scale_down")
 ```
 
