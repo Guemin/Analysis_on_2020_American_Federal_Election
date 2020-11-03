@@ -79,14 +79,13 @@ model_biden <- glm(vote_Biden ~ as.factor(age_group) + as.factor(gender) + as.fa
             data=survey_data, family="binomial")
 ```
 
-### Data cleaning process 
+### Data Cleaning Process 
 Prior to the modelings, we mutated variables in the survey data to create new variables that could be used in the analysis. Our response variables, vote_Trump and vote_Biden are also mutated from a variable named "vote_2020", which provides a name of a candidate that the respondent supports^[vote_Trump is 1 when vote_2020 is "Donald Trump", and 0 otherwise; vote_Biden is 1 when vote_2020 is "Joe Biden", and 0 otherwise.]. Also, the predictor variables, age_group, gender, race, education, household_income, and state are mutated in the data cleaning process so that the categories in each variable in the survey data match with those in the census data.  
 Since only those who are 18 years old or older are eligible to vote, we removed the observations obtained from the respondents who are younger than 18 years old in the data cleaning process. Similarly, we removed the observations of respondents who answered "No, I am not eligible to vote" as vote_intention, since their responses to vote_Trump and vote_Biden will not count in the actual election. Also, we removed people who are "less than 1 year old" or "90 (90+ in 1980 and 1990)" since their responses are unrealistic or not necessary in our analysis.   
 
 
 
-**Model Diagnostics**  
-
+### Model Diagnostics 
 With the logistic regression models we created above, we are going to study the diagnostics of the models.
 First, we need to keep in mind that logistic regressions are well performed under the following assumptions:  
 
@@ -210,8 +209,11 @@ census_data %>%
 
 In the previous sub-sections, we have created the logistic regression models on proportions of voters voting for Donald Trump and Joe Biden using 6 different variables such as age_group, gender, race, education, household_income, and state, and employed the post-stratification technique using the models.   
 
+
 **Model Summary**  
-Tables 6 and 7 in the Appendix are the summarized results of the logistic regression models, and they are going to be used to find the significance of the independent variables using the p-value^[The p-value for each independent variable tests the null hypothesis that the variable has no correlation with the dependent variable. If the p-value is smaller than the significance level, you can reject the null hypothesis measures the significance of the independent variable on the dependent variable]. "(age_group)30-44 year olds" shows a p-value of 1.43e-09 which is the biggest p-value among the age variable, and the smallest p-value among them is 2.59e-15 in "(age_group)45-64 year olds". The age variable is highly significant to the model. Similarly, the gender variable shows a p-value of 4.10e-13 which is significant at a 0% significance level, as well as race, income, and education variables. The state variable has at least one state that is statistically significant, so we can conclude every variable is statistically significant and is going to be used in further analysis.  
+Tables 6 and 7 in the Appendix are the summarized results of the logistic regression models of each candidate, and they are going to be used to find the significance of the independent variables using the p-value^[The p-value for each independent variable tests the null hypothesis that the variable has no correlation with the dependent variable. If the p-value is smaller than the significance level, you can reject the null hypothesis measures the significance of the independent variable on the dependent variable]. "(age_group)30-44 year olds" shows a p-value of 1.43e-09 which is the biggest p-value among the age variable, and the smallest p-value among them is 2.59e-15 in "(age_group)45-64 year olds". The age variable is highly significant to the model. Similarly, the gender variable shows a p-value of 4.10e-13 which is significant at a 0% significance level, as well as race, income, and education variables.  
+
+Likewise, the regression model of Biden(Table 7) shows a similar significance where the p-value of the age variable is 0.0008("(age_group)45-64 year olds"), a p-value of 3.27e-07 in the gender variable, and a p-value of 4.61e-09 in one of the education categories. The state variable has at least one state that is statistically significant in both Table 6 and 7(State Vermont with a p-value of 0.0246 and 0.021). Therefore, we can conclude every variable is statistically significant and is going to be used in further analysis.  
 
 
 **Results of Post-Stratification**  
@@ -236,7 +238,7 @@ kable(list(predict_income_trump, predict_income_biden), caption = "Comparison of
 **Income**  
 In Table 3, it is noticeable that the estimated proportion of voters for Trump increases as the  household income range increases. The lowest predicted value is 0.3219 (32.2%) in the income category "Less than $14,999" and the highest predicted estimate is in "\$150,000 and over" which is	0.5013 (50.13%).  
 
-For Biden, there is no strong deviation shown between the estimates in different household income categories. The proportions of voters voting for Biden in each income level sit in the range between 0.3644 (Income level "\$100,000 to \$149,999") and 0.4305907 ("\$75,000 to $99,999").  
+For Biden, there is no strong deviation shown between the estimates in different household income categories. The proportions of voters voting for Biden in each income level sit in the range between 0.3644 (Income level "\$100,000 to \$149,999") and 0.4306 ("\$75,000 to $99,999").  
 
 The result shows individuals with income "Less than \$14,999" are more likely to vote for Biden (39.31%) over Trump(32.19%), and the individuals with income "\$150,000 and over" are more likely to vote for Trump (50.13%) over Biden (37.46%).  
 
@@ -273,9 +275,9 @@ kable_styling(latex_options = "hold_position")
 **State**  
 Since the post-stratification result includes proportions of voters for each candidate in all of the 51 states in America^[Check Appendix for the full result], we are only going to talk about some noteworthy outcomes instead of going over estimates in every single state. More specifically, for each state, we will compare Trump and Biden's $\hat{y}^{ps}$ values, and consider whoever has the greater proportion of voters wins in the state.  
 
-The histogram(Figure 1) above shows the predicted win counts per state. Here, we can see that Trump is expected to win in 31 states, whereas Biden has a higher proportion of voters in the other 20 states. However, not every win weighs the same, because every state has different number of electoral votes. Since we are not given any information about the weight of each state, we are instead going to compare the proportion in the Swing States.  
+The histogram(Figure 1) above shows the predicted win counts per state. Here, we can see that Trump is expected to win in 31 states, whereas Biden has a higher proportion of voters in the other 20 states. However, not every win weighs the same, because every state has a different number of electoral votes. Since we are not given any information about the weight of each state, we are instead going to compare the proportion in the Swing States.  
 
-Swing States such as North Carolina, Florida, Pennsylvania, Michigan, Arizona, Wisconsin, and Ohio are the key battleground states where it is unclear who the winner will be. Table 4 shows a brief result of the proportions of voters for each candidate in each swing state; here, we can observe that Trump is expected to get the inside track in most of the states, except for Michigan(0.4562030) and Wisconsin(0.4124047), where Biden is expected to have a higher proportion to get voted with 0.4562(45.62%) and 0.4124(41.24%).  
+Swing States such as North Carolina, Florida, Pennsylvania, Michigan, Arizona, Wisconsin, and Ohio are the key battleground states where it is unclear who the winner will be. Table 4 shows a brief result of the proportions of voters for each candidate in each swing state; here, we can observe that Trump is expected to get the inside track in most of the states, except for Michigan(0.4562) and Wisconsin(0.4124), where Biden is expected to have a higher proportion to get voted with 0.4562(45.62%) and 0.4124(41.24%).  
 Table 4 also expects Trump to win by a landslide, since he wins 4 states out of 6 major swing states. 
 
 
@@ -283,12 +285,12 @@ Table 4 also expects Trump to win by a landslide, since he wins 4 states out of 
 
 Using the 2020 survey data and the 2018 census data obtained from Democracy Fund + UCLA Nationscape and IPUMS USA, we have predicted the popular vote outcome of the 2020 presidential election in the USA. In the "Model Specifics" section, logistic regression models are used to predict the candidate who is more likely to win the popular vote in the election, with explanatory variables age_group, gender, race, education, household_income, and state. However, one thing to note regarding the models is that there is a possibility of having omitted variable bias^[* explanation of omitted variable bias is described in "Weakness section"] and measurement error bias since some people could try to hide their political orientation and give false information. 
 
-After fitting the models, we employed the post-stratification analysis in which the census data is partitioned into 55,325 cells - based on the same 6 variables used in the logistic regression models - and the proportions of voters for each candidate are estimated within each cell. Using the estimates in each cell, the total proportions of voters for both Donald Trump and Joe Biden, $\hat{y}^{ps}$, are measured to predict the winner of the popular vote.  
+We then checked if the logistic regression models satisfy all the assumptions in the "Model diagnostic" part, as well as the significance of the models in the "Result" section. After fitting the models, we employed the post-stratification analysis in which the census data is partitioned into 55,325 cells - based on the same 6 variables used in the logistic regression models - and the proportions of voters for each candidate are estimated within each cell. Using the estimates in each cell, the total proportions of voters for both Donald Trump and Joe Biden, $\hat{y}^{ps}$, are measured to predict the winner of the popular vote.  
 The result shows that the estimated value $\hat{y}^{ps}$ for Joe Biden is 39.4% and for Donald Trump is 43.34%, which suggests that Trump is more likely to win the popular vote.   
 
-Moving on, the result in Table 3 (where we grouped the estimates of proportion by household income level) shows that individuals with the income "Less than \$14,999" are more likely to vote for Biden (39.31%) over Trump(32.19%). On the other hand, Trump is expected to have a higher proportion of getting voted from individuals with higher household income level; individuals with the income "\$150,000 and over" tend to vote for Trump by 50.13%. These outcomes may possibly be affected by the campaign promises of each candidate; for example, Biden's promise of raising taxes for those with income greater than $400,000 could affect people with higher income to not vote for him. On the other hand, people in the lower income ranges could possibly support Biden due to his promise of subsidizing health insurance for lower income people not receiving Medicare or Medicaid^[Medicare and Medicaid are the federal programs that provide health coverage to people who meet the criterions].
+Moving on, the result in Table 3 (where we grouped the estimates of proportion by household income level) shows that individuals with the income "Less than \$14,999" are more likely to vote for Biden (39.31%) over Trump(32.19%). On the other hand, Trump is expected to have a higher proportion of getting voted from individuals with higher household income level; individuals with the income "\$150,000 and over" tend to vote for Trump by 50.13%. These outcomes may possibly be affected by the campaign promises of each candidate; for example, Biden's promise of raising taxes for those with income greater than $400,000 could affect people with higher income to not vote for him. On the other hand, people in the lower income ranges could possibly support Biden due to his promise of subsidizing health insurance for lower income people not receiving Medicare or Medicaid^[Medicare and Medicaid are the federal programs that provide health coverage to people who meet the criteria].
 
-Furthermore, we grouped the cell estimates by states and predicted the candidate who is expected to win in each state. The result shows that Trump has greater probabilities to win in 31 states, whereas Biden has higher probabilities to win in 20 states; Trump is ahead of Biden by 11 states. Also, as already explained in the Result section, the outcome in the Swing States shows that Trump is expected to win in 4 out of 6 swing states. The "grouping by states" method along with the comparisons of the estimates between the swing states provides us with better intuition of what the expected result could be in the actual election since the method is more accurate to the electoral voting method than the popular vote previously done in the analysis. Likewise, both popular vote and "grouping by states" vote predict Trump to win in the 2020 presidential election.  
+Furthermore, we grouped the cell estimates by states and predicted the candidate who is expected to win in each state. The result in Figure 1 shows that Trump has greater probabilities to win in 31 states, whereas Biden has higher probabilities to win in 20 states; Trump is ahead of Biden by 11 states. Also, as already explained in the "Result" section, the outcome in the Swing States shows that Trump is expected to win in 4 out of 6 swing states, provided in Table 4. By comparing the results in the Swinging states for both candidates, we predict that Trump is more likely to win in the states with more electoral votes. The "grouping by states" method along with the comparisons of the estimates between the swing states provides us with better intuition of what the expected result could be in the actual election since the method is more accurate to the electoral voting method than the popular vote previously done in the analysis. Likewise, both popular vote and "grouping by states" vote predict Trump to win in the 2020 presidential election.  
 
 To sum up, the overall results from the post-stratification analysis suggest that Donald Trump is more likely to win the popular vote in the 2020 US presidential election. However, this is just an estimation based on the given data sets which do not provide enough information required for predicting the winner of the electoral vote^[The US presidential election actually uses the electoral college vote. There are 538 electors in the electoral college, divided among each state.]. Historically, in 2016, Hillary Clinton won the popular vote but lost the election, because Trump won the Electoral College. Therefore, winning the popular vote does not determine the next president of the USA.  
 
@@ -359,12 +361,12 @@ knitr::kable(list(predict_state_trump, predict_state_biden), caption = "Comparis
 #glm()Model results
 ##trump 
 tidydata_t <- broom::tidy(model_trump)
-tidy_data_trump <- tidydata_t[-c(25:65), ]
+tidy_data_trump <- tidydata_t[-c(25:55), ]
 kable(tidy_data_trump, caption = "Logistic Regression Model Results-Biden")%>% kable_styling(latex_options="scale_down")
 
 ##biden 
 tidydata_b <- broom::tidy(model_biden)
-tidy_data_biden <- tidydata_b[-c(25:65), ]
+tidy_data_biden <- tidydata_b[-c(25:55), ]
 kable(tidy_data_biden, caption = "Logistic Regression Model Results-Biden")%>% kable_styling(latex_options="scale_down")
 ```
 
