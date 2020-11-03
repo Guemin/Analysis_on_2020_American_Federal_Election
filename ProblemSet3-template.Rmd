@@ -344,13 +344,13 @@ Yihui Xie, Christophe Dervieux. “R Markdown Cookbook.” 10.1 The Function Kni
 
 10. Hold kable position: Justas MundeikisJustas Mundeikis, et al. “Rmarkdown Setting the Position of Kable.” 1 Feb. 1968, stackoverflow.com/questions/53153537/rmarkdown-setting-the-position-of-kable. 
 
-11. Knitr Package: Yihui Xie (2020). knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.30.
+11. Knitr Package: Yihui Xie . knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.30, 2020.
 
-12. kableExtra Package: Hao Zhu (2020). kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package
-  version 1.2.1. https://CRAN.R-project.org/package=kableExtra
+12. kableExtra Package: Hao Zhu. kableExtra: Construct Complex Table with 'kable' and Pipe Syntax. R package
+  version 1.2.1, 2020. https://CRAN.R-project.org/package=kableExtra
 
-13. lme4 Package: Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker (2015). Fitting Linear Mixed-Effects Models Using lme4. Journal of
-  Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01.
+13. lme4 Package: Douglas Bates, Martin Maechler, Ben Bolker, Steve Walker. Fitting Linear Mixed-Effects Models Using lme4. Journal of
+  Statistical Software, 67(1), 1-48. doi:10.18637/jss.v067.i01. 2015.
 
 # Appendix 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
