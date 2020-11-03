@@ -46,6 +46,10 @@ reduced_data <-
 # Maybe make some age-groups?
 # Maybe check the values?
 # Is vote a binary? If not, what are you going to do?
+# Considering the questions above, try to mutate the variables in the data
+# You are more than welcome to modify the code based on your choices of variables
+
+# remove unrealistic observations from the data
 reduced_data <-
   reduced_data %>% 
   filter(age != "less than 1 year old") %>%
@@ -53,6 +57,7 @@ reduced_data <-
 
 reduced_data$age <- as.integer(reduced_data$age)
 
+# mutate variables that could be used in the modeling
 reduced_data <- 
   reduced_data %>%
   filter(age>=18) %>%
@@ -91,9 +96,11 @@ reduced_data <-
                                                 "Completed some graduate, but no degree", "Other post high school vocational training") ~ "Some college or associate degree",
                                education %in% c("College Degree (such as B.A., B.S.)", "Doctorate degree ", "Masters degree") ~ "Bachelor's degree or higher"))
 
+# only select certain variables you need in the data
 reduced_data <- 
   reduced_data %>% 
   select(gender, age_group, race, education, household_income, state, vote_Trump, vote_Biden, vote_intention)
+
 # Saving the survey/sample data as a csv file in my
 # working directory
 write_csv(reduced_data, "survey_data.csv")
