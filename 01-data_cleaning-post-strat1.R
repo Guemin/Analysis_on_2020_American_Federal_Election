@@ -13,6 +13,7 @@
 library(haven)
 library(tidyverse)
 # Read in the raw data.
+# (You might need to change this if you use a different dataset)
 raw_data <- read_dta("usa_00004.dta.gz")
 
 
@@ -35,13 +36,13 @@ reduced_data <-
 
 
 #### What's next? ####
+# we are going to mutate variables so that they match with those in the Survey data
 
-## Here I am only splitting cells by age, but you 
-## can use other variables to split by changing
-## count(age) to count(age, sex, ....)
+# convert age and household income variables to integers
 reduced_data$age <- as.integer(reduced_data$age)
 reduced_data$ftotinc <- as.integer(reduced_data$ftotinc)
 
+# list of states in America
 state <- c("alabama", "alaska", "arizona", "arkansas", "california", "colorado",
            "connecticut", "delaware", "florida", "georgia", "hawaii", "idaho",
            "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana",
@@ -53,6 +54,7 @@ state <- c("alabama", "alaska", "arizona", "arkansas", "california", "colorado",
            "washington", "west virginia", "wisconsin", "wyoming", "american samoa",
            "district of columbia")
 
+# mutate demographic variables
 reduced_data <- 
   reduced_data %>%
   filter(age>=18) %>%
@@ -83,6 +85,8 @@ reduced_data <-
                                       ftotinc >= 150000 ~ "$150,000 and over")) %>%
   mutate(gender = case_when(sex == "male" ~ "Male",
                             sex == "female" ~ "Female")) 
+
+# mutate state names with their abbreviated names
 reduced_data <- 
   reduced_data %>%
   mutate(state = case_when(statefip == "alaska" ~ "AK",
@@ -138,6 +142,9 @@ reduced_data <-
                            statefip == "wyoming" ~ "WY")) %>%
   mutate(foreign_born = ifelse(bpl %in% state, "The United States", "Another country")) 
 
+
+## You can use other variables to split by changing
+## count(age_group, gender, race, state, education, household_income) to count(age, marriage_status, ....)
 data <- 
   reduced_data %>%
   select(age_group, gender, race, state, education, household_income) %>%
@@ -145,20 +152,11 @@ data <-
   group_by(age_group, gender, race, state, education, household_income) %>%
   rename(count = n)
 
+# calculate proportions in each cell
 data <- 
   data %>% 
   mutate(cell_prop = count/sum(data$count))
 
-age_data <- 
-  reduced_data %>%
-  count(age_group) %>%
-  group_by(age_group) %>%
-  rename(count = n)
-
-age_data <-
-  age_data %>%
-  mutate(cell_prop = count/sum(age_data$count))
-
 # Saving the census data as a csv file in my
 # working directory
-write_csv(age_data, "census_data.csv")
+write_csv(data, "census_data.csv")
